@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
-            android:src="@drawable/football_field" />
+            android:src="@drawable/superminifield" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/controller_layout"

@@ -15,6 +15,7 @@ public class GameActivity extends AppCompatActivity {
 
     private GameState gameState;
     private Player player;
+    private AccelerationVector playerAccelerationVector;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -31,6 +32,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameState = new GameState();
         player = new Player();
+        playerAccelerationVector = new AccelerationVector();
 
         TextView balls_left_textView = (TextView) findViewById(R.id.balls_number_textView);
         balls_left_textView.setText(String.format("%d", gameState.getBallsLeft()));
@@ -43,20 +45,21 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 int eventAction = event.getAction();
-                float side = view.getWidth();
-                float x = event.getX() - view.getLeft() - side/2;
-                float y = event.getY() - view.getTop() - side/2;
+                float centerSideDistance = view.getWidth() / 2f;
+                float x = event.getX() - centerSideDistance;
+                float y = event.getY() - centerSideDistance;
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
-                        Log.d("TOUCH", "Touched View");
-                        AccelerationVector v = new AccelerationVector();
-                        v.setAcceleration(x, y, side);
-                        player.setAcceleration(v.getMagnitude());
-                        player.setAccelerationDirection(v.getDirection());
+                        //Log.d("TOUCH", "Touched View");
+                        Log.d("TOUCH", "" + x + " " + y);
+                        playerAccelerationVector.setAcceleration(x, y, centerSideDistance);
+                        player.setAcceleration(playerAccelerationVector);
+                        Log.d("TOUCH", "" + player.getAcceleration().getMagnitude() + " " + player.getAcceleration().getDirection());
                         break;
                     case MotionEvent.ACTION_MOVE:
-
+                        //playerAccelerationVector.setAcceleration(x, y, centerSideDistance);
+                        //player.setAcceleration(playerAccelerationVector);
                         break;
                     default:
                         Log.d("TOUCH", "Released");
