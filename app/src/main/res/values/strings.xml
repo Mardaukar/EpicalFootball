@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">EpicalFootball</string>
+    <string name="action_button_text">SHOOT</string>
+    <string name="balls_text">Balls</string>
+    <string name="goals_text">Goals</string>
+    <string name="defaultValue_text">0</string>
+</resources>
