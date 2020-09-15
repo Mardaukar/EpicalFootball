@@ -3,10 +3,12 @@ package com.example.epicalfootball;
 public class Player {
     private Vector acceleration;
     private Vector speed;
+    private Position position;
 
     public Player() {
         this.speed = new Vector();
         this.acceleration = new Vector();
+        this.position = new Position();
     }
 
     public void setAcceleration(Vector acceleration) {
@@ -23,5 +25,13 @@ public class Player {
 
     public Vector getSpeed() {
         return speed;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }
