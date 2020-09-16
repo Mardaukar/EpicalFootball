@@ -46,9 +46,6 @@ public class GameActivity extends AppCompatActivity {
         TextView goals_scored_textView = findViewById(R.id.goals_number_textView);
         goals_scored_textView.setText(String.format("%d", gameState.getGoalsScored()));
 
-        //gameView = findViewById(R.id.game_surfaceView);
-        //gameView.setBackgroundColor(Color.GREEN);
-
         View controlView = findViewById(R.id.control_background);
         controlView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -62,8 +59,9 @@ public class GameActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         //playerAccelerationVector.setAcceleration(x, y, centerSideDistance);
                         //gameState.getPlayer().setAcceleration(playerAccelerationVector);
-                        Position p = new Position();
-                        gameView.drawPlayer(p);
+                        Log.d("DOWN", "touch down");
+                        //Position p = new Position();
+                        //gameView.drawPlayer(p);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         //playerAccelerationVector.setAcceleration(x, y, centerSideDistance);
@@ -75,6 +73,26 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 return true;
+            }
+        });
+    }
+
+    public void updateBallsLeft (final String ballsLeft) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView balls_left_textView = findViewById(R.id.balls_number_textView);
+                balls_left_textView.setText(ballsLeft);
+            }
+        });
+    }
+
+    public void updateGoals(final String goals) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView goals_scored_textView = findViewById(R.id.goals_number_textView);
+                goals_scored_textView.setText(goals);
             }
         });
     }
