@@ -15,13 +15,25 @@ public class GameRunner extends Thread {
 
     @Override
     public void run() {
+
+        long lastTime = System.currentTimeMillis();
+        long now;
+        long elapsed;
+
         while(running) {
             Log.d("RUNNER", "Thread running");
-            gameState.updateGameState();
-            gameView.updateSurface();
+            now = System.currentTimeMillis();
+            elapsed = now - lastTime;
+
+            if (elapsed < 200) {
+                gameState.updateGameState(elapsed);
+                gameView.updateSurface();
+            }
+
+            lastTime = now;
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

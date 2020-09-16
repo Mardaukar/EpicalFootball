@@ -6,9 +6,18 @@ public class Player {
     private Position position;
 
     public Player() {
-        this.speed = new Vector();
+        this.speed = new Vector(0.79f,0.1f);
         this.acceleration = new Vector();
         this.position = new Position();
+    }
+
+    public void updatePosition(float timeFactor) {
+        float x = this.position.getX();
+        float y = this.position.getY();
+        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
+        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
+        Position newPosition = new Position(x, y);
+        this.setPosition(newPosition);
     }
 
     public void setAcceleration(Vector acceleration) {

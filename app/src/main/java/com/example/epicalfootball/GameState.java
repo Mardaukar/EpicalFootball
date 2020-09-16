@@ -38,10 +38,14 @@ public class GameState {
         gameActivity.updateBallsLeft(Integer.toString(ballsLeft));
     }
 
-    public void updateGameState() {
-        substractBall();
-        player.getPosition().setX(player.getPosition().getX() + 20);
-        player.getPosition().setY(player.getPosition().getY() + 15);
+    public void updateGameState(long elapsed) {
         Log.d("GameState", "Update gameState");
+
+        float timeFactor = elapsed/1000f;
+
+        player.updatePosition(timeFactor);
+
+        Log.d("GameState", "Player x: " + this.player.getPosition().getX());
+        Log.d("GameState", "Player y: " + this.player.getPosition().getY());
     }
 }
