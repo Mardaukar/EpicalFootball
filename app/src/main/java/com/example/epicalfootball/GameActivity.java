@@ -57,18 +57,11 @@ public class GameActivity extends AppCompatActivity {
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
-                        //playerAccelerationVector.setAcceleration(x, y, centerSideDistance);
-                        //gameState.getPlayer().setAcceleration(playerAccelerationVector);
-                        Log.d("DOWN", "touch down");
-                        //Position p = new Position();
-                        //gameView.drawPlayer(p);
-                        break;
                     case MotionEvent.ACTION_MOVE:
-                        //playerAccelerationVector.setAcceleration(x, y, centerSideDistance);
-                        //player.setAcceleration(playerAccelerationVector);
+                        gameState.getPlayer().getAcceleration().setAcceleration(x, y, centerSideDistance);
                         break;
                     default:
-                        Log.d("TOUCH", "Released");
+                        gameState.getPlayer().getAcceleration().nullAcceleration();
                         break;
                 }
 

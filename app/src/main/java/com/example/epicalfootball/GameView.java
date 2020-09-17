@@ -79,10 +79,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(Color.YELLOW);
 
         Position position = gameState.getPlayer().getPosition();
-        float drawPositionX = position.getX() * this.getWidth() / 25f + this.getWidth()/2;
-        float drawPositionY = position.getY() * this.getWidth() * 0.8f / 20f + this.getHeight() / 20;
+        float pixelPerMeter = this.getWidth() / 35.294f;
+        float drawPositionX = position.getX() * pixelPerMeter + this.getWidth() / 2f;
+        float drawPositionY = position.getY() * pixelPerMeter + this.getWidth() / 375f * 30;
 
-        canvas.drawRect(drawPositionX - 30, drawPositionY - 30, drawPositionX + 30, drawPositionY + 30, paint);
+        canvas.drawRect(drawPositionX - pixelPerMeter / 2, drawPositionY - pixelPerMeter / 2, drawPositionX + pixelPerMeter / 2, drawPositionY + pixelPerMeter / 2, paint);
 
         surfaceHolder.unlockCanvasAndPost(canvas);
 

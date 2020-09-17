@@ -43,6 +43,8 @@ public class GameState {
 
         float timeFactor = elapsed/1000f;
 
+        player.baseDecelerate(timeFactor);
+        player.updateSpeed(timeFactor);
         player.updatePosition(timeFactor);
 
         Log.d("GameState", "Player x: " + this.player.getPosition().getX());
