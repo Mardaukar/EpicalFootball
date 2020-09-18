@@ -24,16 +24,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        /*
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
-        */
+
         gameState = new GameState(this);
         gameView = new GameView(this, gameState);
 
@@ -51,17 +42,22 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 int eventAction = event.getAction();
+                float x = event.getX();
+                float y = event.getY();
                 float centerSideDistance = view.getWidth() / 2f;
-                float x = event.getX() - centerSideDistance;
-                float y = event.getY() - centerSideDistance;
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        gameState.getPlayer().getAcceleration().setAcceleration(x, y, centerSideDistance);
+                        if(x >= 0 && x <= view.getWidth() && y >= 0 && y <= view.getHeight()) {
+                            gameState.setControlOn(x, y, centerSideDistance);
+                        } else {
+                            gameState.setControlOff();
+                        }
+
                         break;
                     default:
-                        gameState.getPlayer().getAcceleration().nullAcceleration();
+                        gameState.setControlOff();
                         break;
                 }
 
@@ -88,5 +84,20 @@ public class GameActivity extends AppCompatActivity {
                 goals_scored_textView.setText(goals);
             }
         });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        View decorView = getWindow().getDecorView();
+        if (hasFocus) {
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 }

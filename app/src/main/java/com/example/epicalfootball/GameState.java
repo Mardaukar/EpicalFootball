@@ -9,6 +9,11 @@ public class GameState {
     private int ballsLeft;
     private int goalsScored;
 
+    private boolean controlOn = false;
+    private float controlX;
+    private float controlY;
+    private float centerSideDistance;
+
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
         this.player = new Player();
@@ -43,11 +48,43 @@ public class GameState {
 
         float timeFactor = elapsed/1000f;
 
+        if (controlOn) {
+            player.getAcceleration().setAcceleration(controlX - centerSideDistance, controlY - centerSideDistance, centerSideDistance);
+        } else {
+            player.getAcceleration().nullAcceleration();
+        }
         player.baseDecelerate(timeFactor);
         player.updateSpeed(timeFactor);
         player.updatePosition(timeFactor);
 
         Log.d("GameState", "Player x: " + this.player.getPosition().getX());
         Log.d("GameState", "Player y: " + this.player.getPosition().getY());
+    }
+
+    public void setControlOn(float x, float y, float centerSideDistance) {
+        controlOn = true;
+        controlX = x;
+        controlY = y;
+        this.centerSideDistance = centerSideDistance;
+    }
+
+    public boolean isControlOn() {
+        return controlOn;
+    }
+
+    public float getControlX() {
+        return controlX;
+    }
+
+    public float getControlY() {
+        return controlY;
+    }
+
+    public float getCenterSideDistance() {
+        return centerSideDistance;
+    }
+
+    public void setControlOff() {
+        controlOn = false;
     }
 }

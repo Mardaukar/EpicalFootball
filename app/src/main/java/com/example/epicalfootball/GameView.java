@@ -68,13 +68,34 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void updateSurface()
-    {
+    public void clearControlView() {
+        Canvas canvas = surfaceHolder.lockCanvas();
+        Paint clearPaint = new Paint();
+        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
+        surfaceHolder.unlockCanvasAndPost(canvas);
+    }
+
+    public void drawControlCircle(float x, float y, float sideLength) {
+        Canvas canvas = surfaceHolder.lockCanvas();
+        Paint clearPaint = new Paint();
+        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
+
+        paint.setColor(Color.MAGENTA);
+        paint.setAlpha(50);
+
+        canvas.drawCircle((1/8 + x / sideLength) * this.getWidth() * 0.8f + 80, (1 + y / sideLength) * this.getWidth() * 0.8f, 80, paint);
+
+        surfaceHolder.unlockCanvasAndPost(canvas);
+    }
+
+    public void updateSurface() {
         Log.d("GameView", "Start draw");
         Canvas canvas = surfaceHolder.lockCanvas();
         Paint clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawRect(0, 0, this.getWidth(), this.getHeight(), clearPaint);
+        canvas.drawRect(0, 0, this.getWidth(), this.getWidth() * 0.8f, clearPaint);
 
         paint.setColor(Color.YELLOW);
 
@@ -84,6 +105,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         float drawPositionY = position.getY() * pixelPerMeter + this.getWidth() / 375f * 30;
 
         canvas.drawRect(drawPositionX - pixelPerMeter / 2, drawPositionY - pixelPerMeter / 2, drawPositionX + pixelPerMeter / 2, drawPositionY + pixelPerMeter / 2, paint);
+
+        canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
+
+        paint.setColor(Color.MAGENTA);
+        paint.setAlpha(50);
+
+        if (gameState.isControlOn()) {
+            float controlX = gameState.getControlX();
+            float controlY = gameState.getControlY();
+            float centerSideDistance = gameState.getCenterSideDistance();
+            canvas.drawCircle((1/8 + controlX / centerSideDistance / 2) * this.getWidth() * 0.8f + 80, (1 + controlY / centerSideDistance / 2) * this.getWidth() * 0.8f, 80, paint);
+        }
 
         surfaceHolder.unlockCanvasAndPost(canvas);
 
