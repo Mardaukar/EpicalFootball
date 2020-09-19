@@ -13,6 +13,7 @@ public class GameState {
     private float controlX;
     private float controlY;
     private float centerSideDistance;
+    private boolean decelerateOn = false;
 
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
@@ -44,21 +45,20 @@ public class GameState {
     }
 
     public void updateGameState(long elapsed) {
-        Log.d("GameState", "Update gameState");
-
         float timeFactor = elapsed/1000f;
 
         if (controlOn) {
-            player.getAcceleration().setAcceleration(controlX - centerSideDistance, controlY - centerSideDistance, centerSideDistance);
+            player.getTargetSpeed().setTargetSpeed(controlX - centerSideDistance, controlY - centerSideDistance, centerSideDistance);
         } else {
-            player.getAcceleration().nullAcceleration();
+            player.getTargetSpeed().nullTargetSpeed();
         }
-        player.baseDecelerate(timeFactor);
-        player.updateSpeed(timeFactor);
-        player.updatePosition(timeFactor);
 
-        Log.d("GameState", "Player x: " + this.player.getPosition().getX());
-        Log.d("GameState", "Player y: " + this.player.getPosition().getY());
+        player.updateSpeed(timeFactor, decelerateOn);
+        player.updatePosition(timeFactor);
+    }
+
+    public boolean isDecelerateOn() {
+        return decelerateOn;
     }
 
     public void setControlOn(float x, float y, float centerSideDistance) {
@@ -66,6 +66,7 @@ public class GameState {
         controlX = x;
         controlY = y;
         this.centerSideDistance = centerSideDistance;
+        decelerateOn = false;
     }
 
     public boolean isControlOn() {
@@ -84,7 +85,8 @@ public class GameState {
         return centerSideDistance;
     }
 
-    public void setControlOff() {
+    public void setControlOffWithDecelerate(boolean decelerate) {
         controlOn = false;
+        decelerateOn = decelerate;
     }
 }

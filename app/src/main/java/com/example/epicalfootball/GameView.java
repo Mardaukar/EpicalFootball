@@ -68,30 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void clearControlView() {
-        Canvas canvas = surfaceHolder.lockCanvas();
-        Paint clearPaint = new Paint();
-        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
-        surfaceHolder.unlockCanvasAndPost(canvas);
-    }
-
-    public void drawControlCircle(float x, float y, float sideLength) {
-        Canvas canvas = surfaceHolder.lockCanvas();
-        Paint clearPaint = new Paint();
-        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
-
-        paint.setColor(Color.MAGENTA);
-        paint.setAlpha(50);
-
-        canvas.drawCircle((1/8 + x / sideLength) * this.getWidth() * 0.8f + 80, (1 + y / sideLength) * this.getWidth() * 0.8f, 80, paint);
-
-        surfaceHolder.unlockCanvasAndPost(canvas);
-    }
-
     public void updateSurface() {
-        Log.d("GameView", "Start draw");
         Canvas canvas = surfaceHolder.lockCanvas();
         Paint clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -108,6 +85,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
 
+        if (gameState.isDecelerateOn()) {
+            paint.setColor(Color.BLUE);
+            paint.setAlpha(100);
+        } else {
+            paint.setColor(Color.BLUE);
+            paint.setAlpha(50);
+        }
+        canvas.drawCircle(this.getWidth() / 2f, this.getHeight() * 3 / 4, 90, paint);
+
         paint.setColor(Color.MAGENTA);
         paint.setAlpha(50);
 
@@ -119,31 +105,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         surfaceHolder.unlockCanvasAndPost(canvas);
-
-        Log.d("GameView", "End draw");
-    }
-
-    public float getCircleX() {
-        return circleX;
-    }
-
-    public void setCircleX(float circleX) {
-        this.circleX = circleX;
-    }
-
-    public float getCircleY() {
-        return circleY;
-    }
-
-    public void setCircleY(float circleY) {
-        this.circleY = circleY;
-    }
-
-    public Paint getPaint() {
-        return paint;
-    }
-
-    public void setPaint(Paint paint) {
-        this.paint = paint;
     }
 }

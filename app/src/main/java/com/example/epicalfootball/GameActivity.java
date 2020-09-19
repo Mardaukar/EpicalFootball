@@ -1,15 +1,10 @@
 package com.example.epicalfootball;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,7 +12,6 @@ public class GameActivity extends AppCompatActivity {
 
     private GameState gameState;
     private GameView gameView;
-    private AccelerationVector playerAccelerationVector;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -44,20 +38,22 @@ public class GameActivity extends AppCompatActivity {
                 int eventAction = event.getAction();
                 float x = event.getX();
                 float y = event.getY();
-                float centerSideDistance = view.getWidth() / 2f;
+                float sideLength = view.getWidth();
+                float centerSideDistance = sideLength / 2f;
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        if(x >= 0 && x <= view.getWidth() && y >= 0 && y <= view.getHeight()) {
+                        if (x >= sideLength * 0.40 && x <= sideLength * 0.60 && y >= sideLength * 0.40 && y <= sideLength * 0.60) {
+                            gameState.setControlOffWithDecelerate(true);
+                        } else if(x >= 0 && x <= sideLength && y >= 0 && y <= sideLength) {
                             gameState.setControlOn(x, y, centerSideDistance);
                         } else {
-                            gameState.setControlOff();
+                            gameState.setControlOffWithDecelerate(false);
                         }
-
                         break;
                     default:
-                        gameState.setControlOff();
+                        gameState.setControlOffWithDecelerate(false);
                         break;
                 }
 

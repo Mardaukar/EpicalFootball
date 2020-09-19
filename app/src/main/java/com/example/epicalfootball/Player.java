@@ -1,39 +1,84 @@
 package com.example.epicalfootball;
 
+import android.util.Log;
+
 public class Player {
-    private AccelerationVector acceleration;
+    private TargetSpeedVector targetSpeed;
     private Vector speed;
     private Position position;
 
     public Player() {
-        this.speed = new Vector(0.79f,1f);
-        this.acceleration = new AccelerationVector();
+        this.speed = new Vector((float)Math.PI/3f,1f);
+        this.targetSpeed = new TargetSpeedVector();
         this.position = new Position();
     }
 
-    public void updateSpeed(float timeFactor) {
-        if (acceleration.getMagnitude() >  0) {
-            float newSpeedX = (float)(Math.cos(speed.getDirection()) * speed.getMagnitude() + Math.cos(acceleration.getDirection()) * acceleration.getMagnitude() * 0.4 * timeFactor);
-            float newSpeedY = (float)(Math.sin(speed.getDirection()) * speed.getMagnitude() + Math.sin(acceleration.getDirection()) * acceleration.getMagnitude() * 0.4 * timeFactor);
+    public void updateSpeed(float timeFactor, boolean decelerateOn) {
+        float oldSpeedMagnitude = speed.getMagnitude();
+        float deceleratedSpeedMagnitude = 0;
 
-            float newDirection = EpicalMath.convertToDirection(newSpeedX, newSpeedY);
-            float newMagnitude = EpicalMath.calculateMagnitude(newSpeedX, newSpeedY);
+        if (oldSpeedMagnitude > 0) {
+            float deceleration;
 
-            Vector newSpeed = new Vector(newDirection, newMagnitude);
-            this.setSpeed(newSpeed);
-
-        }
-    }
-
-    public void baseDecelerate(float timeFactor) {
-        if (speed.getMagnitude() > 0) {
-            float newSpeedMagnitude = this.speed.getMagnitude() - 0.2f * timeFactor;
-
-            if (newSpeedMagnitude < 0) {
-                newSpeedMagnitude = 0;
+            if (decelerateOn) {
+                deceleration = 0.7f;
+            } else {
+                deceleration = 0.3f;
             }
 
-            this.speed.setMagnitude(newSpeedMagnitude);
+            deceleratedSpeedMagnitude = oldSpeedMagnitude - deceleration * timeFactor;
+
+            if (deceleratedSpeedMagnitude < 0) {
+                deceleratedSpeedMagnitude = 0;
+            }
+        }
+
+        if (targetSpeed.getMagnitude() >  0) {
+            float newSpeedX = (float)(Math.cos(speed.getDirection()) * deceleratedSpeedMagnitude);
+            float newSpeedY = (float)(Math.sin(speed.getDirection()) * deceleratedSpeedMagnitude);
+            float targetSpeedX = (float)(Math.cos(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
+            float targetSpeedY = (float)(Math.sin(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
+
+            if (newSpeedX >= 0) {
+                if (targetSpeedX > newSpeedX) {
+                    newSpeedX += Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                } else {
+                    newSpeedX -= Math.abs(Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                }
+            } else {
+                if (targetSpeedX < newSpeedX) {
+                    newSpeedX += Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                } else {
+                    newSpeedX += Math.abs(Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                }
+            }
+
+            if (newSpeedY >= 0) {
+                if (targetSpeedY > newSpeedY) {
+                    newSpeedY += Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                } else {
+                    newSpeedY -= Math.abs(Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                }
+            } else {
+                if (targetSpeedY < newSpeedY) {
+                    newSpeedY += Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                } else {
+                    newSpeedY += Math.abs(Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                }
+            }
+
+            float newDirection = EpicalMath.convertToDirection(newSpeedX, newSpeedY);
+            float newSpeedMagnitude = EpicalMath.calculateMagnitude(newSpeedX, newSpeedY);
+
+            if (newSpeedMagnitude > oldSpeedMagnitude) {
+                newSpeedMagnitude = (newSpeedMagnitude - oldSpeedMagnitude) * (1 - oldSpeedMagnitude * 7/8) + oldSpeedMagnitude;
+            }
+
+            Vector newSpeed = new Vector(newDirection, newSpeedMagnitude);
+            this.setSpeed(newSpeed);
+
+        } else {
+            this.speed.setMagnitude(deceleratedSpeedMagnitude);
         }
     }
 
@@ -46,16 +91,16 @@ public class Player {
         this.setPosition(newPosition);
     }
 
-    public void setAcceleration(AccelerationVector acceleration) {
-        this.acceleration = acceleration;
+    public void setTargetSpeed(TargetSpeedVector targetSpeed) {
+        this.targetSpeed = targetSpeed;
     }
 
     public void setSpeed(Vector speed) {
         this.speed = speed;
     }
 
-    public AccelerationVector getAcceleration() {
-        return acceleration;
+    public TargetSpeedVector getTargetSpeed() {
+        return targetSpeed;
     }
 
     public Vector getSpeed() {

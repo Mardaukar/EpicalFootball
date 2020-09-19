@@ -21,7 +21,6 @@ public class GameRunner extends Thread {
         long elapsed;
 
         while(running) {
-            Log.d("RUNNER", "Thread running");
             now = System.currentTimeMillis();
             elapsed = now - lastTime;
 
