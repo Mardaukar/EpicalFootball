@@ -4,8 +4,8 @@ import android.util.Log;
 
 public class Player {
     private TargetSpeedVector targetSpeed;
-    private Vector speed;
-    private Position position;
+    protected Vector speed;
+    protected Position position;
 
     public Player() {
         this.speed = new Vector((float)Math.PI/3f,1f);
@@ -82,27 +82,6 @@ public class Player {
         }
     }
 
-    public void updatePosition(float timeFactor) {
-        float x = this.position.getX();
-        float y = this.position.getY();
-        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        Position newPosition = new Position(x, y);
-        this.setPosition(newPosition);
-    }
-
-    public void setTargetSpeed(TargetSpeedVector targetSpeed) {
-        this.targetSpeed = targetSpeed;
-    }
-
-    public void setSpeed(Vector speed) {
-        this.speed = speed;
-    }
-
-    public TargetSpeedVector getTargetSpeed() {
-        return targetSpeed;
-    }
-
     public Vector getSpeed() {
         return speed;
     }
@@ -111,7 +90,28 @@ public class Player {
         return position;
     }
 
+    public void setSpeed(Vector speed) {
+        this.speed = speed;
+    }
+
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public void updatePosition(float timeFactor) {
+        float x = this.position.getX();
+        float y = this.position.getY();
+        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
+        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
+        Position newPosition = new Position(x, y);
+        this.position = newPosition;
+    }
+
+    public void setTargetSpeed(TargetSpeedVector targetSpeed) {
+        this.targetSpeed = targetSpeed;
+    }
+
+    public TargetSpeedVector getTargetSpeed() {
+        return targetSpeed;
     }
 }

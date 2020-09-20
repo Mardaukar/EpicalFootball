@@ -6,6 +6,7 @@ public class GameState {
 
     private GameActivity gameActivity;
     private Player player;
+    private Ball ball;
     private int ballsLeft;
     private int goalsScored;
 
@@ -18,6 +19,7 @@ public class GameState {
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
         this.player = new Player();
+        this.ball = new Ball();
         this.ballsLeft = 10;
         this.goalsScored = 0;
     }
@@ -44,6 +46,14 @@ public class GameState {
         gameActivity.updateBallsLeft(Integer.toString(ballsLeft));
     }
 
+    public Ball getBall() {
+        return ball;
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
@@ -54,7 +64,9 @@ public class GameState {
         }
 
         player.updateSpeed(timeFactor, decelerateOn);
+        ball.updateSpeed(timeFactor);
         player.updatePosition(timeFactor);
+        ball.updatePosition(timeFactor);
     }
 
     public boolean isDecelerateOn() {
