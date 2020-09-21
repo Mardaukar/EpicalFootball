@@ -29,4 +29,15 @@ public class Position {
     public float getY() {
         return y;
     }
+
+    public Position addVector(float direction, float distance) {
+        this.x += Math.cos(direction) * distance;
+        this.y += Math.sin(direction) * distance;
+        return this;
+    }
+
+    public Position addVector(Vector vector) {
+        addVector(vector.getDirection(), vector.getMagnitude());
+        return this;
+    }
 }

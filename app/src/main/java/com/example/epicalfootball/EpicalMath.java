@@ -1,5 +1,9 @@
 package com.example.epicalfootball;
 
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.util.Log;
+
 public class EpicalMath {
 
     public static float calculateMagnitude(float x, float y, float relationDivisor) {
@@ -41,6 +45,43 @@ public class EpicalMath {
             } else {
                 direction = 0;
             }
+        }
+
+        return direction;
+    }
+
+    public static boolean checkIntersect(RectF rect, float x, float y, float radius) {
+        Log.d("EpicalMath", "" + rect.left + " " + rect.right + " " + rect.top + " " + rect.bottom);
+        Log.d("EpicalMath", "" + x + " " + y + " " + radius);
+
+        if (x + radius >= rect.left && x - radius <= rect.right && y + radius >= rect.top && y - radius <= rect.bottom) {
+            Log.d("EpicalMath", "true");
+            return true;
+        } else {
+            Log.d("EpicalMath", "false");
+            return false;
+        }
+    }
+
+    public static boolean checkIntersect(float x1, float y1, float radius1, float x2, float y2, float radius2) {
+        float distance = calculateDistance(x1, y1, x2, y2);
+        if (distance < radius1 + radius2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static float calculateDistance(float x1, float y1, float x2, float y2) {
+        float distance = (float)Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+        return distance;
+    }
+
+    public static float sanitizeDirection(float direction) {
+        if (direction < -Math.PI) {
+            direction += 2*Math.PI;
+        } else if (direction > Math.PI) {
+            direction -= 2*Math.PI;
         }
 
         return direction;

@@ -1,37 +1,11 @@
 package com.example.epicalfootball;
 
-public class Ball {
-    protected Vector speed;
-    protected Position position;
+public class Ball extends FieldObject {
 
     public Ball() {
-        this.position = new Position(-15, 13);
-        this.speed = new Vector(0,1f);
-    }
-
-    public Vector getSpeed() {
-        return speed;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setSpeed(Vector speed) {
-        this.speed = speed;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void updatePosition(float timeFactor) {
-        float x = this.position.getX();
-        float y = this.position.getY();
-        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        Position newPosition = new Position(x, y);
-        this.position = newPosition;
+        this.position = new Position(-7.32f / 2 + 0.2f, 35);
+        this.speed = new Vector((float)-Math.PI / 2,3.2f);
+        this.radius = 0.4f;
     }
 
     public void updateSpeed(float timeFactor) {

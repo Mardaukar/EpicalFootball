@@ -90,8 +90,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * 0.8f, paint);
 
         paint.setColor(0xffffad60);
-        canvas.drawArc(drawPositionX - pixelPerMeter * 0.8f, drawPositionY - pixelPerMeter * 0.8f, drawPositionX + pixelPerMeter * 0.8f, drawPositionY + pixelPerMeter * 0.8f, -90, 120, true, paint);
-
+        float directionRadians = gameState.getPlayer().getTargetSpeed().getDirection();
+        float directionDegrees = directionRadians / (float)Math.PI * 180;
+        canvas.drawArc(drawPositionX - pixelPerMeter * 0.8f, drawPositionY - pixelPerMeter * 0.8f, drawPositionX + pixelPerMeter * 0.8f, drawPositionY + pixelPerMeter * 0.8f, directionDegrees - 60, 120, true, paint);
 
         canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
 

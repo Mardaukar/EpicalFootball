@@ -29,4 +29,18 @@ public class Vector {
     public float getMagnitude() {
         return magnitude;
     }
+
+    public void reverseDirection() {
+        if (direction >= 0 ) {
+            direction -= Math.PI;
+        } else {
+            direction += Math.PI;
+        }
+    }
+
+    public void bounceDirection (float surfaceDirection) {
+        this.reverseDirection();
+        float bounceDirection = EpicalMath.sanitizeDirection(surfaceDirection + surfaceDirection - this.direction);
+        this.direction = bounceDirection;
+    }
 }

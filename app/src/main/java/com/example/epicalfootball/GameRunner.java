@@ -24,7 +24,7 @@ public class GameRunner extends Thread {
             now = System.currentTimeMillis();
             elapsed = now - lastTime;
 
-            if (elapsed < 200) {
+            if (elapsed < 150) {
                 gameState.updateGameState(elapsed);
                 gameView.updateSurface();
             }
@@ -32,7 +32,7 @@ public class GameRunner extends Thread {
             lastTime = now;
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

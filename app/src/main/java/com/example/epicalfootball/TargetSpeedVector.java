@@ -11,7 +11,7 @@ public class TargetSpeedVector extends Vector {
     }
 
     public void nullTargetSpeed() {
-        this.setDirection(0);
+        //this.setDirection(0);
         this.setMagnitude(0);
     }
 }

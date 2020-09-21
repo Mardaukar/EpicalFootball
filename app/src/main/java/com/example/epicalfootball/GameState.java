@@ -1,5 +1,6 @@
 package com.example.epicalfootball;
 
+import android.graphics.RectF;
 import android.util.Log;
 
 public class GameState {
@@ -15,6 +16,16 @@ public class GameState {
     private float controlY;
     private float centerSideDistance;
     private boolean decelerateOn = false;
+
+    private RectF rearNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -35.294f*0.8f*0.08f);
+    private RectF leftNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, -7.32f / 2, 0);
+    private RectF rightNet = new RectF(7.32f / 2, (float)(-35.294*0.8*0.08), 7.32f / 2, 0);
+    private RectF leftBoundary = new RectF(-35.294f / 2, -35.294f*0.8f*0.1f, -35.294f / 2, 35.294f*0.8f*0.9f);
+    private RectF rightBoundary = new RectF(35.294f / 2, -35.294f*0.8f*0.1f, 35.294f / 2, 35.294f*0.8f*0.9f);
+    private RectF topBoundary = new RectF(-35.294f / 2, -35.294f*0.8f*0.1f, 35.294f / 2, -35.294f*0.8f*0.1f);
+    private RectF bottomBoundary = new RectF(-35.294f / 2, 35.294f*0.8f*0.9f, 35.294f / 2, 35.294f*0.8f*0.9f);
+    private Circle leftPost = new Circle(-7.32f / 2, 0, 0.2f);
+    private Circle rightPost = new Circle(7.32f / 2, 0, 0.2f);
 
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
@@ -65,8 +76,63 @@ public class GameState {
 
         player.updateSpeed(timeFactor, decelerateOn);
         ball.updateSpeed(timeFactor);
+
+        //handlePlayerBallCollision();
+        handleGoalCollision(player);
+        handleGoalCollision(ball);
+        handleBoundaryCollision(player);
         player.updatePosition(timeFactor);
         ball.updatePosition(timeFactor);
+    }
+
+    public void handleGoalCollision(FieldObject fieldObject) {
+        handleCircleCollision(leftPost, fieldObject);
+        handleCircleCollision(rightPost, fieldObject);
+        handleLineSegmentCollision(rearNet, fieldObject);
+        handleLineSegmentCollision(leftNet, fieldObject);
+        handleLineSegmentCollision(rightNet, fieldObject);
+    }
+
+    public void handleCircleCollision(Circle circle, FieldObject fieldObject) {
+        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
+            float distance = circle.getRadius() + fieldObject.getRadius();
+            float direction = EpicalMath.convertToDirection(fieldObject.getPosition().getX() - circle.getX(), fieldObject.getPosition().getY() - circle.getY());
+            fieldObject.setPosition(circle.getPosition().addVector(direction, distance));
+            fieldObject.getSpeed().bounceDirection(direction);
+            float hitAngle = Math.abs(fieldObject.getSpeed().getDirection() - direction);
+            fieldObject.getSpeed().setMagnitude((1 - 0.6f * (float)Math.cos(hitAngle)) * fieldObject.getSpeed().getMagnitude() * 0.9f);
+        }
+    }
+
+    public void handleLineSegmentCollision(RectF rectF, FieldObject fieldObject) {
+        if (EpicalMath.checkIntersect(rectF, fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
+            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * 0.5f);
+
+            if (rectF.top == rectF.bottom) {
+                if (fieldObject.position.getY() < rectF.top) {
+                    fieldObject.getSpeed().bounceDirection((float)-Math.PI / 2);
+                    fieldObject.getPosition().setY(rectF.top - fieldObject.getRadius());
+                } else {
+                    fieldObject.getSpeed().bounceDirection((float)Math.PI / 2);
+                    fieldObject.getPosition().setY(rectF.bottom + fieldObject.getRadius());
+                }
+            } else {
+                if (fieldObject.position.getX() < rectF.left) {
+                    fieldObject.getSpeed().bounceDirection((float)Math.PI);
+                    fieldObject.getPosition().setX(rectF.left - fieldObject.getRadius());
+                } else {
+                    fieldObject.getSpeed().bounceDirection(0);
+                    fieldObject.getPosition().setX(rectF.right + fieldObject.getRadius());
+                }
+            }
+        }
+    }
+
+    public void handleBoundaryCollision(FieldObject fieldObject) {
+        handleLineSegmentCollision(leftBoundary, fieldObject);
+        handleLineSegmentCollision(rightBoundary, fieldObject);
+        handleLineSegmentCollision(topBoundary, fieldObject);
+        handleLineSegmentCollision(bottomBoundary, fieldObject);
     }
 
     public boolean isDecelerateOn() {

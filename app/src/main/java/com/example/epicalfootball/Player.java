@@ -2,15 +2,14 @@ package com.example.epicalfootball;
 
 import android.util.Log;
 
-public class Player {
+public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
-    protected Vector speed;
-    protected Position position;
 
     public Player() {
         this.speed = new Vector((float)Math.PI/3f,1f);
         this.targetSpeed = new TargetSpeedVector();
         this.position = new Position();
+        this.radius = 0.8f;
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn) {
@@ -80,31 +79,6 @@ public class Player {
         } else {
             this.speed.setMagnitude(deceleratedSpeedMagnitude);
         }
-    }
-
-    public Vector getSpeed() {
-        return speed;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setSpeed(Vector speed) {
-        this.speed = speed;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void updatePosition(float timeFactor) {
-        float x = this.position.getX();
-        float y = this.position.getY();
-        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        Position newPosition = new Position(x, y);
-        this.position = newPosition;
     }
 
     public void setTargetSpeed(TargetSpeedVector targetSpeed) {
