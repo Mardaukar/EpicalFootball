@@ -17,6 +17,10 @@ public class GameState {
     private float centerSideDistance;
     private boolean decelerateOn = false;
 
+    private boolean canScore = true;
+    private long newBallTimer = 0;
+
+    private RectF goalArea = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -0.8f);
     private RectF rearNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -35.294f*0.8f*0.08f);
     private RectF leftNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, -7.32f / 2, 0);
     private RectF rightNet = new RectF(7.32f / 2, (float)(-35.294*0.8*0.08), 7.32f / 2, 0);
@@ -24,8 +28,8 @@ public class GameState {
     private RectF rightBoundary = new RectF(35.294f / 2, -35.294f*0.8f*0.1f, 35.294f / 2, 35.294f*0.8f*0.9f);
     private RectF topBoundary = new RectF(-35.294f / 2, -35.294f*0.8f*0.1f, 35.294f / 2, -35.294f*0.8f*0.1f);
     private RectF bottomBoundary = new RectF(-35.294f / 2, 35.294f*0.8f*0.9f, 35.294f / 2, 35.294f*0.8f*0.9f);
-    private Circle leftPost = new Circle(-7.32f / 2, 0, 0.2f);
-    private Circle rightPost = new Circle(7.32f / 2, 0, 0.2f);
+    private Circle leftPost = new Circle(-7.32f / 2 - 0.1f, 0, 0.2f);
+    private Circle rightPost = new Circle(7.32f / 2 + 0.1f, 0, 0.2f);
 
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
@@ -68,6 +72,16 @@ public class GameState {
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
+        if (newBallTimer > 0) {
+            newBallTimer -= elapsed;
+
+            if (newBallTimer <= 0) {
+                substractBall();
+                this.ball = new Ball();
+                canScore = true;
+            }
+        }
+
         if (controlOn) {
             player.getTargetSpeed().setTargetSpeed(controlX - centerSideDistance, controlY - centerSideDistance, centerSideDistance);
         } else {
@@ -77,12 +91,40 @@ public class GameState {
         player.updateSpeed(timeFactor, decelerateOn);
         ball.updateSpeed(timeFactor);
 
-        //handlePlayerBallCollision();
+        handlePlayerBallCollision(player, ball);
         handleGoalCollision(player);
         handleGoalCollision(ball);
         handleBoundaryCollision(player);
         player.updatePosition(timeFactor);
         ball.updatePosition(timeFactor);
+
+        if (ballInGoal() && canScore) {
+            addGoal();
+            canScore = false;
+            newBallTimer = 2000;
+        } else if (ballOutOfBounds() && canScore) {
+            canScore = false;
+            newBallTimer = 2000;
+        }
+    }
+
+    public boolean ballOutOfBounds() {
+        if (ball.getPosition().getX() < -35.294f / 2
+                || ball.getPosition().getX() > 35.294f / 2
+                || ball.getPosition().getY() < -0.8f
+                || ball.getPosition().getY() > 35.294f*0.8f*0.9f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean ballInGoal() {
+        if (EpicalMath.checkIntersect(goalArea, ball.position.getX(), ball.position.getY(), ball.getRadius())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void handleGoalCollision(FieldObject fieldObject) {
@@ -97,16 +139,33 @@ public class GameState {
         if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
             float distance = circle.getRadius() + fieldObject.getRadius();
             float direction = EpicalMath.convertToDirection(fieldObject.getPosition().getX() - circle.getX(), fieldObject.getPosition().getY() - circle.getY());
-            fieldObject.setPosition(circle.getPosition().addVector(direction, distance));
+            fieldObject.getPosition().setX(circle.getPosition().getX());
+            fieldObject.getPosition().setY(circle.getPosition().getY());
+            fieldObject.getPosition().addVector(direction, distance);
             fieldObject.getSpeed().bounceDirection(direction);
             float hitAngle = Math.abs(fieldObject.getSpeed().getDirection() - direction);
-            fieldObject.getSpeed().setMagnitude((1 - 0.6f * (float)Math.cos(hitAngle)) * fieldObject.getSpeed().getMagnitude() * 0.9f);
+            fieldObject.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(hitAngle)) * fieldObject.getSpeed().getMagnitude() * 0.8f);
+        }
+    }
+
+    public void handlePlayerBallCollision(Player player, Ball ball) {
+        if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+            float distance = player.getRadius() + ball.getRadius();
+            float direction = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
+            ball.getPosition().setX(player.getPosition().getX());
+            ball.getPosition().setY(player.getPosition().getY());
+            ball.getPosition().addVector(direction, distance);
+            ball.getSpeed().bounceDirection(direction);
+            float hitAngle = Math.abs(ball.getSpeed().getDirection() - direction);
+            ball.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(hitAngle)) * ball.getSpeed().getMagnitude() * 0.5f);
+            //ball.getSpeed().addVector(player.getSpeed().getDirection(), (0.5f * (float)Math.cos(hitAngle)) * 1.1f * player.getSpeed().getMagnitude());
+            //ball.getSpeed().addVector(player.getSpeed().getDirection(), (player.getSpeed().getMagnitude()));
         }
     }
 
     public void handleLineSegmentCollision(RectF rectF, FieldObject fieldObject) {
         if (EpicalMath.checkIntersect(rectF, fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * 0.5f);
+            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * 0.2f);
 
             if (rectF.top == rectF.bottom) {
                 if (fieldObject.position.getY() < rectF.top) {

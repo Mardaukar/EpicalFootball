@@ -1,8 +1,8 @@
 package com.example.epicalfootball;
 
 public class Vector {
-    private float direction;
-    private float magnitude;
+    protected float direction;
+    protected float magnitude;
 
     public Vector() {
         this.direction = 0;
@@ -12,6 +12,17 @@ public class Vector {
     public Vector(float direction, float magnitude) {
         this.direction = direction;
         this.magnitude = magnitude;
+    }
+
+    public void addVector(float direction, float magnitude) {
+        float directionX = (float)(Math.cos(this.direction) * this.magnitude + Math.cos(direction) * magnitude);
+        float directionY = (float)(Math.sin(this.direction) * this.magnitude + Math.sin(direction) * magnitude);
+        this.direction = EpicalMath.convertToDirection(directionX, directionY);
+        this.magnitude = EpicalMath.calculateDistance(directionX, directionY);
+    }
+
+    public void addVector(Vector vector) {
+        addVector(vector.getDirection(), vector.getMagnitude());
     }
 
     public void setDirection(float direction) {

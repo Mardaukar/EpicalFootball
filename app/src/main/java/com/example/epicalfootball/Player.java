@@ -6,10 +6,10 @@ public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
 
     public Player() {
-        this.speed = new Vector((float)Math.PI/3f,1f);
-        this.targetSpeed = new TargetSpeedVector();
-        this.position = new Position();
+        this.speed = new Vector((float)Math.PI/3f,0f);
+        this.position = new Position(0, 0);
         this.radius = 0.8f;
+        this.targetSpeed = new TargetSpeedVector();
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn) {
