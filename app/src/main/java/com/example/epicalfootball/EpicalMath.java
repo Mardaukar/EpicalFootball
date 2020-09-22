@@ -86,4 +86,9 @@ public class EpicalMath {
 
         return direction;
     }
+
+    public static float absoluteDifference(float direction1, float direction2) {
+        float difference = sanitizeDirection(direction1 - direction2);
+        return Math.abs(difference);
+    }
 }

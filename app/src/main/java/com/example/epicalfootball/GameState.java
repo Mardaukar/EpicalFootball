@@ -18,7 +18,7 @@ public class GameState {
     private boolean decelerateOn = false;
 
     private boolean canScore = true;
-    private long newBallTimer = 0;
+    private long newBallTimer = 2000;
 
     private RectF goalArea = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -0.8f);
     private RectF rearNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -35.294f*0.8f*0.08f);
@@ -79,6 +79,7 @@ public class GameState {
                 substractBall();
                 this.ball = new Ball();
                 canScore = true;
+                newBallTimer = 3000;
             }
         }
 
@@ -88,15 +89,16 @@ public class GameState {
             player.getTargetSpeed().nullTargetSpeed();
         }
 
-        player.updateSpeed(timeFactor, decelerateOn);
-        ball.updateSpeed(timeFactor);
-
         handlePlayerBallCollision(player, ball);
         handleGoalCollision(player);
         handleGoalCollision(ball);
         handleBoundaryCollision(player);
+
         player.updatePosition(timeFactor);
         ball.updatePosition(timeFactor);
+
+        player.updateSpeed(timeFactor, decelerateOn);
+        ball.updateSpeed(timeFactor);
 
         if (ballInGoal() && canScore) {
             addGoal();
@@ -143,23 +145,44 @@ public class GameState {
             fieldObject.getPosition().setY(circle.getPosition().getY());
             fieldObject.getPosition().addVector(direction, distance);
             fieldObject.getSpeed().bounceDirection(direction);
-            float hitAngle = Math.abs(fieldObject.getSpeed().getDirection() - direction);
+            float hitAngle = Math.abs(EpicalMath.sanitizeDirection(fieldObject.getSpeed().getDirection() - direction));
             fieldObject.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(hitAngle)) * fieldObject.getSpeed().getMagnitude() * 0.8f);
         }
     }
 
     public void handlePlayerBallCollision(Player player, Ball ball) {
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            float distance = player.getRadius() + ball.getRadius();
-            float direction = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
-            ball.getPosition().setX(player.getPosition().getX());
-            ball.getPosition().setY(player.getPosition().getY());
-            ball.getPosition().addVector(direction, distance);
-            ball.getSpeed().bounceDirection(direction);
-            float hitAngle = Math.abs(ball.getSpeed().getDirection() - direction);
-            ball.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(hitAngle)) * ball.getSpeed().getMagnitude() * 0.5f);
-            //ball.getSpeed().addVector(player.getSpeed().getDirection(), (0.5f * (float)Math.cos(hitAngle)) * 1.1f * player.getSpeed().getMagnitude());
-            //ball.getSpeed().addVector(player.getSpeed().getDirection(), (player.getSpeed().getMagnitude()));
+            float centersDistance = player.getRadius() + ball.getRadius();
+            float collisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
+            float ballCollisionDifference = EpicalMath.absoluteDifference(collisionDirection, ball.getSpeed().getDirection());
+
+            ball.getPosition().copyPosition(player.getPosition());
+            ball.getPosition().addVector(collisionDirection, centersDistance);
+
+            if (ballCollisionDifference > Math.PI / 2 && ball.getSpeed().getMagnitude() > 0) {
+                Log.d("GameState", "BOUNCE");
+                ball.getSpeed().bounceDirection(collisionDirection);
+                float newDifference = EpicalMath.absoluteDifference(collisionDirection, ball.getSpeed().getDirection());
+                ball.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(newDifference)) * ball.getSpeed().getMagnitude() * 0.5f);
+
+                float playerCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, player.getSpeed().getDirection());
+                float impactMagnitude = (float)(Math.cos(playerCollisionAngle) * player.getSpeed().getMagnitude());
+
+                Vector impulse = new Vector(collisionDirection, impactMagnitude);
+                ball.getSpeed().addVector(impulse);
+            } else {
+                Log.d("GameState", "touch");
+                float playerCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, player.getSpeed().getDirection());
+                float ballCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, ball.getSpeed().getDirection());
+                float impactMagnitude = (float)(Math.cos(playerCollisionAngle) * player.getSpeed().getMagnitude() - Math.cos(ballCollisionAngle) * ball.getSpeed().getMagnitude());
+
+                if (impactMagnitude < 0) {
+                    impactMagnitude = 0;
+                }
+
+                Vector impulse = new Vector(collisionDirection, impactMagnitude);
+                ball.getSpeed().addVector(impulse);
+            }
         }
     }
 

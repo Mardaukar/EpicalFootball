@@ -40,4 +40,9 @@ public class Position {
         addVector(vector.getDirection(), vector.getMagnitude());
         return this;
     }
+
+    public void copyPosition(Position otherPosition) {
+        this.x = otherPosition.getX();
+        this.y = otherPosition.getY();
+    }
 }
