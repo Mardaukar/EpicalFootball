@@ -1,5 +1,7 @@
 package com.example.epicalfootball;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class Ball extends FieldObject {
 
     public Ball() {
@@ -7,7 +9,7 @@ public class Ball extends FieldObject {
         this.position = new Position(0.2f, 20);
         this.speed = new Vector((float)-Math.PI / 2,1f);
         //this.speed = new Vector();
-        this.radius = 0.4f;
+        this.radius = BALL_RADIUS;
     }
 
     public void updateSpeed(float timeFactor) {

@@ -39,7 +39,6 @@ public class GameActivity extends AppCompatActivity {
                 float x = event.getX();
                 float y = event.getY();
                 float sideLength = view.getWidth();
-                float centerSideDistance = sideLength / 2f;
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
@@ -47,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
                         if (x >= sideLength * 0.40 && x <= sideLength * 0.60 && y >= sideLength * 0.40 && y <= sideLength * 0.60) {
                             gameState.setControlOffWithDecelerate(true);
                         } else if(x >= 0 && x <= sideLength && y >= 0 && y <= sideLength) {
-                            gameState.setControlOn(x, y, centerSideDistance);
+                            gameState.setControlOn(x - sideLength / 2, y - sideLength / 2, sideLength);
                         } else {
                             gameState.setControlOffWithDecelerate(false);
                         }

@@ -3,6 +3,8 @@ package com.example.epicalfootball;
 import android.graphics.RectF;
 import android.util.Log;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class GameState {
 
     private GameActivity gameActivity;
@@ -14,22 +16,25 @@ public class GameState {
     private boolean controlOn = false;
     private float controlX;
     private float controlY;
-    private float centerSideDistance;
+    private float controlWidth;
     private boolean decelerateOn = false;
 
     private boolean canScore = true;
-    private long newBallTimer = 2000;
+    private long newBallTimer = NEW_BALL_TIMER;
 
-    private RectF goalArea = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -0.8f);
-    private RectF rearNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, 7.32f / 2, -35.294f*0.8f*0.08f);
-    private RectF leftNet = new RectF(-7.32f / 2, -35.294f*0.8f*0.08f, -7.32f / 2, 0);
-    private RectF rightNet = new RectF(7.32f / 2, (float)(-35.294*0.8*0.08), 7.32f / 2, 0);
-    private RectF leftBoundary = new RectF(-35.294f / 2, -35.294f*0.8f*0.1f, -35.294f / 2, 35.294f*0.8f*0.9f);
-    private RectF rightBoundary = new RectF(35.294f / 2, -35.294f*0.8f*0.1f, 35.294f / 2, 35.294f*0.8f*0.9f);
-    private RectF topBoundary = new RectF(-35.294f / 2, -35.294f*0.8f*0.1f, 35.294f / 2, -35.294f*0.8f*0.1f);
-    private RectF bottomBoundary = new RectF(-35.294f / 2, 35.294f*0.8f*0.9f, 35.294f / 2, 35.294f*0.8f*0.9f);
-    private Circle leftPost = new Circle(-7.32f / 2 - 0.1f, 0, 0.2f);
-    private Circle rightPost = new Circle(7.32f / 2 + 0.1f, 0, 0.2f);
+    private RectF leftBoundary = new RectF(-FIELD_WIDTH / 2 - 1, -FIELD_WIDTH*0.8f*0.1f, -FIELD_WIDTH / 2, FIELD_WIDTH*0.8f*0.9f);
+    private RectF rightBoundary = new RectF(FIELD_WIDTH / 2, -FIELD_WIDTH*0.8f*0.1f, FIELD_WIDTH / 2 + 1, FIELD_WIDTH*0.8f*0.9f);
+    private RectF topBoundary = new RectF(-FIELD_WIDTH, -FIELD_WIDTH*0.8f*0.1f - 1, FIELD_WIDTH, -FIELD_WIDTH*0.8f*0.1f);
+    private RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_WIDTH*0.8f*0.9f, FIELD_WIDTH, FIELD_WIDTH*0.8f*0.9f + 1);
+
+    private RectF goalArea = new RectF(-GOAL_WIDTH / 2, -GOAL_DEPTH, GOAL_WIDTH / 2, -2 * BALL_RADIUS);
+    private RectF rearNet = new RectF(-GOAL_WIDTH / 2, -GOAL_DEPTH - 2 * POST_RADIUS, GOAL_WIDTH / 2, -GOAL_DEPTH);
+    private RectF leftNet = new RectF(-GOAL_WIDTH / 2 - 2 * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH / 2, -POST_RADIUS);
+    private RectF rightNet = new RectF(GOAL_WIDTH / 2, -GOAL_DEPTH, GOAL_WIDTH / 2 + 2 * POST_RADIUS, -POST_RADIUS);
+    private Circle leftPost = new Circle(-GOAL_WIDTH / 2 - POST_RADIUS, 0, POST_RADIUS);
+    private Circle rightPost = new Circle(GOAL_WIDTH / 2 + POST_RADIUS, 0, POST_RADIUS);
+    private Circle leftSupport = new Circle(-GOAL_WIDTH / 2 - POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
+    private Circle rightSupport = new Circle(GOAL_WIDTH / 2 + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
 
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
@@ -79,12 +84,11 @@ public class GameState {
                 substractBall();
                 this.ball = new Ball();
                 canScore = true;
-                newBallTimer = 3000;
             }
         }
 
         if (controlOn) {
-            player.getTargetSpeed().setTargetSpeed(controlX - centerSideDistance, controlY - centerSideDistance, centerSideDistance);
+            player.getTargetSpeed().setTargetSpeed(controlX, controlY, controlWidth);
         } else {
             player.getTargetSpeed().nullTargetSpeed();
         }
@@ -103,18 +107,18 @@ public class GameState {
         if (ballInGoal() && canScore) {
             addGoal();
             canScore = false;
-            newBallTimer = 2000;
+            newBallTimer = NEW_BALL_TIMER;
         } else if (ballOutOfBounds() && canScore) {
             canScore = false;
-            newBallTimer = 2000;
+            newBallTimer = NEW_BALL_TIMER;
         }
     }
 
     public boolean ballOutOfBounds() {
-        if (ball.getPosition().getX() < -35.294f / 2
-                || ball.getPosition().getX() > 35.294f / 2
+        if (ball.getPosition().getX() < -FIELD_WIDTH / 2
+                || ball.getPosition().getX() > FIELD_WIDTH / 2
                 || ball.getPosition().getY() < -0.8f
-                || ball.getPosition().getY() > 35.294f*0.8f*0.9f) {
+                || ball.getPosition().getY() > FIELD_WIDTH*0.8f*0.9f) {
             return true;
         } else {
             return false;
@@ -130,23 +134,31 @@ public class GameState {
     }
 
     public void handleGoalCollision(FieldObject fieldObject) {
-        handleCircleCollision(leftPost, fieldObject);
-        handleCircleCollision(rightPost, fieldObject);
         handleLineSegmentCollision(rearNet, fieldObject);
         handleLineSegmentCollision(leftNet, fieldObject);
         handleLineSegmentCollision(rightNet, fieldObject);
+        handleCircleCollision(leftPost, fieldObject);
+        handleCircleCollision(rightPost, fieldObject);
+        handleCircleCollision(leftSupport, fieldObject);
+        handleCircleCollision(rightSupport, fieldObject);
     }
 
     public void handleCircleCollision(Circle circle, FieldObject fieldObject) {
         if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            float distance = circle.getRadius() + fieldObject.getRadius();
-            float direction = EpicalMath.convertToDirection(fieldObject.getPosition().getX() - circle.getX(), fieldObject.getPosition().getY() - circle.getY());
-            fieldObject.getPosition().setX(circle.getPosition().getX());
-            fieldObject.getPosition().setY(circle.getPosition().getY());
-            fieldObject.getPosition().addVector(direction, distance);
-            fieldObject.getSpeed().bounceDirection(direction);
-            float hitAngle = Math.abs(EpicalMath.sanitizeDirection(fieldObject.getSpeed().getDirection() - direction));
-            fieldObject.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(hitAngle)) * fieldObject.getSpeed().getMagnitude() * 0.8f);
+            Log.d("circle", "circle");
+            float centersDistance = circle.getRadius() + fieldObject.getRadius();
+            float collisionDirection = EpicalMath.convertToDirection(fieldObject.getPosition().getX() - circle.getX(), fieldObject.getPosition().getY() - circle.getY());
+            float fieldObjectCollisionDifference = EpicalMath.absoluteDifference(collisionDirection, fieldObject.getSpeed().getDirection());
+
+            fieldObject.getPosition().copyPosition(circle.getPosition());
+            fieldObject.getPosition().addVector(collisionDirection, centersDistance);
+
+            if (fieldObjectCollisionDifference > Math.PI / 2) {
+                fieldObject.getSpeed().bounceDirection(collisionDirection);
+            }
+
+            float newDifference = EpicalMath.absoluteDifference(collisionDirection, fieldObject.getSpeed().getDirection());
+            fieldObject.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(newDifference)) * fieldObject.getSpeed().getMagnitude() * 0.8f);
         }
     }
 
@@ -160,7 +172,6 @@ public class GameState {
             ball.getPosition().addVector(collisionDirection, centersDistance);
 
             if (ballCollisionDifference > Math.PI / 2 && ball.getSpeed().getMagnitude() > 0) {
-                Log.d("GameState", "BOUNCE");
                 ball.getSpeed().bounceDirection(collisionDirection);
                 float newDifference = EpicalMath.absoluteDifference(collisionDirection, ball.getSpeed().getDirection());
                 ball.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(newDifference)) * ball.getSpeed().getMagnitude() * 0.5f);
@@ -171,7 +182,6 @@ public class GameState {
                 Vector impulse = new Vector(collisionDirection, impactMagnitude);
                 ball.getSpeed().addVector(impulse);
             } else {
-                Log.d("GameState", "touch");
                 float playerCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, player.getSpeed().getDirection());
                 float ballCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, ball.getSpeed().getDirection());
                 float impactMagnitude = (float)(Math.cos(playerCollisionAngle) * player.getSpeed().getMagnitude() - Math.cos(ballCollisionAngle) * ball.getSpeed().getMagnitude());
@@ -186,25 +196,34 @@ public class GameState {
         }
     }
 
-    public void handleLineSegmentCollision(RectF rectF, FieldObject fieldObject) {
-        if (EpicalMath.checkIntersect(rectF, fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * 0.2f);
+    public void handleLineSegmentCollision(RectF line, FieldObject fieldObject) {
+        if (EpicalMath.checkIntersect(line, fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
+            Log.d("line", "line");
+            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * 0.4f);
 
-            if (rectF.top == rectF.bottom) {
-                if (fieldObject.position.getY() < rectF.top) {
-                    fieldObject.getSpeed().bounceDirection((float)-Math.PI / 2);
-                    fieldObject.getPosition().setY(rectF.top - fieldObject.getRadius());
+            if (line.height() < line.width()) {
+                if (fieldObject.position.getY() < line.centerY()) {
+                    if (player.getSpeed().getDirection() > 0) {
+                        fieldObject.getSpeed().bounceDirection((float)-Math.PI / 2);
+                    }
+                    fieldObject.getPosition().setY(line.top - fieldObject.getRadius());
                 } else {
-                    fieldObject.getSpeed().bounceDirection((float)Math.PI / 2);
-                    fieldObject.getPosition().setY(rectF.bottom + fieldObject.getRadius());
+                    if (player.getSpeed().getDirection() < 0) {
+                        fieldObject.getSpeed().bounceDirection((float)Math.PI / 2);
+                    }
+                    fieldObject.getPosition().setY(line.bottom + fieldObject.getRadius());
                 }
             } else {
-                if (fieldObject.position.getX() < rectF.left) {
-                    fieldObject.getSpeed().bounceDirection((float)Math.PI);
-                    fieldObject.getPosition().setX(rectF.left - fieldObject.getRadius());
+                if (fieldObject.position.getX() < line.centerX()) {
+                    if (Math.abs(player.getSpeed().getDirection()) < Math.PI / 2) {
+                        fieldObject.getSpeed().bounceDirection((float) Math.PI);
+                    }
+                    fieldObject.getPosition().setX(line.left - fieldObject.getRadius());
                 } else {
-                    fieldObject.getSpeed().bounceDirection(0);
-                    fieldObject.getPosition().setX(rectF.right + fieldObject.getRadius());
+                    if (Math.abs(player.getSpeed().getDirection()) > Math.PI / 2) {
+                        fieldObject.getSpeed().bounceDirection(0);
+                    }
+                    fieldObject.getPosition().setX(line.right + fieldObject.getRadius());
                 }
             }
         }
@@ -221,11 +240,11 @@ public class GameState {
         return decelerateOn;
     }
 
-    public void setControlOn(float x, float y, float centerSideDistance) {
+    public void setControlOn(float x, float y, float controlViewWidth) {
         controlOn = true;
         controlX = x;
         controlY = y;
-        this.centerSideDistance = centerSideDistance;
+        this.controlWidth = controlViewWidth;
         decelerateOn = false;
     }
 
@@ -241,12 +260,16 @@ public class GameState {
         return controlY;
     }
 
-    public float getCenterSideDistance() {
-        return centerSideDistance;
-    }
-
     public void setControlOffWithDecelerate(boolean decelerate) {
         controlOn = false;
         decelerateOn = decelerate;
+    }
+
+    public float getControlWidth() {
+        return controlWidth;
+    }
+
+    public void setControlWidth(float controlWidth) {
+        this.controlWidth = controlWidth;
     }
 }

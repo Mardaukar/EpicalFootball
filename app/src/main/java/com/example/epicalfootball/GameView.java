@@ -111,8 +111,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (gameState.isControlOn()) {
             float controlX = gameState.getControlX();
             float controlY = gameState.getControlY();
-            float centerSideDistance = gameState.getCenterSideDistance();
-            canvas.drawCircle((0.125f + controlX / centerSideDistance / 2) * this.getWidth() * 0.8f, (1 + controlY / centerSideDistance / 2) * this.getWidth() * 0.8f, 80, paint);
+            float controlWidth = gameState.getControlWidth();
+            canvas.drawCircle((0.5f + controlX / controlWidth * 0.8f) * this.getWidth(), (1.5f + controlY / controlWidth) * 0.8f * this.getWidth(), 80, paint);
         }
 
         surfaceHolder.unlockCanvasAndPost(canvas);

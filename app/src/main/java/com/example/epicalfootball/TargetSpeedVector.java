@@ -13,10 +13,10 @@ public class TargetSpeedVector extends Vector {
         this.magnitude = magnitude;
     }
 
-    public void setTargetSpeed(float x, float y, float centerSideDistance) {
+    public void setTargetSpeed(float x, float y, float controlWidth) {
         float newDirection = EpicalMath.convertToDirection(x, y);
         this.setDirection(newDirection);
-        float newMagnitude = EpicalMath.calculateMagnitude(x, y, centerSideDistance * touchAreaLimitingFactor);
+        float newMagnitude = EpicalMath.calculateMagnitude(x, y, controlWidth / 2 * touchAreaLimitingFactor);
         this.setMagnitude(newMagnitude);
     }
 
