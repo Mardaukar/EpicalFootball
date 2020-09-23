@@ -10,8 +10,7 @@ abstract public class FieldObject {
         float y = this.position.getY();
         x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
         y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * 8 * timeFactor);
-        Position newPosition = new Position(x, y);
-        this.position = newPosition;
+        this.position = new Position(x, y);
     }
 
     public Vector getSpeed() {

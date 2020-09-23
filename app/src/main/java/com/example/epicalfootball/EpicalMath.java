@@ -1,6 +1,5 @@
 package com.example.epicalfootball;
 
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -51,7 +50,7 @@ public class EpicalMath {
     }
 
     public static boolean checkIntersect(RectF rect, float x, float y, float radius) {
-        if (x + radius > rect.left && x - radius < rect.right && y + radius > rect.top && y - radius < rect.bottom) {
+        if (x + radius >= rect.left && x - radius <= rect.right && y + radius >= rect.top && y - radius <= rect.bottom) {
             Log.d("EpicalMath", "" + x + " " + y + " " + radius);
             Log.d("EpicalMath", "" + rect.left + " " + rect.right + " " + rect.top + " " + rect.bottom);
             return true;
@@ -62,21 +61,15 @@ public class EpicalMath {
 
     public static boolean checkIntersect(float x1, float y1, float radius1, float x2, float y2, float radius2) {
         float distance = calculateDistance(x1, y1, x2, y2);
-        if (distance < radius1 + radius2) {
-            return true;
-        } else {
-            return false;
-        }
+        return distance <= radius1 + radius2;
     }
 
     public static float calculateDistance(float x1, float y1, float x2, float y2) {
-        float distance = (float)Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
-        return distance;
+        return (float)Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
     }
 
     public static float calculateDistance(float x, float y) {
-        float distance = (float)Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        return distance;
+        return (float)Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
     public static float sanitizeDirection(float direction) {
@@ -92,5 +85,10 @@ public class EpicalMath {
     public static float absoluteDifference(float direction1, float direction2) {
         float difference = sanitizeDirection(direction1 - direction2);
         return Math.abs(difference);
+    }
+
+    public static float directionDifference(float direction1, float direction2) {
+        float difference = sanitizeDirection(direction1 - direction2);
+        return difference;
     }
 }
