@@ -22,6 +22,7 @@ public class Constants {
     //GAME PLAY
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 2; //How much more bounce (compared to touch) shifts ball in control
     public static float BALLCONTROL_PLAYER_SPEED_MULTIPLIER = 1f; //Maximum speed magnitude when controlling ball
+    public static float CONTROL_CONE_SPEED_MULTIPLIER = 0.015f;
 
     //VISUAL
     public static float SHADOW_OFFSET = 5;

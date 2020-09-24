@@ -84,7 +84,7 @@ public class GameState {
                 substractBall();
                 this.ball = new Ball();
                 canScore = true;
-                newBallTimer = NEW_BALL_WAIT_TIME;
+                //newBallTimer = NEW_BALL_WAIT_TIME;
             }
         }
 
@@ -205,6 +205,16 @@ public class GameState {
                 }
             } else {
                 ball.getPosition().addVector(collisionDirection, centersDistance);
+            }
+        }
+
+        if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getControlRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+            //Control cone
+            float ballDirectionFromPlayer = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
+            float playerOrientationFromBall = EpicalMath.absoluteDifference(ballDirectionFromPlayer, player.getTargetSpeed().getDirection());
+
+            if (playerOrientationFromBall <= player.getControlAngle()) {
+                ball.shiftWithControlCone(this.getPlayer());
             }
         }
     }

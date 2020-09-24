@@ -5,6 +5,7 @@ import android.util.Log;
 public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
     private float controlAngle;
+    private float controlRadius;
 
     public Player() {
         this.speed = new Vector((float)Math.PI/3f,0f);
@@ -12,6 +13,7 @@ public class Player extends FieldObject {
         this.radius = 0.8f;
         this.targetSpeed = new TargetSpeedVector();
         this.controlAngle = (float)Math.PI / 3;
+        this.controlRadius = 1.2f;
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn) {
@@ -97,5 +99,13 @@ public class Player extends FieldObject {
 
     public void setControlAngle(float controlAngle) {
         this.controlAngle = controlAngle;
+    }
+
+    public float getControlRadius() {
+        return controlRadius;
+    }
+
+    public void setControlRadius(float controlRadius) {
+        this.controlRadius = controlRadius;
     }
 }

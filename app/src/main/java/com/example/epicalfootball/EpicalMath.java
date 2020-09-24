@@ -50,13 +50,7 @@ public class EpicalMath {
     }
 
     public static boolean checkIntersect(RectF rect, float x, float y, float radius) {
-        if (x + radius >= rect.left && x - radius <= rect.right && y + radius >= rect.top && y - radius <= rect.bottom) {
-            Log.d("EpicalMath", "" + x + " " + y + " " + radius);
-            Log.d("EpicalMath", "" + rect.left + " " + rect.right + " " + rect.top + " " + rect.bottom);
-            return true;
-        } else {
-            return false;
-        }
+        return (x + radius >= rect.left && x - radius <= rect.right && y + radius >= rect.top && y - radius <= rect.bottom);
     }
 
     public static boolean checkIntersect(float x1, float y1, float radius1, float x2, float y2, float radius2) {
