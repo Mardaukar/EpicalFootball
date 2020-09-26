@@ -10,6 +10,7 @@ public class Ball extends FieldObject {
         this.speed = new Vector((float)-Math.PI / 2,2f);
         //this.speed = new Vector();
         this.radius = BALL_RADIUS;
+        this.magnitudeSpeed = BALL_REFERENCE_SPEED;
     }
 
     public void updateSpeed(float timeFactor) {
@@ -73,7 +74,8 @@ public class Ball extends FieldObject {
         float playerSpeedDirection = player.getTargetSpeed().getDirection();
         float playerOrientation = player.getTargetSpeed().getDirection();
         float angleIncrement = player.getControlAngle() / 5;
-        float newBallSpeed;
+        float playerSpeed = player.getSpeed().getMagnitude() * player.getMagnitudeSpeed();
+        float newBallSpeedMagnitude;
 
         if (EpicalMath.directionDifference(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
             this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
@@ -106,22 +108,14 @@ public class Ball extends FieldObject {
         this.getPosition().copyPosition(player.getPosition());
         this.getPosition().addVector(shiftedPlayerToBallDirection, centersDistance);
 
-        if (player.getSpeed().getMagnitude() < this.getSpeed().getMagnitude()) {
-            newBallSpeed = this.getSpeed().getMagnitude() - CONTROL_CONE_SPEED_MULTIPLIER * player.getControlAngle();
+        if (playerSpeed < this.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
+            newBallSpeedMagnitude = this.getSpeed().getMagnitude() - CONTROL_CONE_SPEED_MULTIPLIER * player.getControlAngle();
 
-            if (newBallSpeed < player.getSpeed().getMagnitude()) {
-                newBallSpeed = player.getSpeed().getMagnitude();
+            if (newBallSpeedMagnitude * BALL_REFERENCE_SPEED < playerSpeed) {
+                newBallSpeedMagnitude = playerSpeed / BALL_REFERENCE_SPEED;
             }
 
-            this.getSpeed().setMagnitude(newBallSpeed);
-        }/* else {
-            newBallSpeed = this.getSpeed().getMagnitude() + CONTROL_CONE_SPEED_MULTIPLIER * player.getControlAngle();
-
-            if (newBallSpeed > player.getSpeed().getMagnitude()) {
-                newBallSpeed = player.getSpeed().getMagnitude();
-            }
-        }*/
-
-        //this.getSpeed().setMagnitude(newBallSpeed);
+            this.getSpeed().setMagnitude(newBallSpeedMagnitude);
+        }
     }
 }

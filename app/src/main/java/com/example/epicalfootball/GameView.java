@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -104,7 +103,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(0Xff004d98);
         canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * 0.8f, paint);
 
-        //DRAW CONTROL ARC
+        //DRAW CONTROL CONE
         paint.setColor(0xffffad60);
         float directionRadians = gameState.getPlayer().getTargetSpeed().getDirection();
         float directionDegrees = directionRadians / (float)Math.PI * 180;

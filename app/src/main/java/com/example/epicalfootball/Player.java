@@ -2,18 +2,25 @@ package com.example.epicalfootball;
 
 import android.util.Log;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
     private float controlAngle;
     private float controlRadius;
+    private float dribbling;
+    private float acceleration;
 
     public Player() {
+        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH;
         this.speed = new Vector((float)Math.PI/3f,0f);
         this.position = new Position(0, 0);
-        this.radius = 0.8f;
         this.targetSpeed = new TargetSpeedVector();
-        this.controlAngle = (float)Math.PI / 3;
+        this.controlAngle = MIN_BALLCONTROL_VALUE + BALLCONTROL_VALUE_INCREMENT * PLAYER_BALLCONTROL;
         this.controlRadius = 1.2f;
+        this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING;
+        this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED;
+        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED);
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn) {
@@ -24,9 +31,9 @@ public class Player extends FieldObject {
             float deceleration;
 
             if (decelerateOn) {
-                deceleration = 0.7f;
+                deceleration = PLAYER_BASE_DECELERATION + this.acceleration;
             } else {
-                deceleration = 0.3f;
+                deceleration = PLAYER_BASE_DECELERATION;
             }
 
             deceleratedSpeedMagnitude = oldSpeedMagnitude - deceleration * timeFactor;
@@ -44,29 +51,29 @@ public class Player extends FieldObject {
 
             if (newSpeedX >= 0) {
                 if (targetSpeedX > newSpeedX) {
-                    newSpeedX += Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                    newSpeedX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedX -= Math.abs(Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                    newSpeedX -= Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             } else {
                 if (targetSpeedX < newSpeedX) {
-                    newSpeedX += Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                    newSpeedX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedX += Math.abs(Math.cos(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                    newSpeedX += Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             }
 
             if (newSpeedY >= 0) {
                 if (targetSpeedY > newSpeedY) {
-                    newSpeedY += Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                    newSpeedY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedY -= Math.abs(Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                    newSpeedY -= Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             } else {
                 if (targetSpeedY < newSpeedY) {
-                    newSpeedY += Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor;
+                    newSpeedY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedY += Math.abs(Math.sin(targetSpeed.getDirection()) * 0.7 * timeFactor);
+                    newSpeedY += Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             }
 
@@ -107,5 +114,13 @@ public class Player extends FieldObject {
 
     public void setControlRadius(float controlRadius) {
         this.controlRadius = controlRadius;
+    }
+
+    public float getDribbling() {
+        return dribbling;
+    }
+
+    public void setDribbling(float dribbling) {
+        this.dribbling = dribbling;
     }
 }
