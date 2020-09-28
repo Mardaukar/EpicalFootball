@@ -2,6 +2,8 @@ package com.example.epicalfootball;
 
 import android.util.Log;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class GameRunner extends Thread {
 
     private volatile boolean running = true;
@@ -24,7 +26,7 @@ public class GameRunner extends Thread {
             now = System.currentTimeMillis();
             elapsed = now - lastTime;
 
-            if (elapsed < 150) {
+            if (elapsed < ELAPSED_LIMIT_IN_MILLISECONDS) {
                 gameState.updateGameState(elapsed);
                 gameView.updateSurface();
             }
@@ -32,7 +34,7 @@ public class GameRunner extends Thread {
             lastTime = now;
 
             try {
-                Thread.sleep(10);
+                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

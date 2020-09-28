@@ -5,10 +5,10 @@ import static com.example.epicalfootball.Constants.*;
 public class Ball extends FieldObject {
 
     public Ball() {
-        //this.position = new Position(-7.32f / 2 - 0.1f, 35);
-        this.position = new Position(0.2f, 20);
-        this.speed = new Vector((float)-Math.PI / 2,2f);
-        //this.speed = new Vector();
+        this.position = BALL_STARTING_POSITION;
+        this.speed = new Vector();
+        this.speed.setMagnitude(BALL_STARTING_SPEED.getMagnitude());
+        this.speed.setDirection(BALL_STARTING_SPEED.getDirection());
         this.radius = BALL_RADIUS;
         this.magnitudeSpeed = BALL_REFERENCE_SPEED;
     }
@@ -18,8 +18,7 @@ public class Ball extends FieldObject {
         float deceleratedSpeedMagnitude = 0;
 
         if (oldSpeedMagnitude > 0) {
-            float deceleration = 0.2f;
-            //float deceleration = 0.0f;
+            float deceleration = BALL_BASE_DECELERATION;
 
             deceleratedSpeedMagnitude = oldSpeedMagnitude - deceleration * timeFactor;
 
@@ -36,30 +35,30 @@ public class Ball extends FieldObject {
         float factor = CONTROL_BOUNCE_SHIFT_MULTIPLIER;
         float shiftedCollisionDirection;
 
-        if (EpicalMath.directionDifference(playerDirection, this.getSpeed().getDirection()) > 0) {
+        if (EpicalMath.angleBetweenDirections(playerDirection, this.getSpeed().getDirection()) > 0) {
             this.getSpeed().setDirection(this.getSpeed().getDirection() + factor * angleIncrement);
 
-            if (EpicalMath.directionDifference(playerDirection, this.getSpeed().getDirection()) < 0) {
+            if (EpicalMath.angleBetweenDirections(playerDirection, this.getSpeed().getDirection()) < 0) {
                 this.getSpeed().setDirection(playerDirection);
             }
         } else {
             this.getSpeed().setDirection(this.getSpeed().getDirection() - factor * angleIncrement);
 
-            if (EpicalMath.directionDifference(playerDirection, this.getSpeed().getDirection()) > 0) {
+            if (EpicalMath.angleBetweenDirections(playerDirection, this.getSpeed().getDirection()) > 0) {
                 this.getSpeed().setDirection(playerDirection);
             }
         }
 
-        if (EpicalMath.directionDifference(playerDirection, collisionDirection) > 0) {
+        if (EpicalMath.angleBetweenDirections(playerDirection, collisionDirection) > 0) {
             shiftedCollisionDirection = collisionDirection + factor * angleIncrement;
 
-            if (EpicalMath.directionDifference(playerDirection, shiftedCollisionDirection) < 0) {
+            if (EpicalMath.angleBetweenDirections(playerDirection, shiftedCollisionDirection) < 0) {
                 shiftedCollisionDirection = playerDirection;
             }
         } else {
             shiftedCollisionDirection = collisionDirection - factor * angleIncrement;
 
-            if (EpicalMath.directionDifference(playerDirection, shiftedCollisionDirection) > 0) {
+            if (EpicalMath.angleBetweenDirections(playerDirection, shiftedCollisionDirection) > 0) {
                 shiftedCollisionDirection = playerDirection;
             }
         }
@@ -77,35 +76,35 @@ public class Ball extends FieldObject {
         float playerSpeed = player.getSpeed().getMagnitude() * player.getMagnitudeSpeed();
         float newBallSpeedMagnitude;
 
-        if (EpicalMath.directionDifference(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
+        if (EpicalMath.angleBetweenDirections(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
             this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
 
-            if (EpicalMath.directionDifference(playerSpeedDirection, this.getSpeed().getDirection()) < 0) {
+            if (EpicalMath.angleBetweenDirections(playerSpeedDirection, this.getSpeed().getDirection()) < 0) {
                 this.getSpeed().setDirection(playerSpeedDirection);
             }
         } else {
             this.getSpeed().setDirection(this.getSpeed().getDirection() - angleIncrement);
 
-            if (EpicalMath.directionDifference(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
+            if (EpicalMath.angleBetweenDirections(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
                 this.getSpeed().setDirection(playerSpeedDirection);
             }
         }
 
-        if (EpicalMath.directionDifference(playerOrientation, playerToBallDirection) > 0) {
+        if (EpicalMath.angleBetweenDirections(playerOrientation, playerToBallDirection) > 0) {
             shiftedPlayerToBallDirection = playerToBallDirection + angleIncrement;
 
-            if (EpicalMath.directionDifference(playerOrientation, shiftedPlayerToBallDirection) < 0) {
+            if (EpicalMath.angleBetweenDirections(playerOrientation, shiftedPlayerToBallDirection) < 0) {
                 shiftedPlayerToBallDirection = playerOrientation;
             }
         } else {
             shiftedPlayerToBallDirection = playerToBallDirection - angleIncrement;
 
-            if (EpicalMath.directionDifference(playerOrientation, shiftedPlayerToBallDirection) > 0) {
+            if (EpicalMath.angleBetweenDirections(playerOrientation, shiftedPlayerToBallDirection) > 0) {
                 shiftedPlayerToBallDirection = playerOrientation;
             }
         }
 
-        this.getPosition().copyPosition(player.getPosition());
+        this.getPosition().setPosition(player.getPosition());
         this.getPosition().addVector(shiftedPlayerToBallDirection, centersDistance);
 
         if (playerSpeed < this.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {

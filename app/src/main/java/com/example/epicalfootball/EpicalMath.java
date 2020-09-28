@@ -76,12 +76,12 @@ public class EpicalMath {
         return direction;
     }
 
-    public static float absoluteDifference(float direction1, float direction2) {
+    public static float absoluteAngleBetweenDirections(float direction1, float direction2) {
         float difference = sanitizeDirection(direction1 - direction2);
         return Math.abs(difference);
     }
 
-    public static float directionDifference(float direction1, float direction2) {
+    public static float angleBetweenDirections(float direction1, float direction2) {
         float difference = sanitizeDirection(direction1 - direction2);
         return difference;
     }

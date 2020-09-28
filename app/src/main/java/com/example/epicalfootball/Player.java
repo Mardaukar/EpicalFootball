@@ -13,11 +13,11 @@ public class Player extends FieldObject {
 
     public Player() {
         this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH;
-        this.speed = new Vector((float)Math.PI/3f,0f);
-        this.position = new Position(0, 0);
+        this.speed = new Vector();
+        this.position = PLAYER_STARTING_POSITION;
         this.targetSpeed = new TargetSpeedVector();
-        this.controlAngle = MIN_BALLCONTROL_VALUE + BALLCONTROL_VALUE_INCREMENT * PLAYER_BALLCONTROL;
-        this.controlRadius = 1.2f;
+        this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * PLAYER_BALLCONTROL;
+        this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * PLAYER_BALLCONTROL;
         this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING;
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED);
@@ -44,44 +44,44 @@ public class Player extends FieldObject {
         }
 
         if (targetSpeed.getMagnitude() >  0) {
-            float newSpeedX = (float)(Math.cos(speed.getDirection()) * deceleratedSpeedMagnitude);
-            float newSpeedY = (float)(Math.sin(speed.getDirection()) * deceleratedSpeedMagnitude);
-            float targetSpeedX = (float)(Math.cos(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
-            float targetSpeedY = (float)(Math.sin(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
+            float newSpeedMagnitudeX = (float)(Math.cos(speed.getDirection()) * deceleratedSpeedMagnitude);
+            float newSpeedMagnitudeY = (float)(Math.sin(speed.getDirection()) * deceleratedSpeedMagnitude);
+            float targetSpeedMagnitudeX = (float)(Math.cos(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
+            float targetSpeedMagnitudeY = (float)(Math.sin(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
 
-            if (newSpeedX >= 0) {
-                if (targetSpeedX > newSpeedX) {
-                    newSpeedX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+            if (newSpeedMagnitudeX >= 0) {
+                if (targetSpeedMagnitudeX > newSpeedMagnitudeX) {
+                    newSpeedMagnitudeX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedX -= Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeX -= Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             } else {
-                if (targetSpeedX < newSpeedX) {
-                    newSpeedX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+                if (targetSpeedMagnitudeX < newSpeedMagnitudeX) {
+                    newSpeedMagnitudeX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedX += Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeX += Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             }
 
-            if (newSpeedY >= 0) {
-                if (targetSpeedY > newSpeedY) {
-                    newSpeedY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+            if (newSpeedMagnitudeY >= 0) {
+                if (targetSpeedMagnitudeY > newSpeedMagnitudeY) {
+                    newSpeedMagnitudeY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedY -= Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeY -= Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             } else {
-                if (targetSpeedY < newSpeedY) {
-                    newSpeedY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+                if (targetSpeedMagnitudeY < newSpeedMagnitudeY) {
+                    newSpeedMagnitudeY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
                 } else {
-                    newSpeedY += Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeY += Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
                 }
             }
 
-            float newDirection = EpicalMath.convertToDirection(newSpeedX, newSpeedY);
-            float newSpeedMagnitude = EpicalMath.calculateMagnitude(newSpeedX, newSpeedY);
+            float newDirection = EpicalMath.convertToDirection(newSpeedMagnitudeX, newSpeedMagnitudeY);
+            float newSpeedMagnitude = EpicalMath.calculateMagnitude(newSpeedMagnitudeX, newSpeedMagnitudeY);
 
             if (newSpeedMagnitude > oldSpeedMagnitude) {
-                newSpeedMagnitude = (newSpeedMagnitude - oldSpeedMagnitude) * (1 - oldSpeedMagnitude * 7/8) + oldSpeedMagnitude;
+                newSpeedMagnitude = (newSpeedMagnitude - oldSpeedMagnitude) * (FULL_MAGNITUDE - oldSpeedMagnitude * PLAYER_ACCELERATION_SPEED_CURVE_FACTOR) + oldSpeedMagnitude;
             }
 
             Vector newSpeed = new Vector(newDirection, newSpeedMagnitude);

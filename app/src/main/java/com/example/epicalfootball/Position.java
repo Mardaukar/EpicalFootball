@@ -30,9 +30,9 @@ public class Position {
         return y;
     }
 
-    public Position addVector(float direction, float distance) {
-        this.x += Math.cos(direction) * distance;
-        this.y += Math.sin(direction) * distance;
+    public Position addVector(float direction, float magnitude) {
+        this.x += Math.cos(direction) * magnitude;
+        this.y += Math.sin(direction) * magnitude;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class Position {
         return this;
     }
 
-    public void copyPosition(Position otherPosition) {
+    public void setPosition(Position otherPosition) {
         this.x = otherPosition.getX();
         this.y = otherPosition.getY();
     }

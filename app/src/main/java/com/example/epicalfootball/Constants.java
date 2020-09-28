@@ -16,8 +16,10 @@ public class Constants {
     public static float MAX_ACCELERATION_VALUE = 6;
     public static float MIN_SPEED_VALUE = 6;
     public static float MAX_SPEED_VALUE = 12;
-    public static float MIN_BALLCONTROL_VALUE = (float)Math.PI / 4;
-    public static float MAX_BALLCONTROL_VALUE = (float)Math.PI / 2;
+    public static float MIN_BALLCONTROL_ANGLE = (float)Math.PI / 4;
+    public static float MAX_BALLCONTROL_ANGLE = (float)Math.PI / 2;
+    public static float MIN_BALLCONTROL_RADIUS = 0.2f;
+    public static float MAX_BALLCONTROL_RADIUS = 0.6f;
     public static float MIN_DRIBBLING_VALUE = 0.5f;
     public static float MAX_DRIBBLING_VALUE = 1;
 
@@ -25,12 +27,20 @@ public class Constants {
     public static float REACH_VALUE_INCREMENT = (MAX_REACH_VALUE - MIN_REACH_VALUE) / 10;
     public static float ACCELERATION_VALUE_INCREMENT = (MAX_ACCELERATION_VALUE - MIN_ACCELERATION_VALUE) / 10;
     public static float SPEED_VALUE_INCREMENT = (MAX_SPEED_VALUE - MIN_SPEED_VALUE) / 10;
-    public static float BALLCONTROL_VALUE_INCREMENT = (MAX_BALLCONTROL_VALUE - MIN_BALLCONTROL_VALUE) / 10;
+    public static float BALLCONTROL_ANGLE_INCREMENT = (MAX_BALLCONTROL_ANGLE - MIN_BALLCONTROL_ANGLE) / 10;
+    public static float BALLCONTROL_RADIUS_INCREMENT = (MAX_BALLCONTROL_RADIUS - MIN_BALLCONTROL_RADIUS) / 10;
     public static float DRIBBLING_VALUE_INCREMENT = (MAX_DRIBBLING_VALUE - MIN_DRIBBLING_VALUE) / 10;
+
+    //PLAYER
+    public static Position PLAYER_STARTING_POSITION = new Position(0, 0);
+    public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
 
     //BALL
     public static float BALL_RADIUS = 0.4f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
+    public static float BALL_BASE_DECELERATION = 0.2f;
+    public static Position BALL_STARTING_POSITION = new Position(0, 25);
+    public static Vector BALL_STARTING_SPEED = new Vector((float)-Math.PI / 2,0.77f);
 
     //GOAL
     public static float POST_RADIUS = 0.15f;
@@ -41,7 +51,7 @@ public class Constants {
     public static float FIELD_WIDTH = 35.294f; //replace with formula!
 
     //MATCH
-    public static long NEW_BALL_WAIT_TIME = 1000;
+    public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
 
     //GAME PLAY
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 2; //How much more bounce (compared to touch) shifts ball in control
@@ -50,4 +60,11 @@ public class Constants {
 
     //VISUAL
     public static float SHADOW_OFFSET = 5;
+
+    //RUNNER
+    public static long ELAPSED_LIMIT_IN_MILLISECONDS = 150;
+    public static long SLEEP_TIME_IN_MILLISECONDS = 10;
+
+    //MATHEMATICAL
+    public static float FULL_MAGNITUDE = 1f;
 }
