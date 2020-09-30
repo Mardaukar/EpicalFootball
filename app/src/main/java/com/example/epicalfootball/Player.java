@@ -8,19 +8,21 @@ public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
     private float controlAngle;
     private float controlRadius;
+    private float controlBallSpeed;
     private float dribbling;
     private float acceleration;
 
     public Player() {
-        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH;
+        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH_ATTRIBUTE;
         this.speed = new Vector();
         this.position = PLAYER_STARTING_POSITION;
         this.targetSpeed = new TargetSpeedVector();
-        this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * PLAYER_BALLCONTROL;
-        this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * PLAYER_BALLCONTROL;
-        this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING;
-        this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED;
-        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED);
+        this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
+        this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
+        this.controlBallSpeed = MIN_BALLCONTROL_BALL_SPEED + BALLCONTROL_BALL_SPEED_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
+        this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
+        this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
+        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn) {
@@ -122,5 +124,21 @@ public class Player extends FieldObject {
 
     public void setDribbling(float dribbling) {
         this.dribbling = dribbling;
+    }
+
+    public float getControlBallSpeed() {
+        return controlBallSpeed;
+    }
+
+    public void setControlBallSpeed(float controlBallSpeed) {
+        this.controlBallSpeed = controlBallSpeed;
+    }
+
+    public float getAcceleration() {
+        return acceleration;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
     }
 }

@@ -15,31 +15,33 @@ import static com.example.epicalfootball.Constants.*;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder surfaceHolder = null;
-    private Paint paint = new Paint();
+    private Paint paint;
+    private Paint clearPaint;
+    private float surfaceWidth;
+    private float drawPositionX;
+    private float drawPositionY;
+
     private GameState gameState;
     private GameRunner gameRunner;
 
     public GameView (Context context, GameState gameState) {
         super(context);
 
+        paint = new Paint();
+        clearPaint = new Paint();
+        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
         this.gameState = gameState;
 
         //What is this?
-        setFocusable(true);
+        //setFocusable(true);
 
         if(surfaceHolder == null) {
             surfaceHolder = getHolder();
             surfaceHolder.addCallback(this);
         }
 
-        if(paint == null) {
-            paint = new Paint();
-            paint.setColor(Color.RED);
-        }
-
-        // Set current surfaceview at top of the view tree. What is this?
         this.setZOrderOnTop(true);
-
         this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
     }
 
@@ -70,66 +72,65 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void updateSurface() {
         Canvas canvas = surfaceHolder.lockCanvas();
-        Paint clearPaint = new Paint();
-        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawRect(0, 0, this.getWidth(), this.getWidth() * 0.8f, clearPaint);
+        canvas.drawRect(0, 0, this.getWidth(), this.getWidth() * FIELD_HEIGHT_WIDTH_RATIO, clearPaint);
         float pixelPerMeter = this.getWidth() / FIELD_WIDTH;
-        float drawPositionX;
-        float drawPositionY;
+        surfaceWidth = this.getWidth();
+        Player player = gameState.getPlayer();
 
         //DRAW BALL SHADOW
         paint.setColor(Color.BLACK);
-        paint.setAlpha(150);
+        paint.setAlpha(SHADOW_ALPHA);
         Position ballPosition = gameState.getBall().getPosition();
-        drawPositionX = ballPosition.getX() * pixelPerMeter + this.getWidth() / 2f;
-        drawPositionY = ballPosition.getY() * pixelPerMeter + this.getWidth() / 375f * 30;
+        drawPositionX = ballPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+        drawPositionY = ballPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
         canvas.drawCircle(drawPositionX  + SHADOW_OFFSET, drawPositionY + SHADOW_OFFSET, pixelPerMeter * BALL_RADIUS, paint);
 
         //DRAW PLAYER SHADOW
-        Position playerPosition = gameState.getPlayer().getPosition();
-        drawPositionX = playerPosition.getX() * pixelPerMeter + this.getWidth() / 2f;
-        drawPositionY = playerPosition.getY() * pixelPerMeter + this.getWidth() / 375f * 30;
-        canvas.drawCircle(drawPositionX + SHADOW_OFFSET, drawPositionY + SHADOW_OFFSET, pixelPerMeter * 0.8f, paint);
+        Position playerPosition = player.getPosition();
+        drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+        drawPositionY = playerPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
+        canvas.drawCircle(drawPositionX + SHADOW_OFFSET, drawPositionY + SHADOW_OFFSET, pixelPerMeter * player.getRadius(), paint);
 
         //DRAW BALL
         paint.setColor(Color.WHITE);
-        drawPositionX = ballPosition.getX() * pixelPerMeter + this.getWidth() / 2f;
-        drawPositionY = ballPosition.getY() * pixelPerMeter + this.getWidth() / 375f * 30;
+        drawPositionX = ballPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+        drawPositionY = ballPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
         canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * BALL_RADIUS, paint);
 
         //DRAW PLAYER
-        drawPositionX = playerPosition.getX() * pixelPerMeter + this.getWidth() / 2f;
-        drawPositionY = playerPosition.getY() * pixelPerMeter + this.getWidth() / 375f * 30;
-        paint.setColor(0Xff004d98);
-        canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * 0.8f, paint);
+        drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+        drawPositionY = playerPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
+        paint.setColor(getResources().getColor(R.color.playerColor));
+        canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * player.getRadius(), paint);
 
-        //DRAW CONTROL CONE
-        paint.setColor(0xffffad60);
-        float directionRadians = gameState.getPlayer().getTargetSpeed().getDirection();
+        //DRAW CONTROL SECTOR
+        paint.setColor(getResources().getColor(R.color.skinColor));
+        float directionRadians = player.getTargetSpeed().getDirection();
         float directionDegrees = directionRadians / (float)Math.PI * 180;
-        float controlConeRadians = gameState.getPlayer().getControlAngle();
+        float controlConeRadians = player.getControlAngle();
         float controlConeDegrees = controlConeRadians / (float)Math.PI * 180;
-        canvas.drawArc(drawPositionX - pixelPerMeter * 0.8f, drawPositionY - pixelPerMeter * 0.8f, drawPositionX + pixelPerMeter * 0.8f, drawPositionY + pixelPerMeter * 0.8f, directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
+        canvas.drawArc(drawPositionX - pixelPerMeter * player.getRadius(), drawPositionY - pixelPerMeter * player.getRadius(), drawPositionX + pixelPerMeter * player.getRadius(), drawPositionY + pixelPerMeter * player.getRadius(), directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
 
-        canvas.drawRect(0, this.getWidth() * 0.8f, this.getWidth(), this.getHeight(), clearPaint);
+        canvas.drawRect(0, this.getWidth() * FIELD_HEIGHT_WIDTH_RATIO, this.getWidth(), this.getHeight(), clearPaint);
+
+        paint.setColor(Color.BLUE);
 
         if (gameState.isDecelerateOn()) {
-            paint.setColor(Color.BLUE);
-            paint.setAlpha(100);
+            paint.setAlpha(DECELERATE_ON_ALPHA);
         } else {
-            paint.setColor(Color.BLUE);
-            paint.setAlpha(50);
+            paint.setAlpha(DECELERATE_OFF_ALPHA);
         }
-        canvas.drawCircle(this.getWidth() / 2f, this.getHeight() * 3 / 4f, 90, paint);
+
+        canvas.drawCircle(this.getWidth() * HALF, this.getHeight() * CONTROL_AREA_CENTER_FROM_TOP, DECELERATE_DOT_RADIUS, paint);
 
         paint.setColor(Color.MAGENTA);
-        paint.setAlpha(50);
+        paint.setAlpha(CONTROL_DOT_ALPHA);
 
         if (gameState.isControlOn()) {
             float controlX = gameState.getControlX();
             float controlY = gameState.getControlY();
             float controlWidth = gameState.getControlWidth();
-            canvas.drawCircle((0.5f + controlX / controlWidth * 0.8f) * this.getWidth(), (1.5f + controlY / controlWidth) * 0.8f * this.getWidth(), 80, paint);
+            canvas.drawCircle((HALF + controlX / controlWidth * CONTROL_AREA_FROM_WIDTH) * this.getWidth(), (1 + HALF + controlY / controlWidth) * CONTROL_AREA_FROM_WIDTH * this.getWidth(), CONTROL_DOT_RADIUS, paint);
         }
 
         surfaceHolder.unlockCanvasAndPost(canvas);

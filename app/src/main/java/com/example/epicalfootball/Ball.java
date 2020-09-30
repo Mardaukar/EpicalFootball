@@ -30,36 +30,35 @@ public class Ball extends FieldObject {
         this.speed.setMagnitude(deceleratedSpeedMagnitude);
     }
 
-    public void shiftTowardsPlayerDirectionOnBounce(float collisionDirection, float centersDistance, float playerDirection, float playerControlAngle) {
-        float angleIncrement = playerControlAngle / 10;
-        float factor = CONTROL_BOUNCE_SHIFT_MULTIPLIER;
+    public void shiftTowardsPlayerDirectionOnBounce(float collisionDirection, float centersDistance, float playerOrientation, float playerControlAngle) {
+        float angleIncrement = playerControlAngle * CONTROL_BOUNCE_SHIFT_MULTIPLIER;
         float shiftedCollisionDirection;
 
-        if (EpicalMath.angleBetweenDirections(playerDirection, this.getSpeed().getDirection()) > 0) {
-            this.getSpeed().setDirection(this.getSpeed().getDirection() + factor * angleIncrement);
+        if (EpicalMath.angleBetweenDirections(playerOrientation, this.getSpeed().getDirection()) > 0) {
+            this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
 
-            if (EpicalMath.angleBetweenDirections(playerDirection, this.getSpeed().getDirection()) < 0) {
-                this.getSpeed().setDirection(playerDirection);
+            if (EpicalMath.angleBetweenDirections(playerOrientation, this.getSpeed().getDirection()) < 0) {
+                this.getSpeed().setDirection(playerOrientation);
             }
         } else {
-            this.getSpeed().setDirection(this.getSpeed().getDirection() - factor * angleIncrement);
+            this.getSpeed().setDirection(this.getSpeed().getDirection() - angleIncrement);
 
-            if (EpicalMath.angleBetweenDirections(playerDirection, this.getSpeed().getDirection()) > 0) {
-                this.getSpeed().setDirection(playerDirection);
+            if (EpicalMath.angleBetweenDirections(playerOrientation, this.getSpeed().getDirection()) > 0) {
+                this.getSpeed().setDirection(playerOrientation);
             }
         }
 
-        if (EpicalMath.angleBetweenDirections(playerDirection, collisionDirection) > 0) {
-            shiftedCollisionDirection = collisionDirection + factor * angleIncrement;
+        if (EpicalMath.angleBetweenDirections(playerOrientation, collisionDirection) > 0) {
+            shiftedCollisionDirection = collisionDirection + angleIncrement;
 
-            if (EpicalMath.angleBetweenDirections(playerDirection, shiftedCollisionDirection) < 0) {
-                shiftedCollisionDirection = playerDirection;
+            if (EpicalMath.angleBetweenDirections(playerOrientation, shiftedCollisionDirection) < 0) {
+                shiftedCollisionDirection = playerOrientation;
             }
         } else {
-            shiftedCollisionDirection = collisionDirection - factor * angleIncrement;
+            shiftedCollisionDirection = collisionDirection - angleIncrement;
 
-            if (EpicalMath.angleBetweenDirections(playerDirection, shiftedCollisionDirection) > 0) {
-                shiftedCollisionDirection = playerDirection;
+            if (EpicalMath.angleBetweenDirections(playerOrientation, shiftedCollisionDirection) > 0) {
+                shiftedCollisionDirection = playerOrientation;
             }
         }
 
@@ -72,7 +71,7 @@ public class Ball extends FieldObject {
         float shiftedPlayerToBallDirection;
         float playerSpeedDirection = player.getTargetSpeed().getDirection();
         float playerOrientation = player.getTargetSpeed().getDirection();
-        float angleIncrement = player.getControlAngle() / 5;
+        float angleIncrement = player.getControlAngle() * CONTROL_CONE_SHIFT_MULTIPLIER;
         float playerSpeed = player.getSpeed().getMagnitude() * player.getMagnitudeSpeed();
         float newBallSpeedMagnitude;
 
@@ -108,7 +107,7 @@ public class Ball extends FieldObject {
         this.getPosition().addVector(shiftedPlayerToBallDirection, centersDistance);
 
         if (playerSpeed < this.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
-            newBallSpeedMagnitude = this.getSpeed().getMagnitude() - CONTROL_CONE_SPEED_MULTIPLIER * player.getControlAngle();
+            newBallSpeedMagnitude = this.getSpeed().getMagnitude() - player.getControlBallSpeed();
 
             if (newBallSpeedMagnitude * BALL_REFERENCE_SPEED < playerSpeed) {
                 newBallSpeedMagnitude = playerSpeed / BALL_REFERENCE_SPEED;

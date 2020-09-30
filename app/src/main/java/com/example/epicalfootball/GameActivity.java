@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import static com.example.epicalfootball.Constants.*;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -22,8 +23,8 @@ public class GameActivity extends AppCompatActivity {
         gameState = new GameState(this);
         gameView = new GameView(this, gameState);
 
-        ConstraintLayout c = findViewById(R.id.game_layout);
-        c.addView(gameView);
+        ConstraintLayout gameLayout = findViewById(R.id.game_layout);
+        gameLayout.addView(gameView);
 
         TextView balls_left_textView = findViewById(R.id.balls_number_textView);
         balls_left_textView.setText(String.format("%d", gameState.getBallsLeft()));
@@ -36,17 +37,17 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 int eventAction = event.getAction();
-                float x = event.getX();
-                float y = event.getY();
+                float touchX = event.getX();
+                float touchY = event.getY();
                 float sideLength = view.getWidth();
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        if (x >= sideLength * 0.40 && x <= sideLength * 0.60 && y >= sideLength * 0.40 && y <= sideLength * 0.60) {
+                        if (EpicalMath.calculateDistance(sideLength * HALF, sideLength * HALF, touchX, touchY) < sideLength * 0.1f) {
                             gameState.setControlOffWithDecelerate(true);
-                        } else if(x >= 0 && x <= sideLength && y >= 0 && y <= sideLength) {
-                            gameState.setControlOn(x - sideLength / 2, y - sideLength / 2, sideLength);
+                        } else if(touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
+                            gameState.setControlOn(touchX - sideLength * HALF, touchY - sideLength * HALF, sideLength);
                         } else {
                             gameState.setControlOffWithDecelerate(false);
                         }
