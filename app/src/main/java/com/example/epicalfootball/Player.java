@@ -9,6 +9,7 @@ public class Player extends FieldObject {
     private float controlAngle;
     private float controlRadius;
     private float controlBallSpeed;
+    private float controlFirstTouch;
     private float dribbling;
     private float acceleration;
 
@@ -20,6 +21,7 @@ public class Player extends FieldObject {
         this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
         this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
         this.controlBallSpeed = MIN_BALLCONTROL_BALL_SPEED + BALLCONTROL_BALL_SPEED_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
+        this.controlFirstTouch = MIN_BALLCONTROL_FIRST_TOUCH + BALLCONTROL_FIRST_TOUCH_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
         this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
@@ -140,5 +142,13 @@ public class Player extends FieldObject {
 
     public void setAcceleration(float acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public float getControlFirstTouch() {
+        return controlFirstTouch;
+    }
+
+    public void setControlFirstTouch(float controlFirstTouch) {
+        this.controlFirstTouch = controlFirstTouch;
     }
 }

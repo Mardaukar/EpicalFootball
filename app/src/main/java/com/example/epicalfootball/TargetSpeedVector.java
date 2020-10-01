@@ -1,7 +1,8 @@
 package com.example.epicalfootball;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class TargetSpeedVector extends Vector {
-    final float controlViewMaximumLimit = 0.8f;
 
     public TargetSpeedVector() {
         this.direction = 0;
@@ -16,7 +17,7 @@ public class TargetSpeedVector extends Vector {
     public void setTargetSpeed(float x, float y, float controlWidth) {
         float newDirection = EpicalMath.convertToDirection(x, y);
         this.setDirection(newDirection);
-        float newMagnitude = EpicalMath.calculateMagnitude(x, y, controlWidth / 2 * controlViewMaximumLimit);
+        float newMagnitude = EpicalMath.calculateMagnitude(x, y, controlWidth * HALF * CONTROL_VIEW_MAXIMUM_LIMIT );
         this.setMagnitude(newMagnitude);
     }
 

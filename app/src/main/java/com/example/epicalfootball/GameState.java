@@ -22,25 +22,25 @@ public class GameState {
     private boolean canScore = true;
     private long newBallTimer = 0;
 
-    private RectF leftBoundary = new RectF(-FIELD_WIDTH / 2 - 1, -FIELD_WIDTH*0.8f*0.1f, -FIELD_WIDTH / 2, FIELD_WIDTH*0.8f*0.9f);
-    private RectF rightBoundary = new RectF(FIELD_WIDTH / 2, -FIELD_WIDTH*0.8f*0.1f, FIELD_WIDTH / 2 + 1, FIELD_WIDTH*0.8f*0.9f);
-    private RectF topBoundary = new RectF(-FIELD_WIDTH, -FIELD_WIDTH*0.8f*0.1f - 1, FIELD_WIDTH, -FIELD_WIDTH*0.8f*0.1f);
-    private RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_WIDTH*0.8f*0.9f, FIELD_WIDTH, FIELD_WIDTH*0.8f*0.9f + 1);
+    private RectF leftBoundary = new RectF(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH, -TOUCHLINE_FROM_TOP, -FIELD_WIDTH * HALF, FIELD_HEIGHT);
+    private RectF rightBoundary = new RectF(FIELD_WIDTH * HALF, -TOUCHLINE_FROM_TOP, FIELD_WIDTH * HALF + BOUNDARY_WIDTH, FIELD_HEIGHT);
+    private RectF topBoundary = new RectF(-FIELD_WIDTH, -TOUCHLINE_FROM_TOP - BOUNDARY_WIDTH, FIELD_WIDTH, -TOUCHLINE_FROM_TOP);
+    private RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT + BOUNDARY_WIDTH);
 
-    private RectF goalArea = new RectF(-GOAL_WIDTH / 2, -GOAL_DEPTH, GOAL_WIDTH / 2, -2 * BALL_RADIUS);
-    private RectF rearNet = new RectF(-GOAL_WIDTH / 2, -GOAL_DEPTH - 2 * POST_RADIUS, GOAL_WIDTH / 2, -GOAL_DEPTH);
-    private RectF leftNet = new RectF(-GOAL_WIDTH / 2 - 2 * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH / 2, -POST_RADIUS);
-    private RectF rightNet = new RectF(GOAL_WIDTH / 2, -GOAL_DEPTH, GOAL_WIDTH / 2 + 2 * POST_RADIUS, -POST_RADIUS);
-    private Circle leftPost = new Circle(-GOAL_WIDTH / 2 - POST_RADIUS, 0, POST_RADIUS);
-    private Circle rightPost = new Circle(GOAL_WIDTH / 2 + POST_RADIUS, 0, POST_RADIUS);
-    private Circle leftSupport = new Circle(-GOAL_WIDTH / 2 - POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
-    private Circle rightSupport = new Circle(GOAL_WIDTH / 2 + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
+    private RectF goalArea = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF, -DOUBLE * BALL_RADIUS);
+    private RectF rearNet = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH - DOUBLE * POST_RADIUS, GOAL_WIDTH * HALF, -GOAL_DEPTH);
+    private RectF leftNet = new RectF(-GOAL_WIDTH * HALF - DOUBLE * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH * HALF, -POST_RADIUS);
+    private RectF rightNet = new RectF(GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF + DOUBLE * POST_RADIUS, -POST_RADIUS);
+    private Circle leftPost = new Circle(-GOAL_WIDTH * HALF - POST_RADIUS, 0, POST_RADIUS);
+    private Circle rightPost = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, 0, POST_RADIUS);
+    private Circle leftSupport = new Circle(-GOAL_WIDTH * HALF - POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
+    private Circle rightSupport = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
 
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
         this.player = new Player();
         this.ball = new Ball();
-        this.ballsLeft = 10;
+        this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
     }
 
@@ -93,10 +93,10 @@ public class GameState {
             player.getTargetSpeed().nullTargetSpeed();
         }
 
-        handlePlayerBallCollision(player, ball);
-        handleGoalCollision(player);
-        handleGoalCollision(ball);
         handleBoundaryCollision(player);
+        handleGoalCollision(player);
+        Collisions.handlePlayerBallCollision(player, ball);
+        handleGoalCollision(ball);
 
         player.updatePosition(timeFactor);
         ball.updatePosition(timeFactor);
@@ -115,159 +115,31 @@ public class GameState {
     }
 
     public boolean ballOutOfBounds() {
-        return ball.getPosition().getX() < -FIELD_WIDTH / 2
-                || ball.getPosition().getX() > FIELD_WIDTH / 2
-                || ball.getPosition().getY() < -0.8f
-                || ball.getPosition().getY() > FIELD_WIDTH * 0.8f * 0.9f;
+        return ball.getPosition().getX() < -FIELD_WIDTH * HALF
+                || ball.getPosition().getX() > FIELD_WIDTH * HALF
+                || ball.getPosition().getY() < -DOUBLE * BALL_RADIUS
+                || ball.getPosition().getY() > FIELD_HEIGHT;
     }
 
     public boolean ballInGoal() {
         return EpicalMath.checkIntersect(goalArea, ball.position.getX(), ball.position.getY(), ball.getRadius());
     }
 
-    public void handleGoalCollision(FieldObject fieldObject) {
-        handleLineSegmentCollision(rearNet, fieldObject);
-        handleLineSegmentCollision(leftNet, fieldObject);
-        handleLineSegmentCollision(rightNet, fieldObject);
-        handleCircleCollision(leftPost, fieldObject);
-        handleCircleCollision(rightPost, fieldObject);
-        handleCircleCollision(leftSupport, fieldObject);
-        handleCircleCollision(rightSupport, fieldObject);
-    }
-
-    public void handleCircleCollision(Circle circle, FieldObject fieldObject) {
-        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            float centersDistance = circle.getRadius() + fieldObject.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(fieldObject.getPosition().getX() - circle.getX(), fieldObject.getPosition().getY() - circle.getY());
-            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, fieldObject.getSpeed().getDirection());
-
-            fieldObject.getPosition().setPosition(circle.getPosition());
-            fieldObject.getPosition().addVector(collisionDirection, centersDistance);
-
-            if (fieldObjectCollisionDifference > Math.PI / 2) {
-                fieldObject.getSpeed().bounceDirection(collisionDirection);
-            }
-
-            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, fieldObject.getSpeed().getDirection());
-            fieldObject.getSpeed().setMagnitude((1 - 0.5f * (float)Math.cos(newDifference)) * fieldObject.getSpeed().getMagnitude() * 0.8f);
-        }
-    }
-
-    public void handlePlayerBallCollision(Player player, Ball ball) {
-        if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            float centersDistance = player.getRadius() + ball.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
-            float playerSpeedCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getSpeed().getDirection());
-            float playerDirectionCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getTargetSpeed().getDirection());
-            float ballCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
-            Vector impulse;
-            float impactMagnitude;
-            boolean ballControl = playerDirectionCollisionAngle <= player.getControlAngle();
-            boolean bounce = ballCollisionAngle > Math.PI / 2 && ball.getSpeed().getMagnitude() > 0;
-
-            if (bounce) {
-                ball.getSpeed().bounceDirection(collisionDirection);
-                float newBallCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
-                if (ballControl) {
-                    ball.getSpeed().setMagnitude((1 - 0.5f * (float) Math.cos(newBallCollisionAngle)) * ball.getSpeed().getMagnitude() * 0.2f);
-                } else {
-                    ball.getSpeed().setMagnitude((1 - 0.5f * (float) Math.cos(newBallCollisionAngle)) * ball.getSpeed().getMagnitude() * 0.5f);
-                }
-                //float playerCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, player.getSpeed().getDirection());
-                impactMagnitude = (float)(Math.cos(playerSpeedCollisionAngle) * player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED);
-            } else {
-                //float playerCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, player.getSpeed().getDirection());
-                //float ballCollisionAngle = EpicalMath.absoluteDifference(collisionDirection, ball.getSpeed().getDirection());
-                //float impactMagnitude = (float)(Math.cos(playerCollisionAngle) * player.getSpeed().getMagnitude() - Math.cos(ballCollisionAngle) * ball.getSpeed().getMagnitude());
-
-                impactMagnitude = (float)(Math.cos(playerSpeedCollisionAngle) * player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED - Math.cos(ballCollisionAngle) * ball.getSpeed().getMagnitude()); ///
-
-                if (impactMagnitude < 0) {
-                    impactMagnitude = 0;
-                }
-            }
-
-            ball.getPosition().setPosition(player.getPosition());
-            impulse = new Vector(collisionDirection, impactMagnitude);
-            ball.getSpeed().addVector(impulse);
-
-            if (ballControl) {
-                if (bounce) {
-                    ball.shiftTowardsPlayerDirectionOnBounce(collisionDirection, centersDistance, player.getTargetSpeed().getDirection(), player.getControlAngle());
-                } else {
-                    ball.getPosition().addVector(collisionDirection, centersDistance);
-
-                    if (player.getTargetSpeed().getMagnitude() == 1) {
-                        if (player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() > ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
-                            float targetMagnitude = player.getSpeed().getMagnitude() + 0.4f;
-
-                            if (targetMagnitude > 1) {
-                                targetMagnitude = 1;
-                            }
-
-                            ball.getSpeed().setMagnitude(targetMagnitude * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED * 1);
-                            Log.d("Player speed", "" + player.getSpeed().getMagnitude() * player.getMagnitudeSpeed());
-                            Log.d("Ball speed", "" + ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED);
-                        }
-                    }
-                }
-
-                if (player.getSpeed().getMagnitude() > player.getDribbling()) {
-                    player.getSpeed().setMagnitude(player.getDribbling());
-                }
-            } else {
-                ball.getPosition().addVector(collisionDirection, centersDistance);
-            }
-        }
-
-        if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getControlRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            //Control cone
-            float ballDirectionFromPlayer = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
-            float playerOrientationFromBall = EpicalMath.absoluteAngleBetweenDirections(ballDirectionFromPlayer, player.getTargetSpeed().getDirection());
-
-            if (playerOrientationFromBall <= player.getControlAngle()) {
-                ball.shiftWithControlCone(this.getPlayer());
-            }
-        }
-    }
-
-    public void handleLineSegmentCollision(RectF line, FieldObject fieldObject) {
-        if (EpicalMath.checkIntersect(line, fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * 0.4f);
-
-            if (line.height() < line.width()) {
-                if (fieldObject.position.getY() < line.centerY()) {
-                    if (player.getSpeed().getDirection() > 0) {
-                        fieldObject.getSpeed().bounceDirection((float)-Math.PI / 2);
-                    }
-                    fieldObject.getPosition().setY(line.top - fieldObject.getRadius());
-                } else {
-                    if (player.getSpeed().getDirection() < 0) {
-                        fieldObject.getSpeed().bounceDirection((float)Math.PI / 2);
-                    }
-                    fieldObject.getPosition().setY(line.bottom + fieldObject.getRadius());
-                }
-            } else {
-                if (fieldObject.position.getX() < line.centerX()) {
-                    if (Math.abs(player.getSpeed().getDirection()) < Math.PI / 2) {
-                        fieldObject.getSpeed().bounceDirection((float) Math.PI);
-                    }
-                    fieldObject.getPosition().setX(line.left - fieldObject.getRadius());
-                } else {
-                    if (Math.abs(player.getSpeed().getDirection()) > Math.PI / 2) {
-                        fieldObject.getSpeed().bounceDirection(0);
-                    }
-                    fieldObject.getPosition().setX(line.right + fieldObject.getRadius());
-                }
-            }
-        }
-    }
-
     public void handleBoundaryCollision(FieldObject fieldObject) {
-        handleLineSegmentCollision(leftBoundary, fieldObject);
-        handleLineSegmentCollision(rightBoundary, fieldObject);
-        handleLineSegmentCollision(topBoundary, fieldObject);
-        handleLineSegmentCollision(bottomBoundary, fieldObject);
+        Collisions.handleLineSegmentCollision(leftBoundary, fieldObject);
+        Collisions.handleLineSegmentCollision(rightBoundary, fieldObject);
+        Collisions.handleLineSegmentCollision(topBoundary, fieldObject);
+        Collisions.handleLineSegmentCollision(bottomBoundary, fieldObject);
+    }
+
+    public void handleGoalCollision(FieldObject fieldObject) {
+        Collisions.handleLineSegmentCollision(rearNet, fieldObject);
+        Collisions.handleLineSegmentCollision(leftNet, fieldObject);
+        Collisions.handleLineSegmentCollision(rightNet, fieldObject);
+        Collisions.handleCircleCollision(leftPost, fieldObject);
+        Collisions.handleCircleCollision(rightPost, fieldObject);
+        Collisions.handleCircleCollision(leftSupport, fieldObject);
+        Collisions.handleCircleCollision(rightSupport, fieldObject);
     }
 
     public boolean isDecelerateOn() {

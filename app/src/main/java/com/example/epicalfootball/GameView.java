@@ -72,7 +72,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void updateSurface() {
         Canvas canvas = surfaceHolder.lockCanvas();
-        canvas.drawRect(0, 0, this.getWidth(), this.getWidth() * FIELD_HEIGHT_WIDTH_RATIO, clearPaint);
+        canvas.drawRect(0, 0, this.getWidth(), this.getWidth() * FIELD_IMAGE_HEIGHT_WIDTH_RATIO, clearPaint);
         float pixelPerMeter = this.getWidth() / FIELD_WIDTH;
         surfaceWidth = this.getWidth();
         Player player = gameState.getPlayer();
@@ -111,7 +111,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         float controlConeDegrees = controlConeRadians / (float)Math.PI * 180;
         canvas.drawArc(drawPositionX - pixelPerMeter * player.getRadius(), drawPositionY - pixelPerMeter * player.getRadius(), drawPositionX + pixelPerMeter * player.getRadius(), drawPositionY + pixelPerMeter * player.getRadius(), directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
 
-        canvas.drawRect(0, this.getWidth() * FIELD_HEIGHT_WIDTH_RATIO, this.getWidth(), this.getHeight(), clearPaint);
+        canvas.drawRect(0, this.getWidth() * FIELD_IMAGE_HEIGHT_WIDTH_RATIO, this.getWidth(), this.getHeight(), clearPaint);
 
         paint.setColor(Color.BLUE);
 
