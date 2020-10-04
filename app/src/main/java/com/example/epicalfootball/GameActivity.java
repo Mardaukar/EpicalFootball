@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import static com.example.epicalfootball.Constants.*;
 
@@ -32,8 +36,8 @@ public class GameActivity extends AppCompatActivity {
         TextView goals_scored_textView = findViewById(R.id.goals_number_textView);
         goals_scored_textView.setText(String.format("%d", gameState.getGoalsScored()));
 
-        View controlView = findViewById(R.id.control_background);
-        controlView.setOnTouchListener(new View.OnTouchListener() {
+        View controlSurface = findViewById(R.id.control_surface);
+        controlSurface.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 int eventAction = event.getAction();
@@ -44,7 +48,7 @@ public class GameActivity extends AppCompatActivity {
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        if (EpicalMath.calculateDistance(sideLength * HALF, sideLength * HALF, touchX, touchY) < sideLength * 0.1f) {
+                        if (EpicalMath.calculateDistance(sideLength * HALF, sideLength * HALF, touchX, touchY) < sideLength * DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
                             gameState.setControlOffWithDecelerate(true);
                         } else if(touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
                             gameState.setControlOn(touchX - sideLength * HALF, touchY - sideLength * HALF, sideLength);
@@ -54,6 +58,30 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     default:
                         gameState.setControlOffWithDecelerate(false);
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+        final ImageView controlBackground = findViewById(R.id.control_background);
+        final Button shootButton = findViewById(R.id.action_button);
+        shootButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                int eventAction = event.getAction();
+
+                switch (eventAction) {
+                    case MotionEvent.ACTION_DOWN:
+                        gameState.setShootButtonDown(true);
+                        shootButton.setBackgroundColor(SHOOT_BUTTON_DOWN_COLOR);
+                        controlBackground.setImageResource(R.drawable.campnou_grass);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        gameState.setShootButtonDown(false);
+                        shootButton.setBackgroundColor(SHOOT_BUTTON_UP_COLOR);
+                        controlBackground.setImageResource(R.drawable.fire_ring_medium);
                         break;
                 }
 
@@ -78,6 +106,18 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
                 TextView goals_scored_textView = findViewById(R.id.goals_number_textView);
                 goals_scored_textView.setText(goals);
+            }
+        });
+    }
+
+    public void updatePowerBars(final int shotPower) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ProgressBar power_bar_left = findViewById(R.id.power_bar);
+                ProgressBar power_bar_right = findViewById(R.id.power_bar2);
+                power_bar_left.setProgress(shotPower);
+                power_bar_right.setProgress(shotPower);
             }
         });
     }

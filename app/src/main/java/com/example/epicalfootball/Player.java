@@ -12,6 +12,12 @@ public class Player extends FieldObject {
     private float controlFirstTouch;
     private float dribbling;
     private float acceleration;
+    private float accuracyDistance;
+    private float finishingTargetGoalSpeed;
+    private float longshotsTargetGoalSpeed;
+    private float finishingMidShotPower;
+    private float longshotsMidShotPower;
+    private float longshotsAccuracy;
 
     public Player() {
         this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH_ATTRIBUTE;
@@ -25,6 +31,12 @@ public class Player extends FieldObject {
         this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
+        this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
+        this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
+        this.longshotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
+        this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
+        this.longshotsMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
+        this.longshotsAccuracy = MIN_LONGSHOTS_ACCURACY + LONGSHOTS_ACCURACY_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn) {
@@ -150,5 +162,29 @@ public class Player extends FieldObject {
 
     public void setControlFirstTouch(float controlFirstTouch) {
         this.controlFirstTouch = controlFirstTouch;
+    }
+
+    public float getAccuracyDistance() {
+        return accuracyDistance;
+    }
+
+    public float getLongshotsAccuracy() {
+        return longshotsAccuracy;
+    }
+
+    public float getFinishingTargetGoalSpeed() {
+        return finishingTargetGoalSpeed;
+    }
+
+    public float getLongshotsTargetGoalSpeed() {
+        return longshotsTargetGoalSpeed;
+    }
+
+    public float getFinishingMidShotPower() {
+        return finishingMidShotPower;
+    }
+
+    public float getLongshotsMidShotPower() {
+        return longshotsMidShotPower;
     }
 }

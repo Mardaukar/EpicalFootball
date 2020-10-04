@@ -85,7 +85,7 @@
                 android:id="@+id/field_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:src="@drawable/superminifield"
+                android:src="@drawable/smallfootballfield"
                 app:layout_constraintDimensionRatio="1.25"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -123,6 +123,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <View
+                    android:id="@+id/control_surface"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <ProgressBar
                     android:id="@+id/power_bar2"
                     style="@android:style/Widget.ProgressBar.Horizontal"
@@ -143,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#673AB7"
+            android:background="#DF471A97"
             android:text="@string/action_button_text"
             android:textColor="#000000"
             android:textSize="30sp" />

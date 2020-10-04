@@ -13,17 +13,26 @@ public class Constants {
     public static Position BALL_STARTING_POSITION = new Position(0, 25);
     public static Vector BALL_STARTING_SPEED = new Vector((float)-Math.PI / 2,0.77f);
 
-    //FIELD IMAGE
+    //FIELD IMAGE (superminifield)
+    /*
     public static float FIELD_IMAGE_WIDTH_PIXELS = 375;
     public static float FIELD_IMAGE_HEIGHT_PIXELS = 300;
     public static float FIELD_IMAGE_TOUCHLINE_FROM_TOP_PIXELS = 30;
     public static float FIELD_IMAGE_GOAL_DEPTH_PIXELS = 27;
     public static float FIELD_IMAGE_BOX_HEIGHT_PIXELS = 170;
+    public static float FIELD_IMAGE_HEIGHT_WIDTH_RATIO =  FIELD_IMAGE_HEIGHT_PIXELS / FIELD_IMAGE_WIDTH_PIXELS;*/
+
+    //FIELD IMAGE (smallfield)
+    public static float FIELD_IMAGE_WIDTH_PIXELS = 500;
+    public static float FIELD_IMAGE_HEIGHT_PIXELS = 400;
+    public static float FIELD_IMAGE_TOUCHLINE_FROM_TOP_PIXELS = 32;
+    public static float FIELD_IMAGE_GOAL_DEPTH_PIXELS = 22;
+    public static float FIELD_IMAGE_BOX_HEIGHT_PIXELS = 172;
     public static float FIELD_IMAGE_HEIGHT_WIDTH_RATIO =  FIELD_IMAGE_HEIGHT_PIXELS / FIELD_IMAGE_WIDTH_PIXELS;
 
     //FIELD METRICS
     public static float FIELD_HEIGHT_PIXELS = FIELD_IMAGE_HEIGHT_PIXELS - FIELD_IMAGE_TOUCHLINE_FROM_TOP_PIXELS;
-    public static float METERS_PER_PIXELS = 16 / FIELD_IMAGE_BOX_HEIGHT_PIXELS;
+    public static float METERS_PER_PIXELS = 16.5f / FIELD_IMAGE_BOX_HEIGHT_PIXELS;
     public static float FIELD_WIDTH = FIELD_IMAGE_WIDTH_PIXELS * METERS_PER_PIXELS;
     public static float FIELD_HEIGHT = FIELD_HEIGHT_PIXELS * METERS_PER_PIXELS;
     public static float GOAL_DEPTH = FIELD_IMAGE_GOAL_DEPTH_PIXELS * METERS_PER_PIXELS;
@@ -47,22 +56,38 @@ public class Constants {
     public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
     public static float DRIBBLING_KICK_FORWARD = 0.4f;
+    public static int SHOT_POWER_METER_OPTIMAL = 100;
+    public static int SHOT_POWER_METER_HIGHER_LIMIT = 120;
+    public static int SHOT_POWER_METER_LOWER_LIMIT = 10;
+    public static float AIMING_TIME = 1.5f;
+    public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
+
+    //SHOOTING
+    public static float LONG_SHOTS_LIMIT = 20;
+    public static float TARGET_GOAL_MOVE_SPEED = 0.4f;
+    public static float TARGET_GOAL_WIDTH_TO_HEIGHT = 3;
+    public static float MAX_TARGET_GOAL_SIZE = 0.9f;
+    public static float MAX_TARGET_GOAL_MOVE_SIZE = 0.8f;
+    public static float MIN_TARGET_GOAL_SIZE = 0.1f;
 
     //LAYOUT
     public static float CONTROL_AREA_FROM_WIDTH = 0.8f;
-    public static float CONTROL_AREA_CENTER_FROM_TOP = 3/4f;
-
-    //CONTROL AREA
+    public static float CONTROL_AREA_FROM_HEIGHT = 0.5f;
+    public static float CONTROL_AREA_CENTER_FROM_TOP = 0.75f;
+    public static float CONTROL_AREA_TOP_FROM_TOP = 0.5f;
+    public static float CONTROL_AREA_LEFT_FROM_LEFT = 0.1f;
     public static float CONTROL_VIEW_MAXIMUM_LIMIT = 0.8f;
+    public static float DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE = 0.12f;
+    public static float CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
 
     //VISUAL
     public static int SHADOW_ALPHA = 150;
-    public static float SHADOW_OFFSET = 5;
+    public static float SHADOW_OFFSET = 5; ///should calculate
     public static int DECELERATE_ON_ALPHA = 100;
     public static int DECELERATE_OFF_ALPHA = 50;
-    public static int DECELERATE_DOT_RADIUS = 90;
     public static int CONTROL_DOT_ALPHA = 50;
-    public static int CONTROL_DOT_RADIUS = 80;
+    public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF673AB7;
+    public static int SHOOT_BUTTON_UP_COLOR = 0xDF471A97;
 
     //RUNNER
     public static long ELAPSED_LIMIT_IN_MILLISECONDS = 150;
@@ -70,6 +95,7 @@ public class Constants {
 
     //MATHEMATICAL
     public static float FULL_MAGNITUDE = 1f;
+    public static float FULL = 1f;
     public static float HALF = 0.5f;
     public static float DOUBLE = 2;
 
@@ -79,6 +105,10 @@ public class Constants {
     public static float PLAYER_SPEED_ATTRIBUTE = 5;
     public static float PLAYER_BALLCONTROL_ATTRIBUTE = 5;
     public static float PLAYER_DRIBBLING_ATTRIBUTE = 5;
+    public static float PLAYER_SHOTPOWER_ATTRIBUTE = 0;
+    public static float PLAYER_ACCURACY_ATTRIBUTE = 5;
+    public static float PLAYER_FINISHING_ATTRIBUTE = 5;
+    public static float PLAYER_LONGSHOTS_ATTRIBUTE = 5;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.5f;
@@ -97,6 +127,14 @@ public class Constants {
     public static float MAX_BALLCONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER / 5;
     public static float MIN_DRIBBLING_VALUE = 0.5f;
     public static float MAX_DRIBBLING_VALUE = 1;
+    public static float MIN_ACCURACY_DISTANCE = 4;
+    public static float MAX_ACCURACY_DISTANCE = 12;
+    public static float MIN_TARGET_GOAL_SPEED = 1;
+    public static float MAX_TARGET_GOAL_SPEED = 0.5f;
+    public static float MIN_MID_SHOT_POWER = 25;
+    public static float MAX_MID_SHOT_POWER = 75;
+    public static float MIN_LONGSHOTS_ACCURACY = 1;
+    public static float MAX_LONGSHOTS_ACCURACY = 0.5f;
 
     //PLAYER VALUE INCREMENTS
     public static float REACH_VALUE_INCREMENT = (MAX_REACH_VALUE - MIN_REACH_VALUE) / 10;
@@ -107,5 +145,8 @@ public class Constants {
     public static float BALLCONTROL_BALL_SPEED_INCREMENT = (MAX_BALLCONTROL_BALL_SPEED - MIN_BALLCONTROL_BALL_SPEED) / 10;
     public static float BALLCONTROL_FIRST_TOUCH_INCREMENT = (MAX_BALLCONTROL_FIRST_TOUCH - MIN_BALLCONTROL_FIRST_TOUCH) / 10;
     public static float DRIBBLING_VALUE_INCREMENT = (MAX_DRIBBLING_VALUE - MIN_DRIBBLING_VALUE) / 10;
-
+    public static float ACCURACY_DISTANCE_INCREMENT = (MAX_ACCURACY_DISTANCE - MIN_ACCURACY_DISTANCE) / 10;
+    public static float TARGET_GOAL_SPEED_INCREMENT = (MAX_TARGET_GOAL_SPEED - MIN_TARGET_GOAL_SPEED) / 10;
+    public static float MID_SHOT_POWER_INCREMENT = (MAX_MID_SHOT_POWER - MIN_MID_SHOT_POWER) / 10;
+    public static float LONGSHOTS_ACCURACY_INCREMENT = (MAX_LONGSHOTS_ACCURACY - MIN_LONGSHOTS_ACCURACY) / 10;
 }

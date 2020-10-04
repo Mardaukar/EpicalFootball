@@ -18,6 +18,14 @@ public class GameState {
     private float controlY;
     private float controlWidth;
     private boolean decelerateOn = false;
+    private boolean shootButtonDown = false;
+    private boolean readyToShoot = false;
+    private float shotPowerMeter = 0;
+    private float shootingTimer = 0;
+    private GoalFrame goalFrame;
+    private TargetGoal targetGoal;
+    private boolean longshot;
+    private float shotPowerIncrement;
 
     private boolean canScore = true;
     private long newBallTimer = 0;
@@ -27,21 +35,13 @@ public class GameState {
     private RectF topBoundary = new RectF(-FIELD_WIDTH, -TOUCHLINE_FROM_TOP - BOUNDARY_WIDTH, FIELD_WIDTH, -TOUCHLINE_FROM_TOP);
     private RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT + BOUNDARY_WIDTH);
 
-    private RectF goalArea = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF, -DOUBLE * BALL_RADIUS);
-    private RectF rearNet = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH - DOUBLE * POST_RADIUS, GOAL_WIDTH * HALF, -GOAL_DEPTH);
-    private RectF leftNet = new RectF(-GOAL_WIDTH * HALF - DOUBLE * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH * HALF, -POST_RADIUS);
-    private RectF rightNet = new RectF(GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF + DOUBLE * POST_RADIUS, -POST_RADIUS);
-    private Circle leftPost = new Circle(-GOAL_WIDTH * HALF - POST_RADIUS, 0, POST_RADIUS);
-    private Circle rightPost = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, 0, POST_RADIUS);
-    private Circle leftSupport = new Circle(-GOAL_WIDTH * HALF - POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
-    private Circle rightSupport = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
-
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
         this.player = new Player();
         this.ball = new Ball();
         this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
+        this.goalFrame = new GoalFrame();
     }
 
     public Player getPlayer() {
@@ -70,10 +70,6 @@ public class GameState {
         return ball;
     }
 
-    public void setBall(Ball ball) {
-        this.ball = ball;
-    }
-
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
@@ -87,16 +83,80 @@ public class GameState {
             }
         }
 
-        if (controlOn) {
-            player.getTargetSpeed().setTargetSpeed(controlX, controlY, controlWidth);
+        if (shootButtonDown) {
+            if (this.targetGoal == null) {
+                float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
+
+                if (distance < LONG_SHOTS_LIMIT) {
+                    longshot = false;
+                } else {
+                    longshot = true;
+                }
+
+                this.targetGoal = new TargetGoal(distance, longshot, this.getPlayer());
+            }
+
+            targetGoal.updatePosition(timeFactor);
+
+            if (readyToShoot) {
+                readyToShoot = false;
+                this.shotPowerMeter = 0;
+            }
+
+            if (!longshot) {
+                if (this.shotPowerMeter < player.getFinishingMidShotPower()) {
+                    this.shotPowerMeter += player.getFinishingMidShotPower() / (SHOT_POWER_METER_OPTIMAL - player.getFinishingMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                } else {
+                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - player.getFinishingMidShotPower()) / player.getFinishingMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                }
+            } else {
+                if (this.shotPowerMeter < player.getLongshotsMidShotPower()) {
+                    this.shotPowerMeter += player.getLongshotsMidShotPower() / (SHOT_POWER_METER_OPTIMAL - player.getLongshotsMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                } else {
+                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - player.getLongshotsMidShotPower()) / player.getLongshotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                }
+            }
+
+            if (controlOn) {
+
+            } else {
+
+            }
         } else {
-            player.getTargetSpeed().nullTargetSpeed();
+            this.targetGoal = null;
+
+            if (this.shotPowerMeter < SHOT_POWER_METER_LOWER_LIMIT) {
+                this.readyToShoot = false;
+                this.shotPowerMeter = 0;
+                this.shootingTimer = 0;
+            } else if (this.shotPowerMeter > 0) {
+                if (readyToShoot) {
+                    this.shootingTimer -= elapsed;
+
+                    if (this.shootingTimer <= 0) {
+                        readyToShoot = false;
+                        this.shotPowerMeter = 0;
+                        this.shootingTimer = 0;
+                    }
+                } else {
+                    readyToShoot = true;
+                    this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
+                }
+            }
+
+            if (controlOn) {
+                player.getTargetSpeed().setTargetSpeed(controlX, controlY, controlWidth);
+            } else {
+                player.getTargetSpeed().nullTargetSpeed();
+            }
         }
 
+        this.gameActivity.updatePowerBars((int)this.shotPowerMeter);
+
         handleBoundaryCollision(player);
-        handleGoalCollision(player);
+        this.goalFrame.handleGoalCollision(player);
         Collisions.handlePlayerBallCollision(player, ball);
-        handleGoalCollision(ball);
+        this.goalFrame.handleGoalCollision(ball);
 
         player.updatePosition(timeFactor);
         ball.updatePosition(timeFactor);
@@ -117,12 +177,12 @@ public class GameState {
     public boolean ballOutOfBounds() {
         return ball.getPosition().getX() < -FIELD_WIDTH * HALF
                 || ball.getPosition().getX() > FIELD_WIDTH * HALF
-                || ball.getPosition().getY() < -DOUBLE * BALL_RADIUS
+                || ball.getPosition().getY() < -BALL_RADIUS
                 || ball.getPosition().getY() > FIELD_HEIGHT;
     }
 
     public boolean ballInGoal() {
-        return EpicalMath.checkIntersect(goalArea, ball.position.getX(), ball.position.getY(), ball.getRadius());
+        return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.position.getX(), ball.position.getY(), ball.getRadius());
     }
 
     public void handleBoundaryCollision(FieldObject fieldObject) {
@@ -130,16 +190,6 @@ public class GameState {
         Collisions.handleLineSegmentCollision(rightBoundary, fieldObject);
         Collisions.handleLineSegmentCollision(topBoundary, fieldObject);
         Collisions.handleLineSegmentCollision(bottomBoundary, fieldObject);
-    }
-
-    public void handleGoalCollision(FieldObject fieldObject) {
-        Collisions.handleLineSegmentCollision(rearNet, fieldObject);
-        Collisions.handleLineSegmentCollision(leftNet, fieldObject);
-        Collisions.handleLineSegmentCollision(rightNet, fieldObject);
-        Collisions.handleCircleCollision(leftPost, fieldObject);
-        Collisions.handleCircleCollision(rightPost, fieldObject);
-        Collisions.handleCircleCollision(leftSupport, fieldObject);
-        Collisions.handleCircleCollision(rightSupport, fieldObject);
     }
 
     public boolean isDecelerateOn() {
@@ -177,5 +227,29 @@ public class GameState {
 
     public void setControlWidth(float controlWidth) {
         this.controlWidth = controlWidth;
+    }
+
+    public boolean isShootButtonDown() {
+        return shootButtonDown;
+    }
+
+    public void setShootButtonDown(boolean shootButtonDown) {
+        this.shootButtonDown = shootButtonDown;
+    }
+
+    public boolean isReadyToShoot() {
+        return readyToShoot;
+    }
+
+    public void setReadyToShoot(boolean readyToShoot) {
+        this.readyToShoot = readyToShoot;
+    }
+
+    public TargetGoal getTargetGoal() {
+        return targetGoal;
+    }
+
+    public GoalFrame getGoalFrame() {
+        return goalFrame;
     }
 }
