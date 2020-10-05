@@ -161,7 +161,7 @@ public class GameState {
         player.updatePosition(timeFactor);
         ball.updatePosition(timeFactor);
 
-        player.updateSpeed(timeFactor, decelerateOn);
+        player.updateSpeed(timeFactor, decelerateOn, ball);
         ball.updateSpeed(timeFactor);
 
         if (ballInGoal() && canScore) {
@@ -185,11 +185,18 @@ public class GameState {
         return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.position.getX(), ball.position.getY(), ball.getRadius());
     }
 
-    public void handleBoundaryCollision(FieldObject fieldObject) {
-        Collisions.handleLineSegmentCollision(leftBoundary, fieldObject);
-        Collisions.handleLineSegmentCollision(rightBoundary, fieldObject);
-        Collisions.handleLineSegmentCollision(topBoundary, fieldObject);
-        Collisions.handleLineSegmentCollision(bottomBoundary, fieldObject);
+    public void handleBoundaryCollision(Ball ball) {
+        Collisions.handleLineSegmentCollision(leftBoundary, ball);
+        Collisions.handleLineSegmentCollision(rightBoundary, ball);
+        Collisions.handleLineSegmentCollision(topBoundary, ball);
+        Collisions.handleLineSegmentCollision(bottomBoundary, ball);
+    }
+
+    public void handleBoundaryCollision(Player player) {
+        Collisions.handleLineSegmentCollision(leftBoundary, player);
+        Collisions.handleLineSegmentCollision(rightBoundary, player);
+        Collisions.handleLineSegmentCollision(topBoundary, player);
+        Collisions.handleLineSegmentCollision(bottomBoundary, player);
     }
 
     public boolean isDecelerateOn() {

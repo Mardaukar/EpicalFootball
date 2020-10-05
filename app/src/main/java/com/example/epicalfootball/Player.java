@@ -18,6 +18,7 @@ public class Player extends FieldObject {
     private float finishingMidShotPower;
     private float longshotsMidShotPower;
     private float longshotsAccuracy;
+    private float dribblingTarget;
 
     public Player() {
         this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH_ATTRIBUTE;
@@ -29,6 +30,7 @@ public class Player extends FieldObject {
         this.controlBallSpeed = MIN_BALLCONTROL_BALL_SPEED + BALLCONTROL_BALL_SPEED_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
         this.controlFirstTouch = MIN_BALLCONTROL_FIRST_TOUCH + BALLCONTROL_FIRST_TOUCH_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
         this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
+        this.dribblingTarget = MIN_DRIBBLING_TARGET + DRIBBLING_TARGET_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
         this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
@@ -39,7 +41,7 @@ public class Player extends FieldObject {
         this.longshotsAccuracy = MIN_LONGSHOTS_ACCURACY + LONGSHOTS_ACCURACY_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
     }
 
-    public void updateSpeed(float timeFactor, boolean decelerateOn) {
+    public void updateSpeed(float timeFactor, boolean decelerateOn, Ball ball) {
         float oldSpeedMagnitude = speed.getMagnitude();
         float deceleratedSpeedMagnitude = 0;
 
@@ -64,32 +66,39 @@ public class Player extends FieldObject {
             float newSpeedMagnitudeY = (float)(Math.sin(speed.getDirection()) * deceleratedSpeedMagnitude);
             float targetSpeedMagnitudeX = (float)(Math.cos(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
             float targetSpeedMagnitudeY = (float)(Math.sin(targetSpeed.getDirection()) * targetSpeed.getMagnitude());
+            float acceleration;
+
+            if (EpicalMath.checkIntersect(this.getPosition().getX(), this.getPosition().getY(), this.getControlRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+                acceleration = PLAYER_BASE_DECELERATION + this.acceleration * this.dribbling;
+            } else {
+                acceleration = PLAYER_BASE_DECELERATION + this.acceleration;
+            }
 
             if (newSpeedMagnitudeX >= 0) {
                 if (targetSpeedMagnitudeX > newSpeedMagnitudeX) {
-                    newSpeedMagnitudeX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+                    newSpeedMagnitudeX += Math.cos(targetSpeed.getDirection()) * (acceleration) * timeFactor;
                 } else {
-                    newSpeedMagnitudeX -= Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeX -= Math.abs(Math.cos(targetSpeed.getDirection()) * (acceleration) * timeFactor);
                 }
             } else {
                 if (targetSpeedMagnitudeX < newSpeedMagnitudeX) {
-                    newSpeedMagnitudeX += Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+                    newSpeedMagnitudeX += Math.cos(targetSpeed.getDirection()) * (acceleration) * timeFactor;
                 } else {
-                    newSpeedMagnitudeX += Math.abs(Math.cos(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeX += Math.abs(Math.cos(targetSpeed.getDirection()) * (acceleration) * timeFactor);
                 }
             }
 
             if (newSpeedMagnitudeY >= 0) {
                 if (targetSpeedMagnitudeY > newSpeedMagnitudeY) {
-                    newSpeedMagnitudeY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+                    newSpeedMagnitudeY += Math.sin(targetSpeed.getDirection()) * (acceleration) * timeFactor;
                 } else {
-                    newSpeedMagnitudeY -= Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeY -= Math.abs(Math.sin(targetSpeed.getDirection()) * (acceleration) * timeFactor);
                 }
             } else {
                 if (targetSpeedMagnitudeY < newSpeedMagnitudeY) {
-                    newSpeedMagnitudeY += Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor;
+                    newSpeedMagnitudeY += Math.sin(targetSpeed.getDirection()) * (acceleration) * timeFactor;
                 } else {
-                    newSpeedMagnitudeY += Math.abs(Math.sin(targetSpeed.getDirection()) * (PLAYER_BASE_DECELERATION + this.acceleration) * timeFactor);
+                    newSpeedMagnitudeY += Math.abs(Math.sin(targetSpeed.getDirection()) * (acceleration) * timeFactor);
                 }
             }
 
@@ -108,8 +117,14 @@ public class Player extends FieldObject {
         }
     }
 
-    public void setTargetSpeed(TargetSpeedVector targetSpeed) {
-        this.targetSpeed = targetSpeed;
+    public float getMagnitudeToOrientation() {
+        float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.getTargetSpeed().getDirection());
+
+        if (angle > Math.PI / 2) {
+            return 0;
+        } else {
+            return (float)Math.cos(angle) * this.getSpeed().getMagnitude();
+        }
     }
 
     public TargetSpeedVector getTargetSpeed() {
@@ -118,10 +133,6 @@ public class Player extends FieldObject {
 
     public float getControlAngle() {
         return controlAngle;
-    }
-
-    public void setControlAngle(float controlAngle) {
-        this.controlAngle = controlAngle;
     }
 
     public float getControlRadius() {
@@ -186,5 +197,9 @@ public class Player extends FieldObject {
 
     public float getLongshotsMidShotPower() {
         return longshotsMidShotPower;
+    }
+
+    public float getDribblingTarget() {
+        return dribblingTarget;
     }
 }

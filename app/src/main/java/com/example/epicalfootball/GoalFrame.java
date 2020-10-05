@@ -25,14 +25,24 @@ public class GoalFrame {
         this.rightSupport = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
     }
 
-    public void handleGoalCollision(FieldObject fieldObject) {
-        Collisions.handleLineSegmentCollision(rearNet, fieldObject);
-        Collisions.handleLineSegmentCollision(leftNet, fieldObject);
-        Collisions.handleLineSegmentCollision(rightNet, fieldObject);
-        Collisions.handleCircleCollision(leftPost, fieldObject);
-        Collisions.handleCircleCollision(rightPost, fieldObject);
-        Collisions.handleCircleCollision(leftSupport, fieldObject);
-        Collisions.handleCircleCollision(rightSupport, fieldObject);
+    public void handleGoalCollision(Ball ball) {
+        Collisions.handleLineSegmentCollision(rearNet, ball);
+        Collisions.handleLineSegmentCollision(leftNet, ball);
+        Collisions.handleLineSegmentCollision(rightNet, ball);
+        Collisions.handleCircleCollision(leftPost, ball);
+        Collisions.handleCircleCollision(rightPost, ball);
+        Collisions.handleCircleCollision(leftSupport, ball);
+        Collisions.handleCircleCollision(rightSupport,ball);
+    }
+
+    public void handleGoalCollision(Player player) {
+        Collisions.handleLineSegmentCollision(rearNet, player);
+        Collisions.handleLineSegmentCollision(leftNet, player);
+        Collisions.handleLineSegmentCollision(rightNet, player);
+        Collisions.handleCircleCollision(leftPost, player);
+        Collisions.handleCircleCollision(rightPost, player);
+        Collisions.handleCircleCollision(leftSupport, player);
+        Collisions.handleCircleCollision(rightSupport, player);
     }
 
     public RectF getGoalArea() {

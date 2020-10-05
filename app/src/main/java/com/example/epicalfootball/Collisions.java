@@ -66,11 +66,12 @@ public class Collisions {
                     ball.getPosition().addVector(collisionDirection, centersDistance);
 
                     if (player.getTargetSpeed().getMagnitude() == 1) {
-                        if (player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() > ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
-                            float targetMagnitude = player.getSpeed().getMagnitude() + DRIBBLING_KICK_FORWARD;
+                        if (player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
+                            float targetMagnitude = player.getMagnitudeToOrientation() + DRIBBLING_KICK_FORWARD;
+                            Log.d("targetMagnitude", "" + targetMagnitude);
 
-                            if (targetMagnitude > 1) {
-                                targetMagnitude = 1;
+                            if (targetMagnitude > player.getDribblingTarget()) {
+                                targetMagnitude = player.getDribblingTarget();
                             }
 
                             ball.getSpeed().setMagnitude(targetMagnitude * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED);
@@ -81,6 +82,7 @@ public class Collisions {
                 if (player.getSpeed().getMagnitude() > player.getDribbling()) {
                     player.getSpeed().setMagnitude(player.getDribbling());
                 }
+                Log.d("player speed", "" + player.getSpeed().getMagnitude());
             } else {
                 ball.getPosition().addVector(collisionDirection, centersDistance);
             }
@@ -97,33 +99,79 @@ public class Collisions {
         }
     }
 
-    public static void handleLineSegmentCollision(RectF line, FieldObject fieldObject) {
-        if (EpicalMath.checkIntersect(line, fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            fieldObject.getSpeed().setMagnitude(fieldObject.getSpeed().getMagnitude() * LINESEGMENT_COLLISION_SPEED_MULTIPLIER);
+    public static void handleLineSegmentCollision(RectF line, Ball ball) {
+        if (EpicalMath.checkIntersect(line, ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+            ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINESEGMENT_COLLISION_SPEED_MULTIPLIER);
 
             if (line.height() < line.width()) {
-                if (fieldObject.position.getY() < line.centerY()) {
-                    if (fieldObject.getSpeed().getDirection() > 0) {
-                        fieldObject.getSpeed().bounceDirection((float)-Math.PI * HALF);
+                if (ball.position.getY() < line.centerY()) {
+                    if (ball.getSpeed().getDirection() > 0) {
+                        ball.getSpeed().bounceDirection((float)-Math.PI * HALF);
                     }
-                    fieldObject.getPosition().setY(line.top - fieldObject.getRadius());
+                    ball.getPosition().setY(line.top - ball.getRadius());
                 } else {
-                    if (fieldObject.getSpeed().getDirection() < 0) {
-                        fieldObject.getSpeed().bounceDirection((float)Math.PI * HALF);
+                    if (ball.getSpeed().getDirection() < 0) {
+                        ball.getSpeed().bounceDirection((float)Math.PI * HALF);
                     }
-                    fieldObject.getPosition().setY(line.bottom + fieldObject.getRadius());
+                    ball.getPosition().setY(line.bottom + ball.getRadius());
                 }
             } else {
-                if (fieldObject.position.getX() < line.centerX()) {
-                    if (Math.abs(fieldObject.getSpeed().getDirection()) < Math.PI * HALF) {
-                        fieldObject.getSpeed().bounceDirection((float) Math.PI);
+                if (ball.position.getX() < line.centerX()) {
+                    if (Math.abs(ball.getSpeed().getDirection()) < Math.PI * HALF) {
+                        ball.getSpeed().bounceDirection((float) Math.PI);
                     }
-                    fieldObject.getPosition().setX(line.left - fieldObject.getRadius());
+                    ball.getPosition().setX(line.left - ball.getRadius());
                 } else {
-                    if (Math.abs(fieldObject.getSpeed().getDirection()) > Math.PI * HALF) {
-                        fieldObject.getSpeed().bounceDirection(0);
+                    if (Math.abs(ball.getSpeed().getDirection()) > Math.PI * HALF) {
+                        ball.getSpeed().bounceDirection(0);
                     }
-                    fieldObject.getPosition().setX(line.right + fieldObject.getRadius());
+                    ball.getPosition().setX(line.right + ball.getRadius());
+                }
+            }
+        }
+    }
+
+    public static void handleLineSegmentCollision(RectF line, Player player) {
+        if (EpicalMath.checkIntersect(line, player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
+            if (line.height() < line.width()) {
+                if (player.position.getY() < line.centerY()) {
+                    /*if (player.getSpeed().getDirection() > 0) {
+                        if (player.getSpeed().getDirection() > Math.PI / 2) {
+                            player.getSpeed().setDirection((float)Math.PI);
+                        } else {
+                            player.getSpeed().setDirection(0);
+                        }
+                    }*/
+                    player.getPosition().setY(line.top - player.getRadius());
+                } else {
+                    /*if (player.getSpeed().getDirection() < 0) {
+                        if (player.getSpeed().getDirection() < -Math.PI / 2) {
+                            player.getSpeed().setDirection((float)Math.PI);
+                        } else {
+                            player.getSpeed().setDirection(0);
+                        }
+                    }*/
+                    player.getPosition().setY(line.bottom + player.getRadius());
+                }
+            } else {
+                if (player.position.getX() < line.centerX()) {
+                    /*if (Math.abs(player.getSpeed().getDirection()) < Math.PI / 2) {
+                        if (player.getSpeed().getDirection() < 0) {
+                            player.getSpeed().setDirection((float)-Math.PI / 2);
+                        } else {
+                            player.getSpeed().setDirection((float)Math.PI / 2);
+                        }
+                    }*/
+                    player.getPosition().setX(line.left - player.getRadius());
+                } else {
+                    /*if (Math.abs(player.getSpeed().getDirection()) > Math.PI / 2) {
+                        if (player.getSpeed().getDirection() < 0) {
+                            player.getSpeed().setDirection((float)-Math.PI / 2);
+                        } else {
+                            player.getSpeed().setDirection((float)Math.PI / 2);
+                        }
+                    }*/
+                    player.getPosition().setX(line.right + player.getRadius());
                 }
             }
         }
