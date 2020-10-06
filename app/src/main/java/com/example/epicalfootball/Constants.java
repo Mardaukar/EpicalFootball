@@ -82,7 +82,7 @@ public class Constants {
 
     //VISUAL
     public static int SHADOW_ALPHA = 150;
-    public static float SHADOW_OFFSET = 5; ///should calculate
+    public static float SHADOW_OFFSET = 0.0052f;
     public static int DECELERATE_ON_ALPHA = 100;
     public static int DECELERATE_OFF_ALPHA = 50;
     public static int CONTROL_DOT_ALPHA = 50;

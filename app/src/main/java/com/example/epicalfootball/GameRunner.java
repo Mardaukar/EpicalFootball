@@ -28,7 +28,7 @@ public class GameRunner extends Thread {
 
             if (elapsed < ELAPSED_LIMIT_IN_MILLISECONDS) {
                 gameState.updateGameState(elapsed);
-                gameView.updateSurface();
+                gameView.drawOnSurface();
             }
 
             lastTime = now;
