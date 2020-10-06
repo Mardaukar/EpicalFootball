@@ -24,8 +24,8 @@ public class GameState {
     private float shootingTimer = 0;
     private GoalFrame goalFrame;
     private TargetGoal targetGoal;
+    private Position aimTarget;
     private boolean longshot;
-    private float shotPowerIncrement;
 
     private boolean canScore = true;
     private long newBallTimer = 0;
@@ -42,6 +42,20 @@ public class GameState {
         this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
         this.goalFrame = new GoalFrame();
+    }
+
+    public void setControl(float touchX, float touchY, float sideLength) {
+        if (shootButtonDown) {
+            setControlOn(touchX - sideLength * HALF, touchY - sideLength, sideLength);
+        } else {
+            if (EpicalMath.calculateDistance(sideLength * HALF, sideLength * HALF, touchX, touchY) < sideLength * DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
+                setControlOffWithDecelerate(true);
+            } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
+                setControlOn(touchX - sideLength * HALF, touchY - sideLength * HALF, sideLength);
+            } else {
+                setControlOffWithDecelerate(false);
+            }
+        }
     }
 
     public Player getPlayer() {
@@ -83,6 +97,8 @@ public class GameState {
             }
         }
 
+        player.updateRecoveryTimer(elapsed);
+
         if (shootButtonDown) {
             if (this.targetGoal == null) {
                 float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
@@ -123,8 +139,6 @@ public class GameState {
 
             }
         } else {
-            this.targetGoal = null;
-
             if (this.shotPowerMeter < SHOT_POWER_METER_LOWER_LIMIT) {
                 this.readyToShoot = false;
                 this.shotPowerMeter = 0;
@@ -140,6 +154,7 @@ public class GameState {
                     }
                 } else {
                     readyToShoot = true;
+                    this.aimTarget = targetGoal.getAimTarget(controlX, controlY, controlWidth);
                     this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
                 }
             }
@@ -149,13 +164,22 @@ public class GameState {
             } else {
                 player.getTargetSpeed().nullTargetSpeed();
             }
+
+            this.targetGoal = null;
         }
 
         this.gameActivity.updatePowerBars((int)this.shotPowerMeter);
 
         handleBoundaryCollision(player);
         this.goalFrame.handleGoalCollision(player);
-        Collisions.handlePlayerBallCollision(player, ball);
+
+        if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot)) {
+            this.ball.shoot(player, shotPowerMeter, aimTarget);
+            player.setRecoveryTimer(500);
+            this.readyToShoot = false;
+            this.shotPowerMeter = 0;
+        }
+
         this.goalFrame.handleGoalCollision(ball);
 
         player.updatePosition(timeFactor);
@@ -183,13 +207,6 @@ public class GameState {
 
     public boolean ballInGoal() {
         return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.position.getX(), ball.position.getY(), ball.getRadius());
-    }
-
-    public void handleBoundaryCollision(Ball ball) {
-        Collisions.handleLineSegmentCollision(leftBoundary, ball);
-        Collisions.handleLineSegmentCollision(rightBoundary, ball);
-        Collisions.handleLineSegmentCollision(topBoundary, ball);
-        Collisions.handleLineSegmentCollision(bottomBoundary, ball);
     }
 
     public void handleBoundaryCollision(Player player) {
@@ -230,10 +247,6 @@ public class GameState {
 
     public float getControlWidth() {
         return controlWidth;
-    }
-
-    public void setControlWidth(float controlWidth) {
-        this.controlWidth = controlWidth;
     }
 
     public boolean isShootButtonDown() {

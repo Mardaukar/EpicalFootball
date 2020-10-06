@@ -1,5 +1,7 @@
 package com.example.epicalfootball;
 
+import android.util.Log;
+
 import static com.example.epicalfootball.Constants.*;
 
 public class Ball extends FieldObject {
@@ -115,5 +117,12 @@ public class Ball extends FieldObject {
 
             this.getSpeed().setMagnitude(newBallSpeedMagnitude);
         }
+    }
+
+    public void shoot(Player player, float shotPowerMeter, Position aimTarget) {
+        Log.d("ball target x", "" + aimTarget.getX());
+        Log.d("ball target y", "" + aimTarget.getY());
+        this.getSpeed().setMagnitude(shotPowerMeter / 100 * player.getShotpower());
+        this.getSpeed().setDirection(EpicalMath.convertToDirection(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY()));
     }
 }

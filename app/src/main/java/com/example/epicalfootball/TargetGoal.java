@@ -81,6 +81,29 @@ public class TargetGoal {
         }
     }
 
+    public Position getAimTarget(float controlX, float controlY, float controlWidth) {
+        float targetGoalSize = this.size;
+        float targetGoalMiddle = this.positionX - HALF + targetGoalSize * HALF;
+        float targetGoalBottom = this.positionY - FULL + targetGoalSize / TARGET_GOAL_WIDTH_TO_HEIGHT;
+
+        Log.d("targetGoal", "" + targetGoalSize + " " + targetGoalMiddle + " " + targetGoalBottom);
+        Log.d("control", "" + controlX + " " + controlY + " " + controlWidth);
+
+        float targetX = controlX * AIMING_TARGET_MULTIPLIER / controlWidth;
+        float targetY = controlY * AIMING_TARGET_MULTIPLIER / controlWidth;
+
+        Log.d("control", "" + targetX + " " + targetY);
+
+        if (targetY >= targetGoalBottom) {
+            targetX *= targetGoalBottom / targetY;
+        }
+
+        Log.d("control", "" + targetX + " " + targetY);
+        Log.d("control", "" + (targetX - targetGoalMiddle) / targetGoalSize * (GOAL_WIDTH + DOUBLE * POST_RADIUS));
+
+        return new Position((targetX - targetGoalMiddle) / targetGoalSize * (GOAL_WIDTH + DOUBLE * POST_RADIUS), 0); ///Should determine post width from png
+    }
+
     public float getPositionX() {
         return positionX;
     }

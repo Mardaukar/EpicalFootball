@@ -6,12 +6,15 @@ import static com.example.epicalfootball.Constants.*;
 
 public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
+    private float recoveryTimer = 0;
+
     private float controlAngle;
     private float controlRadius;
     private float controlBallSpeed;
     private float controlFirstTouch;
     private float dribbling;
     private float acceleration;
+    private float shotpower;
     private float accuracyDistance;
     private float finishingTargetGoalSpeed;
     private float longshotsTargetGoalSpeed;
@@ -34,6 +37,7 @@ public class Player extends FieldObject {
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
         this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
+        this.shotpower = MIN_SHOTPOWER_VALUE + SHOTPOWER_VALUE_INCREMENT * PLAYER_SHOTPOWER_ATTRIBUTE;
         this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
         this.longshotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
         this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
@@ -201,5 +205,27 @@ public class Player extends FieldObject {
 
     public float getDribblingTarget() {
         return dribblingTarget;
+    }
+
+    public float getShotpower() {
+        return shotpower;
+    }
+
+    public void updateRecoveryTimer(float elapsed) {
+        if (this.recoveryTimer > 0) {
+            this.recoveryTimer -= elapsed;
+
+            if (this.recoveryTimer < 0 ) {
+                this.recoveryTimer = 0;
+            }
+        }
+    }
+
+    public float getRecoveryTimer() {
+        return recoveryTimer;
+    }
+
+    public void setRecoveryTimer(float recoveryTimer) {
+        this.recoveryTimer = recoveryTimer;
     }
 }

@@ -48,13 +48,8 @@ public class GameActivity extends AppCompatActivity {
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        if (EpicalMath.calculateDistance(sideLength * HALF, sideLength * HALF, touchX, touchY) < sideLength * DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
-                            gameState.setControlOffWithDecelerate(true);
-                        } else if(touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
-                            gameState.setControlOn(touchX - sideLength * HALF, touchY - sideLength * HALF, sideLength);
-                        } else {
-                            gameState.setControlOffWithDecelerate(false);
-                        }
+                        gameState.setControl(touchX, touchY, sideLength);
+                        //Log.d("activity control", "" + touchX + " " + touchY + " " + sideLength);
                         break;
                     default:
                         gameState.setControlOffWithDecelerate(false);

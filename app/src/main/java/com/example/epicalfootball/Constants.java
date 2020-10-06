@@ -3,15 +3,15 @@ package com.example.epicalfootball;
 public class Constants {
 
     //PLAYER
-    public static Position PLAYER_STARTING_POSITION = new Position(0, 0);
+    public static Position PLAYER_STARTING_POSITION = new Position(5, 30);
     public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
 
     //BALL
     public static float BALL_RADIUS = 0.4f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
     public static float BALL_BASE_DECELERATION = 0.2f;
-    public static Position BALL_STARTING_POSITION = new Position(0, 25);
-    public static Vector BALL_STARTING_SPEED = new Vector((float)-Math.PI / 2,0.77f);
+    public static Position BALL_STARTING_POSITION = new Position(0, 35);
+    public static Vector BALL_STARTING_SPEED = new Vector((float)-Math.PI / 2,0.6f);
 
     //FIELD IMAGE (superminifield)
     /*
@@ -69,6 +69,7 @@ public class Constants {
     public static float MAX_TARGET_GOAL_SIZE = 0.9f;
     public static float MAX_TARGET_GOAL_MOVE_SIZE = 0.8f;
     public static float MIN_TARGET_GOAL_SIZE = 0.1f;
+    public static float AIMING_TARGET_MULTIPLIER = 1.5f;
 
     //LAYOUT
     public static float CONTROL_AREA_FROM_WIDTH = 0.8f;
@@ -79,6 +80,7 @@ public class Constants {
     public static float CONTROL_VIEW_MAXIMUM_LIMIT = 0.8f;
     public static float DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE = 0.12f;
     public static float CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
+    public static float TARGET_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
 
     //VISUAL
     public static int SHADOW_ALPHA = 150;
@@ -86,6 +88,7 @@ public class Constants {
     public static int DECELERATE_ON_ALPHA = 100;
     public static int DECELERATE_OFF_ALPHA = 50;
     public static int CONTROL_DOT_ALPHA = 50;
+    public static int TARGET_DOT_ALPHA = 150;
     public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF673AB7;
     public static int SHOOT_BUTTON_UP_COLOR = 0xDF471A97;
 
@@ -105,7 +108,7 @@ public class Constants {
     public static float PLAYER_SPEED_ATTRIBUTE = 5;
     public static float PLAYER_BALLCONTROL_ATTRIBUTE = 5;
     public static float PLAYER_DRIBBLING_ATTRIBUTE = 5;
-    public static float PLAYER_SHOTPOWER_ATTRIBUTE = 0;
+    public static float PLAYER_SHOTPOWER_ATTRIBUTE = 5;
     public static float PLAYER_ACCURACY_ATTRIBUTE = 5;
     public static float PLAYER_FINISHING_ATTRIBUTE = 5;
     public static float PLAYER_LONGSHOTS_ATTRIBUTE = 5;
@@ -129,6 +132,8 @@ public class Constants {
     public static float MAX_DRIBBLING_VALUE = 1;
     public static float MIN_DRIBBLING_TARGET = 0.9f;
     public static float MAX_DRIBBLING_TARGET = 1.2f;
+    public static float MAX_SHOTPOWER_VALUE = 6f;
+    public static float MIN_SHOTPOWER_VALUE = 2f;
     public static float MIN_ACCURACY_DISTANCE = 4;
     public static float MAX_ACCURACY_DISTANCE = 12;
     public static float MIN_TARGET_GOAL_SPEED = 1;
@@ -148,6 +153,7 @@ public class Constants {
     public static float BALLCONTROL_FIRST_TOUCH_INCREMENT = (MAX_BALLCONTROL_FIRST_TOUCH - MIN_BALLCONTROL_FIRST_TOUCH) / 10;
     public static float DRIBBLING_VALUE_INCREMENT = (MAX_DRIBBLING_VALUE - MIN_DRIBBLING_VALUE) / 10;
     public static float DRIBBLING_TARGET_INCREMENT = (MAX_DRIBBLING_TARGET - MIN_DRIBBLING_TARGET) / 10;
+    public static float SHOTPOWER_VALUE_INCREMENT = (MAX_SHOTPOWER_VALUE - MIN_SHOTPOWER_VALUE) / 10;
     public static float ACCURACY_DISTANCE_INCREMENT = (MAX_ACCURACY_DISTANCE - MIN_ACCURACY_DISTANCE) / 10;
     public static float TARGET_GOAL_SPEED_INCREMENT = (MAX_TARGET_GOAL_SPEED - MIN_TARGET_GOAL_SPEED) / 10;
     public static float MID_SHOT_POWER_INCREMENT = (MAX_MID_SHOT_POWER - MIN_MID_SHOT_POWER) / 10;
