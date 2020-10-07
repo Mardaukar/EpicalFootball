@@ -46,12 +46,12 @@ public class GameState {
 
     public void setControl(float touchX, float touchY, float sideLength) {
         if (shootButtonDown) {
-            setControlOn(touchX - sideLength * HALF, touchY - sideLength, sideLength);
+            setControlOn(touchX, touchY);
         } else {
-            if (EpicalMath.calculateDistance(sideLength * HALF, sideLength * HALF, touchX, touchY) < sideLength * DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
+            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
                 setControlOffWithDecelerate(true);
             } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
-                setControlOn(touchX - sideLength * HALF, touchY - sideLength * HALF, sideLength);
+                setControlOn(touchX, touchY);
             } else {
                 setControlOffWithDecelerate(false);
             }
@@ -154,13 +154,13 @@ public class GameState {
                     }
                 } else {
                     readyToShoot = true;
-                    this.aimTarget = targetGoal.getAimTarget(controlX, controlY, controlWidth);
+                    this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
                     this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
                 }
             }
 
             if (controlOn) {
-                player.getTargetSpeed().setTargetSpeed(controlX, controlY, controlWidth);
+                player.getTargetSpeed().setTargetSpeed(controlX - HALF, controlY - HALF);
             } else {
                 player.getTargetSpeed().nullTargetSpeed();
             }
@@ -173,7 +173,7 @@ public class GameState {
         handleBoundaryCollision(player);
         this.goalFrame.handleGoalCollision(player);
 
-        if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot)) {
+        if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot, aimTarget)) {
             this.ball.shoot(player, shotPowerMeter, aimTarget);
             player.setRecoveryTimer(500);
             this.readyToShoot = false;
@@ -187,6 +187,10 @@ public class GameState {
 
         player.updateSpeed(timeFactor, decelerateOn, ball);
         ball.updateSpeed(timeFactor);
+
+        if (canScore && ball.getPosition().getY() <= 0) {
+            Log.d("line pass","" + ball.getPosition().getX());
+        }
 
         if (ballInGoal() && canScore) {
             addGoal();
@@ -220,11 +224,10 @@ public class GameState {
         return decelerateOn;
     }
 
-    public void setControlOn(float x, float y, float controlViewWidth) {
+    public void setControlOn(float x, float y) {
         controlOn = true;
         controlX = x;
         controlY = y;
-        this.controlWidth = controlViewWidth;
         decelerateOn = false;
     }
 

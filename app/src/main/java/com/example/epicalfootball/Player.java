@@ -16,6 +16,7 @@ public class Player extends FieldObject {
     private float acceleration;
     private float shotpower;
     private float accuracyDistance;
+    public float accuracyTargetDot;
     private float finishingTargetGoalSpeed;
     private float longshotsTargetGoalSpeed;
     private float finishingMidShotPower;
@@ -37,6 +38,7 @@ public class Player extends FieldObject {
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
         this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
+        this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
         this.shotpower = MIN_SHOTPOWER_VALUE + SHOTPOWER_VALUE_INCREMENT * PLAYER_SHOTPOWER_ATTRIBUTE;
         this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
         this.longshotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
@@ -227,5 +229,9 @@ public class Player extends FieldObject {
 
     public void setRecoveryTimer(float recoveryTimer) {
         this.recoveryTimer = recoveryTimer;
+    }
+
+    public float getAccuracyTargetDot() {
+        return accuracyTargetDot;
     }
 }

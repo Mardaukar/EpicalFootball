@@ -80,7 +80,7 @@ public class Constants {
     public static float CONTROL_VIEW_MAXIMUM_LIMIT = 0.8f;
     public static float DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE = 0.12f;
     public static float CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
-    public static float TARGET_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
+    public static float TARGET_DOT_RADIUS_OF_CONTROL_SURFACE = 0.05f;
 
     //VISUAL
     public static int SHADOW_ALPHA = 150;
@@ -109,9 +109,9 @@ public class Constants {
     public static float PLAYER_BALLCONTROL_ATTRIBUTE = 5;
     public static float PLAYER_DRIBBLING_ATTRIBUTE = 5;
     public static float PLAYER_SHOTPOWER_ATTRIBUTE = 5;
-    public static float PLAYER_ACCURACY_ATTRIBUTE = 5;
+    public static float PLAYER_ACCURACY_ATTRIBUTE = 0;
     public static float PLAYER_FINISHING_ATTRIBUTE = 5;
-    public static float PLAYER_LONGSHOTS_ATTRIBUTE = 5;
+    public static float PLAYER_LONGSHOTS_ATTRIBUTE = 0;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.5f;
@@ -134,8 +134,10 @@ public class Constants {
     public static float MAX_DRIBBLING_TARGET = 1.2f;
     public static float MAX_SHOTPOWER_VALUE = 6f;
     public static float MIN_SHOTPOWER_VALUE = 2f;
-    public static float MIN_ACCURACY_DISTANCE = 4;
+    public static float MIN_ACCURACY_DISTANCE = 6;
     public static float MAX_ACCURACY_DISTANCE = 12;
+    public static float MIN_ACCURACY_TARGET_DOT = 0.1f;
+    public static float MAX_ACCURACY_TARGET_DOT = 0.02f;
     public static float MIN_TARGET_GOAL_SPEED = 1;
     public static float MAX_TARGET_GOAL_SPEED = 0.5f;
     public static float MIN_MID_SHOT_POWER = 25;
@@ -155,6 +157,7 @@ public class Constants {
     public static float DRIBBLING_TARGET_INCREMENT = (MAX_DRIBBLING_TARGET - MIN_DRIBBLING_TARGET) / 10;
     public static float SHOTPOWER_VALUE_INCREMENT = (MAX_SHOTPOWER_VALUE - MIN_SHOTPOWER_VALUE) / 10;
     public static float ACCURACY_DISTANCE_INCREMENT = (MAX_ACCURACY_DISTANCE - MIN_ACCURACY_DISTANCE) / 10;
+    public static float ACCURACY_TARGET_DOT_INCREMENT = (MAX_ACCURACY_TARGET_DOT - MIN_ACCURACY_TARGET_DOT) / 10;
     public static float TARGET_GOAL_SPEED_INCREMENT = (MAX_TARGET_GOAL_SPEED - MIN_TARGET_GOAL_SPEED) / 10;
     public static float MID_SHOT_POWER_INCREMENT = (MAX_MID_SHOT_POWER - MIN_MID_SHOT_POWER) / 10;
     public static float LONGSHOTS_ACCURACY_INCREMENT = (MAX_LONGSHOTS_ACCURACY - MIN_LONGSHOTS_ACCURACY) / 10;

@@ -148,8 +148,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 float targetGoalRight = targetGoalLeft + gameState.getTargetGoal().getSize() * CONTROL_AREA_FROM_WIDTH;
                 float targetGoalBottom = targetGoalTop + gameState.getTargetGoal().getSize() / 3 * CONTROL_AREA_FROM_HEIGHT;
 
-                Log.d("DRAW", "" + targetGoalLeft + " " + targetGoalTop + " " + targetGoalRight + " " + targetGoalBottom);
-
                 targetGoalImage.setBounds((int) (targetGoalLeft * surfaceWidth), (int)(targetGoalTop * surfaceHeight), (int)(targetGoalRight * surfaceWidth), (int)(targetGoalBottom * surfaceHeight));
                 //targetGoalImage.setBounds(0, 0, 50, 50);
                 targetGoalImage.draw(canvas);
@@ -161,10 +159,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 paint.setAlpha(TARGET_DOT_ALPHA);
                 float controlX = gameState.getControlX();
                 float controlY = gameState.getControlY();
-                float controlWidth = gameState.getControlWidth();
-                //canvas.drawCircle((HALF + controlX * AIMING_TARGET_MULTIPLIER / controlWidth * CONTROL_AREA_FROM_WIDTH) * surfaceWidth, surfaceHeight + (controlY / controlWidth) * CONTROL_AREA_FROM_WIDTH * surfaceWidth * 3 / 2, TARGET_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
-                //canvas.drawCircle(controlX * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH * surfaceWidth, controlY * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH * surfaceWidth, TARGET_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
-                canvas.drawCircle((controlX / controlWidth * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, (controlY / controlWidth * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT) * surfaceHeight + surfaceHeight, TARGET_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
+                canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + 1) * surfaceHeight, player.getAccuracyTargetDot() * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
             }
         } else {
             paint.setColor(Color.BLUE);
@@ -183,7 +178,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 float controlX = gameState.getControlX();
                 float controlY = gameState.getControlY();
                 float controlWidth = gameState.getControlWidth();
-                canvas.drawCircle((HALF + controlX / controlWidth * CONTROL_AREA_FROM_WIDTH) * surfaceWidth, (1 + HALF + controlY / controlWidth) * CONTROL_AREA_FROM_WIDTH * surfaceWidth, CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
+                canvas.drawCircle((HALF + (controlX - HALF) * CONTROL_AREA_FROM_WIDTH) * surfaceWidth, (1 + HALF + (controlY - HALF)) * CONTROL_AREA_FROM_WIDTH * surfaceWidth, CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
             }
         }
 

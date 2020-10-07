@@ -48,7 +48,7 @@ public class GameActivity extends AppCompatActivity {
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        gameState.setControl(touchX, touchY, sideLength);
+                        gameState.setControl(touchX / sideLength, touchY / sideLength, sideLength);
                         //Log.d("activity control", "" + touchX + " " + touchY + " " + sideLength);
                         break;
                     default:

@@ -25,15 +25,21 @@ public class Collisions {
         }
     }
 
-    public static boolean handlePlayerBallCollision(Player player, Ball ball, boolean readyToShoot) {
+    public static boolean handlePlayerBallCollision(Player player, Ball ball, boolean readyToShoot, Position aimTarget) {
         float playerCollisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
         float playerOrientationCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, player.getTargetSpeed().getDirection());
         boolean ballControl = playerOrientationCollisionAngle <= player.getControlAngle() || player.getRecoveryTimer() == 0;
 
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
             if (ballControl && readyToShoot) { ///Add angle criteria
-                return true;
-            } else {
+                float aimDirection = EpicalMath.convertToDirection(aimTarget.getX() - ball.getPosition().getX(), aimTarget.getY() - ball.getPosition().getY());
+                float collisionToAimTargetAngle = EpicalMath.absoluteAngleBetweenDirections(aimDirection, playerCollisionDirection);
+
+                if (collisionToAimTargetAngle < Math.PI / 2) {
+                    return true;
+                }
+            }
+
                 float centersDistance = player.getRadius() + ball.getRadius();
                 float playerSpeedCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, player.getSpeed().getDirection());
                 float ballCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, ball.getSpeed().getDirection());
@@ -86,16 +92,15 @@ public class Collisions {
                     if (player.getSpeed().getMagnitude() > player.getDribbling()) {
                         player.getSpeed().setMagnitude(player.getDribbling());
                     }
-                    Log.d("player speed", "" + player.getSpeed().getMagnitude());
                 } else {
                     ball.getPosition().addVector(playerCollisionDirection, centersDistance);
                 }
-            }
+
         }
 
         //CONTROL CONE
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getControlRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            if (ballControl) {
+            if (ballControl && player.getRecoveryTimer() == 0) {
                 ball.shiftWithControlCone(player);
             }
         }
