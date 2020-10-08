@@ -10,8 +10,6 @@ public class Constants {
     public static float BALL_RADIUS = 0.4f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
     public static float BALL_BASE_DECELERATION = 0.2f;
-    public static Position BALL_STARTING_POSITION = new Position(0, 35);
-    public static Vector BALL_STARTING_SPEED = new Vector((float)-Math.PI / 2,0.6f);
 
     //FIELD IMAGE (superminifield)
     /*
@@ -61,6 +59,7 @@ public class Constants {
     public static int SHOT_POWER_METER_LOWER_LIMIT = 10;
     public static float AIMING_TIME = 1.5f;
     public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
+    public static long BALL_FEED_TIMER = 500;
 
     //SHOOTING
     public static float LONG_SHOTS_LIMIT = 20;
@@ -70,6 +69,7 @@ public class Constants {
     public static float MAX_TARGET_GOAL_MOVE_SIZE = 0.8f;
     public static float MIN_TARGET_GOAL_SIZE = 0.1f;
     public static float AIMING_TARGET_MULTIPLIER = 1.5f;
+    public static float PLAYER_RECOVERY_TIME = 500;
 
     //LAYOUT
     public static float CONTROL_AREA_FROM_WIDTH = 0.8f;
@@ -101,6 +101,7 @@ public class Constants {
     public static float FULL = 1f;
     public static float HALF = 0.5f;
     public static float DOUBLE = 2;
+    public static int TWO = 2;
 
     //PLAYER ATTRIBUTES
     public static float PLAYER_REACH_ATTRIBUTE = 5;
@@ -109,9 +110,9 @@ public class Constants {
     public static float PLAYER_BALLCONTROL_ATTRIBUTE = 5;
     public static float PLAYER_DRIBBLING_ATTRIBUTE = 5;
     public static float PLAYER_SHOTPOWER_ATTRIBUTE = 5;
-    public static float PLAYER_ACCURACY_ATTRIBUTE = 0;
+    public static float PLAYER_ACCURACY_ATTRIBUTE = 5;
     public static float PLAYER_FINISHING_ATTRIBUTE = 5;
-    public static float PLAYER_LONGSHOTS_ATTRIBUTE = 0;
+    public static float PLAYER_LONGSHOTS_ATTRIBUTE = 5;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.5f;

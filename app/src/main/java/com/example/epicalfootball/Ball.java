@@ -7,10 +7,8 @@ import static com.example.epicalfootball.Constants.*;
 public class Ball extends FieldObject {
 
     public Ball() {
-        this.position = BALL_STARTING_POSITION;
+        this.position = new Position();
         this.speed = new Vector();
-        this.speed.setMagnitude(BALL_STARTING_SPEED.getMagnitude());
-        this.speed.setDirection(BALL_STARTING_SPEED.getDirection());
         this.radius = BALL_RADIUS;
         this.magnitudeSpeed = BALL_REFERENCE_SPEED;
     }

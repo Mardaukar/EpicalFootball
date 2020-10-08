@@ -2,6 +2,7 @@ package com.example.epicalfootball;
 
 import android.graphics.RectF;
 import android.util.Log;
+import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
 
@@ -27,8 +28,11 @@ public class GameState {
     private Position aimTarget;
     private boolean longshot;
 
-    private boolean canScore = true;
-    private long newBallTimer = 0;
+    private boolean canScore;
+    private long newBallTimer;
+    private long ballFeedTimer;
+
+    private Random random = new Random();
 
     private RectF leftBoundary = new RectF(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH, -TOUCHLINE_FROM_TOP, -FIELD_WIDTH * HALF, FIELD_HEIGHT);
     private RectF rightBoundary = new RectF(FIELD_WIDTH * HALF, -TOUCHLINE_FROM_TOP, FIELD_WIDTH * HALF + BOUNDARY_WIDTH, FIELD_HEIGHT);
@@ -38,10 +42,13 @@ public class GameState {
     public GameState(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
         this.player = new Player();
-        this.ball = new Ball();
         this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
         this.goalFrame = new GoalFrame();
+        this.canScore = false;
+        this.ballFeedTimer = BALL_FEED_TIMER;
+        this.newBallTimer = 0;
+        this.ball = feedNewBall();
     }
 
     public void setControl(float touchX, float touchY, float sideLength) {
@@ -87,13 +94,23 @@ public class GameState {
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
+        if (ballFeedTimer > 0) {
+            ballFeedTimer -= elapsed;
+
+            if (ballFeedTimer <= 0) {
+                ballFeedTimer = 0;
+                canScore = true;
+            }
+        }
+
         if (newBallTimer > 0) {
             newBallTimer -= elapsed;
 
             if (newBallTimer <= 0) {
+                newBallTimer = 0;
+                ballFeedTimer = BALL_FEED_TIMER;
                 substractBall();
-                this.ball = new Ball();
-                canScore = true;
+                this.ball = feedNewBall();
             }
         }
 
@@ -175,7 +192,7 @@ public class GameState {
 
         if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot, aimTarget)) {
             this.ball.shoot(player, shotPowerMeter, aimTarget);
-            player.setRecoveryTimer(500);
+            player.setRecoveryTimer(PLAYER_RECOVERY_TIME);
             this.readyToShoot = false;
             this.shotPowerMeter = 0;
         }
@@ -188,10 +205,6 @@ public class GameState {
         player.updateSpeed(timeFactor, decelerateOn, ball);
         ball.updateSpeed(timeFactor);
 
-        if (canScore && ball.getPosition().getY() <= 0) {
-            Log.d("line pass","" + ball.getPosition().getX());
-        }
-
         if (ballInGoal() && canScore) {
             addGoal();
             canScore = false;
@@ -200,6 +213,22 @@ public class GameState {
             canScore = false;
             newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
         }
+    }
+
+    public Ball feedNewBall() {
+        Ball ball = new Ball();
+        ball.getSpeed().setMagnitude((random.nextInt(4) + 9) / 10f);
+        ball.getPosition().setY(random.nextInt(7) + 24);
+
+        if (random.nextInt(TWO) == 0) {
+            ball.getSpeed().setDirection(0);
+            ball.getPosition().setX(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH);
+        } else {
+            ball.getSpeed().setDirection((float)Math.PI);
+            ball.getPosition().setX(FIELD_WIDTH * HALF + BOUNDARY_WIDTH);
+        }
+
+        return ball;
     }
 
     public boolean ballOutOfBounds() {
