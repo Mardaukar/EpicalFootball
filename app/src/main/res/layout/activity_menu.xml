@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#B079D835"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title_textView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_text"
+            android:textAlignment="gravity"
+            android:textColor="#040404"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8">
+
+            <TableRow>
+                <TextView
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/reach"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/reach_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_reach_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseReach"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_reach_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseReach"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/acceleration"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/acceleration_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_acceleration_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseAcceleration"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_acceleration_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseAcceleration"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/speed"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/speed_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_speed_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseSpeed"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_speed_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseSpeed"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/ball_control"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ball_control_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_ball_control_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseBallControl"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_ball_control_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseBallControl"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/dribbling"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dribbling_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_dribbling_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseDribbling"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_dribbling_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseDribbling"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/shot_power"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/shot_power_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_shot_power_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseShotPower"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_shot_power_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseShotPower"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/accuracy"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/accuracy_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_accuracy_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseAccuracy"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_accuracy_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseAccuracy"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/finishing"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/finishing_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_finishing_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseFinishing"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_finishing_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseFinishing"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/long_shots"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/long_shots_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_long_shots_button"
+                    android:layout_weight="0"
+                    android:onClick="decreaseLongShots"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_long_shots_button"
+                    android:layout_weight="0"
+                    android:onClick="increaseLongShots"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/start_game_button"
+            android:onClick="startGame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#DF471A97"
+            android:text="@string/start_game_text"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,4 +4,17 @@
     <string name="balls_text">Balls</string>
     <string name="goals_text">Goals</string>
     <string name="defaultValue_text">0</string>
+    <string name="minus_text">-</string>
+    <string name="plus_text">+</string>
+    <string name="title_text">EPICAL FOOTBALL</string>
+    <string name="start_game_text">START GAME</string>
+    <string name="reach">Reach</string>
+    <string name="acceleration">Acceleration</string>
+    <string name="speed">Speed</string>
+    <string name="long_shots">Long Shots</string>
+    <string name="finishing">Finishing</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="shot_power">Shot Power</string>
+    <string name="dribbling">Dribbling</string>
+    <string name="ball_control">Ball Control</string>
 </resources>
