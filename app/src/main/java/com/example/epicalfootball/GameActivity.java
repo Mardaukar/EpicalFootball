@@ -3,6 +3,7 @@ package com.example.epicalfootball;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -113,6 +114,17 @@ public class GameActivity extends AppCompatActivity {
                 ProgressBar power_bar_right = findViewById(R.id.power_bar2);
                 power_bar_left.setProgress(shotPower);
                 power_bar_right.setProgress(shotPower);
+            }
+        });
+    }
+
+    public void goToResult (final int goalsScored) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameActivity.this, ResultActivity.class);
+                intent.putExtra("goals_scored", goalsScored);
+                startActivity(intent);
             }
         });
     }

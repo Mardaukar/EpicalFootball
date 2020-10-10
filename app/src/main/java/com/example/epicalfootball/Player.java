@@ -3,6 +3,7 @@ package com.example.epicalfootball;
 import android.util.Log;
 
 import static com.example.epicalfootball.Constants.*;
+import static com.example.epicalfootball.MenuActivity.playerAttributes;
 
 public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
@@ -25,26 +26,26 @@ public class Player extends FieldObject {
     private float dribblingTarget;
 
     public Player() {
-        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * PLAYER_REACH_ATTRIBUTE;
         this.speed = new Vector();
         this.position = PLAYER_STARTING_POSITION;
         this.targetSpeed = new TargetSpeedVector();
-        this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
-        this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
-        this.controlBallSpeed = MIN_BALLCONTROL_BALL_SPEED + BALLCONTROL_BALL_SPEED_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
-        this.controlFirstTouch = MIN_BALLCONTROL_FIRST_TOUCH + BALLCONTROL_FIRST_TOUCH_INCREMENT * PLAYER_BALLCONTROL_ATTRIBUTE;
-        this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
-        this.dribblingTarget = MIN_DRIBBLING_TARGET + DRIBBLING_TARGET_INCREMENT * PLAYER_DRIBBLING_ATTRIBUTE;
-        this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE;
-        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * PLAYER_ACCELERATION_ATTRIBUTE) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * PLAYER_SPEED_ATTRIBUTE);
-        this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
-        this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * PLAYER_ACCURACY_ATTRIBUTE;
-        this.shotpower = MIN_SHOTPOWER_VALUE + SHOTPOWER_VALUE_INCREMENT * PLAYER_SHOTPOWER_ATTRIBUTE;
-        this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
-        this.longshotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
-        this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * PLAYER_FINISHING_ATTRIBUTE;
-        this.longshotsMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
-        this.longshotsAccuracy = MIN_LONGSHOTS_ACCURACY + LONGSHOTS_ACCURACY_INCREMENT * PLAYER_LONGSHOTS_ATTRIBUTE;
+        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * playerAttributes.get("reach");
+        this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * playerAttributes.get("ballControl");
+        this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * playerAttributes.get("ballControl");
+        this.controlBallSpeed = MIN_BALLCONTROL_BALL_SPEED + BALLCONTROL_BALL_SPEED_INCREMENT * playerAttributes.get("ballControl");
+        this.controlFirstTouch = MIN_BALLCONTROL_FIRST_TOUCH + BALLCONTROL_FIRST_TOUCH_INCREMENT * playerAttributes.get("ballControl");
+        this.dribbling = MIN_DRIBBLING_VALUE + DRIBBLING_VALUE_INCREMENT * playerAttributes.get("dribbling");
+        this.dribblingTarget = MIN_DRIBBLING_TARGET + DRIBBLING_TARGET_INCREMENT * playerAttributes.get("dribbling");
+        this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed");
+        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * playerAttributes.get("acceleration")) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed"));
+        this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * playerAttributes.get("accuracy");
+        this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get("accuracy");
+        this.shotpower = MIN_SHOTPOWER_VALUE + SHOTPOWER_VALUE_INCREMENT * playerAttributes.get("shotPower");
+        this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("finishing");
+        this.longshotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("longShots");
+        this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * playerAttributes.get("finishing");
+        this.longshotsMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * playerAttributes.get("longShots");
+        this.longshotsAccuracy = MIN_LONGSHOTS_ACCURACY + LONGSHOTS_ACCURACY_INCREMENT * playerAttributes.get("longShots");
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn, Ball ball) {

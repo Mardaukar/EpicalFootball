@@ -43,12 +43,12 @@ public class Constants {
 
     //MATCH
     public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
+    public static int BALLS_AT_START = 2;
 
     //GAME PLAY
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
     public static float PLAYER_BASE_DECELERATION = 0.3f;
-    public static int BALLS_AT_START = 10;
     public static float LINESEGMENT_COLLISION_SPEED_MULTIPLIER = 0.5f;
     public static float POST_COLLISION_SPEED_MULTIPLIER = 0.8f;
     public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
@@ -102,17 +102,6 @@ public class Constants {
     public static float HALF = 0.5f;
     public static float DOUBLE = 2;
     public static int TWO = 2;
-
-    //PLAYER ATTRIBUTES
-    public static float PLAYER_REACH_ATTRIBUTE = 5;
-    public static float PLAYER_ACCELERATION_ATTRIBUTE = 5;
-    public static float PLAYER_SPEED_ATTRIBUTE = 5;
-    public static float PLAYER_BALLCONTROL_ATTRIBUTE = 5;
-    public static float PLAYER_DRIBBLING_ATTRIBUTE = 5;
-    public static float PLAYER_SHOTPOWER_ATTRIBUTE = 5;
-    public static float PLAYER_ACCURACY_ATTRIBUTE = 5;
-    public static float PLAYER_FINISHING_ATTRIBUTE = 5;
-    public static float PLAYER_LONGSHOTS_ATTRIBUTE = 5;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.5f;

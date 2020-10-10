@@ -17,4 +17,5 @@
     <string name="shot_power">Shot Power</string>
     <string name="dribbling">Dribbling</string>
     <string name="ball_control">Ball Control</string>
+    <string name="go_to_menu_text">TO MENU</string>
 </resources>

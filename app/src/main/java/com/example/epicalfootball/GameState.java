@@ -108,9 +108,14 @@ public class GameState {
 
             if (newBallTimer <= 0) {
                 newBallTimer = 0;
-                ballFeedTimer = BALL_FEED_TIMER;
-                substractBall();
-                this.ball = feedNewBall();
+
+                if (this.ballsLeft > 1) {
+                    ballFeedTimer = BALL_FEED_TIMER;
+                    substractBall();
+                    this.ball = feedNewBall();
+                } else {
+                    gameActivity.goToResult(this.goalsScored);
+                }
             }
         }
 

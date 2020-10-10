@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.HashMap;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -19,12 +20,25 @@ public class MenuActivity extends AppCompatActivity {
     private int accuracyAttribute = 5;
     private int finishingAttribute = 5;
     private int longShotsAttribute = 5;
+    public static HashMap<String, Integer> playerAttributes= new HashMap<String, Integer>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        if (getIntent().getBooleanExtra("fromResult", false)) {
+            reachAttribute = playerAttributes.get("reach");
+            accelerationAttribute = playerAttributes.get("acceleration");
+            speedAttribute = playerAttributes.get("speed");
+            ballControlAttribute = playerAttributes.get("ballControl");
+            dribblingAttribute = playerAttributes.get("dribbling");
+            shotPowerAttribute = playerAttributes.get("shotPower");
+            accuracyAttribute = playerAttributes.get("accuracy");
+            finishingAttribute = playerAttributes.get("finishing");
+            longShotsAttribute = playerAttributes.get("longShots");
+        }
 
         TextView reachView = findViewById(R.id.reach_attribute_textView);
         reachView.setText(Integer.toString(this.reachAttribute));
@@ -56,15 +70,15 @@ public class MenuActivity extends AppCompatActivity {
 
     public void startGame(View view) {
         Intent startGameIntent = new Intent(this, GameActivity.class);
-        startGameIntent.putExtra("reach", reachAttribute);
-        startGameIntent.putExtra("acceleration", accelerationAttribute);
-        startGameIntent.putExtra("speed", speedAttribute);
-        startGameIntent.putExtra("ballControl", ballControlAttribute);
-        startGameIntent.putExtra("dribbling", dribblingAttribute);
-        startGameIntent.putExtra("shotPower", shotPowerAttribute);
-        startGameIntent.putExtra("accuracy", accuracyAttribute);
-        startGameIntent.putExtra("finishing", finishingAttribute);
-        startGameIntent.putExtra("longShots", longShotsAttribute);
+        playerAttributes.put("reach", reachAttribute);
+        playerAttributes.put("acceleration", accelerationAttribute);
+        playerAttributes.put("speed", speedAttribute);
+        playerAttributes.put("ballControl", ballControlAttribute);
+        playerAttributes.put("dribbling", dribblingAttribute);
+        playerAttributes.put("shotPower", shotPowerAttribute);
+        playerAttributes.put("accuracy", accuracyAttribute);
+        playerAttributes.put("finishing", finishingAttribute);
+        playerAttributes.put("longShots", longShotsAttribute);
         startActivity(startGameIntent);
     }
 
