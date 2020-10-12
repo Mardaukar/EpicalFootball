@@ -43,7 +43,7 @@ public class Constants {
 
     //MATCH
     public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
-    public static int BALLS_AT_START = 2;
+    public static int BALLS_AT_START = 10;
 
     //GAME PLAY
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle

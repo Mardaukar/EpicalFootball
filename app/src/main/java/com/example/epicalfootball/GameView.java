@@ -96,7 +96,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             Position playerPosition = player.getPosition();
             drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
             drawPositionY = playerPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
-            canvas.drawCircle(drawPositionX + SHADOW_OFFSET, drawPositionY + SHADOW_OFFSET, pixelPerMeter * player.getRadius(), paint);
+            canvas.drawCircle(drawPositionX + surfaceWidth * SHADOW_OFFSET, drawPositionY + surfaceWidth * SHADOW_OFFSET, pixelPerMeter * player.getRadius(), paint);
 
             //DRAW BALL
             paint.setColor(Color.WHITE);
