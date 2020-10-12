@@ -19,24 +19,29 @@ public class GameRunner extends Thread {
     public void run() {
 
         long lastTime = System.currentTimeMillis();
-        long now;
         long elapsed;
+        long begin;
+        long delta;
 
         while(running) {
-            now = System.currentTimeMillis();
-            elapsed = now - lastTime;
+            begin = System.currentTimeMillis();
+            elapsed = begin - lastTime;
+            Log.d("Elapsed: ", "" + elapsed);
+            lastTime = begin;
 
-            if (elapsed < ELAPSED_LIMIT_IN_MILLISECONDS) {
-                gameState.updateGameState(elapsed);
-                gameView.drawOnSurface();
-            }
+            gameState.updateGameState(elapsed);
+            gameView.drawOnSurface();
 
-            lastTime = now;
+            delta = System.currentTimeMillis() - begin;
 
-            try {
-                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (delta < GAME_UPDATE_TIME) {
+                try {
+                    Thread.sleep(GAME_UPDATE_TIME - delta);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("Elapsed: ", "SPLURGE");
             }
         }
 

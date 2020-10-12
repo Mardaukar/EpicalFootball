@@ -46,6 +46,7 @@ public class Constants {
     public static int BALLS_AT_START = 10;
 
     //GAME PLAY
+    public static int GAME_UPDATE_TIME = 30;
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
     public static float PLAYER_BASE_DECELERATION = 0.3f;
