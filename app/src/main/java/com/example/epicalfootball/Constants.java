@@ -50,8 +50,8 @@ public class Constants {
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
     public static float PLAYER_BASE_DECELERATION = 0.3f;
-    public static float LINESEGMENT_COLLISION_SPEED_MULTIPLIER = 0.5f;
-    public static float POST_COLLISION_SPEED_MULTIPLIER = 0.8f;
+    public static float LINESEGMENT_COLLISION_SPEED_MULTIPLIER = 0.3f;
+    public static float POST_COLLISION_SPEED_MULTIPLIER = 0.6f;
     public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
     public static float DRIBBLING_KICK_FORWARD = 0.4f;
@@ -70,7 +70,8 @@ public class Constants {
     public static float MAX_TARGET_GOAL_MOVE_SIZE = 0.8f;
     public static float MIN_TARGET_GOAL_SIZE = 0.1f;
     public static float AIMING_TARGET_MULTIPLIER = 1.5f;
-    public static float PLAYER_RECOVERY_TIME = 500;
+    public static float PLAYER_KICK_RECOVERY_TIME = 300;
+    public static float PLAYER_SLOW_ON_SHOT_FACTOR = 0.5f;
 
     //LAYOUT
     public static float CONTROL_AREA_FROM_WIDTH = 0.8f;
@@ -112,8 +113,8 @@ public class Constants {
     public static float MIN_SPEED_VALUE = 6;
     public static float MAX_SPEED_VALUE = 12;
     public static float MIN_BALLCONTROL_ANGLE = (float)Math.PI / 4;
-    public static float MAX_BALLCONTROL_ANGLE = (float)Math.PI / 2;
-    public static float MIN_BALLCONTROL_RADIUS = 0.2f;
+    public static float MAX_BALLCONTROL_ANGLE = (float)Math.PI / 2.2f;
+    public static float MIN_BALLCONTROL_RADIUS = 0f;
     public static float MAX_BALLCONTROL_RADIUS = 0.6f;
     public static float MIN_BALLCONTROL_BALL_SPEED = 0.01f;
     public static float MAX_BALLCONTROL_BALL_SPEED = 0.03f;

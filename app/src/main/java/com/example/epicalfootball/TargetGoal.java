@@ -91,7 +91,15 @@ public class TargetGoal {
             targetX *= targetGoalBottom / targetY;
         }
 
-        return new Position((targetX - targetGoalMiddle) / targetGoalSize * (GOAL_WIDTH + DOUBLE * POST_RADIUS), 0); ///Should determine post width from png
+        float aimPositionX = (targetX - targetGoalMiddle) / targetGoalSize * (GOAL_WIDTH + DOUBLE * POST_RADIUS); ///Should calculate post size from pic
+
+        if (aimPositionX < -FIELD_WIDTH) {
+            aimPositionX = -FIELD_WIDTH;
+        } else if (aimPositionX > FIELD_WIDTH) {
+            aimPositionX = FIELD_WIDTH;
+        }
+
+        return new Position(aimPositionX, 0);
     }
 
     public float getPositionX() {

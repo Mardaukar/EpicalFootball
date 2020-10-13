@@ -1,13 +1,11 @@
 package com.example.epicalfootball;
 
-import android.util.Log;
-
 import static com.example.epicalfootball.Constants.*;
 import static com.example.epicalfootball.MenuActivity.playerAttributes;
 
 public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
-    private float recoveryTimer = 0;
+    private float kickRecoveryTimer = 0;
 
     private float controlAngle;
     private float controlRadius;
@@ -215,21 +213,21 @@ public class Player extends FieldObject {
     }
 
     public void updateRecoveryTimer(float elapsed) {
-        if (this.recoveryTimer > 0) {
-            this.recoveryTimer -= elapsed;
+        if (this.kickRecoveryTimer > 0) {
+            this.kickRecoveryTimer -= elapsed;
 
-            if (this.recoveryTimer < 0 ) {
-                this.recoveryTimer = 0;
+            if (this.kickRecoveryTimer < 0 ) {
+                this.kickRecoveryTimer = 0;
             }
         }
     }
 
-    public float getRecoveryTimer() {
-        return recoveryTimer;
+    public float getKickRecoveryTimer() {
+        return kickRecoveryTimer;
     }
 
-    public void setRecoveryTimer(float recoveryTimer) {
-        this.recoveryTimer = recoveryTimer;
+    public void setKickRecoveryTimer(float kickRecoveryTimer) {
+        this.kickRecoveryTimer = kickRecoveryTimer;
     }
 
     public float getAccuracyTargetDot() {

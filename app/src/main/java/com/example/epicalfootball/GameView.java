@@ -98,6 +98,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             drawPositionY = playerPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
             canvas.drawCircle(drawPositionX + surfaceWidth * SHADOW_OFFSET, drawPositionY + surfaceWidth * SHADOW_OFFSET, pixelPerMeter * player.getRadius(), paint);
 
+            //DRAW GOAL SHADOW
+            Circle leftPost = goalFrame.getLeftPost();
+            Circle rightPost = goalFrame.getRightPost();
+            Circle leftSupport = goalFrame.getLeftSupport();
+            Circle rightSupport = goalFrame.getRightSupport();
+            RectF leftNet = goalFrame.getLeftNet();
+            RectF rightNet = goalFrame.getRightNet();
+            RectF rearNet = goalFrame.getRearNet();
+            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, leftPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rightPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, leftSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rightSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, leftNet.right * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, paint);
+            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rightNet.right * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, paint);
+            canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rearNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rearNet.right * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rearNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, paint);
+
             //DRAW BALL
             paint.setColor(Color.WHITE);
             drawPositionX = ballPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
@@ -120,13 +136,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             //DRAW GOAL
             paint.setColor(Color.WHITE);
-            Circle leftPost = goalFrame.getLeftPost();
-            Circle rightPost = goalFrame.getRightPost();
-            Circle leftSupport = goalFrame.getLeftSupport();
-            Circle rightSupport = goalFrame.getRightSupport();
-            RectF leftNet = goalFrame.getLeftNet();
-            RectF rightNet = goalFrame.getRightNet();
-            RectF rearNet = goalFrame.getRearNet();
             canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF, leftPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, leftPost.getRadius() * pixelPerMeter, paint);
             canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF, rightPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, rightPost.getRadius() * pixelPerMeter, paint);
             canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF, leftSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, leftSupport.getRadius() * pixelPerMeter, paint);
@@ -175,7 +184,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                 if (gameState.isControlOn()) {
                     paint.setColor(Color.MAGENTA);
-                    paint.setAlpha(CONTROL_DOT_ALPHA);
+
+                    if (player.getTargetSpeed().getMagnitude() < 1) {
+                        paint.setAlpha(CONTROL_DOT_ALPHA);
+                    } else {
+                        paint.setAlpha(CONTROL_DOT_ALPHA + 100);
+                    }
+
                     float controlX = gameState.getControlX();
                     float controlY = gameState.getControlY();
                     float controlWidth = gameState.getControlWidth();

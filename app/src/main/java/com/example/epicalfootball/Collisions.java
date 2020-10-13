@@ -28,7 +28,7 @@ public class Collisions {
     public static boolean handlePlayerBallCollision(Player player, Ball ball, boolean readyToShoot, Position aimTarget) {
         float playerCollisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
         float playerOrientationCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, player.getTargetSpeed().getDirection());
-        boolean ballControl = playerOrientationCollisionAngle <= player.getControlAngle() || player.getRecoveryTimer() == 0;
+        boolean ballControl = playerOrientationCollisionAngle <= player.getControlAngle() && player.getKickRecoveryTimer() == 0;
 
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
             if (ballControl && readyToShoot) { ///Add angle criteria
@@ -100,7 +100,7 @@ public class Collisions {
 
         //CONTROL CONE
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getControlRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            if (ballControl && player.getRecoveryTimer() == 0) {
+            if (ballControl) {
                 ball.shiftWithControlCone(player);
             }
         }

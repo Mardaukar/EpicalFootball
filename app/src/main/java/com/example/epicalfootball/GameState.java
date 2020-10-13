@@ -1,7 +1,7 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
-import android.util.Log;
+
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
@@ -176,8 +176,13 @@ public class GameState {
                     }
                 } else {
                     readyToShoot = true;
-                    this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
                     this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
+
+                    if (controlOn) {
+                        this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
+                    } else {
+                        this.aimTarget = new Position(0,0);
+                    }
                 }
             }
 
@@ -197,7 +202,8 @@ public class GameState {
 
         if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot, aimTarget)) {
             this.ball.shoot(player, shotPowerMeter, aimTarget);
-            player.setRecoveryTimer(PLAYER_RECOVERY_TIME);
+            player.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
+            player.getSpeed().setMagnitude(player.getSpeed().getMagnitude() * PLAYER_SLOW_ON_SHOT_FACTOR);
             this.readyToShoot = false;
             this.shotPowerMeter = 0;
         }
