@@ -54,13 +54,14 @@ public class Constants {
     public static float POST_COLLISION_SPEED_MULTIPLIER = 0.6f;
     public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
-    public static float DRIBBLING_KICK_FORWARD = 0.4f;
+    public static float DRIBBLING_KICK_FORWARD = 0.2f;
     public static int SHOT_POWER_METER_OPTIMAL = 100;
     public static int SHOT_POWER_METER_HIGHER_LIMIT = 120;
     public static int SHOT_POWER_METER_LOWER_LIMIT = 10;
     public static float AIMING_TIME = 1.5f;
     public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
     public static long BALL_FEED_TIMER = 500;
+    public static float PLAYER_KICK_RECOVERY_TIME = 300;
 
     //SHOOTING
     public static float LONG_SHOTS_LIMIT = 20;
@@ -70,7 +71,6 @@ public class Constants {
     public static float MAX_TARGET_GOAL_MOVE_SIZE = 0.8f;
     public static float MIN_TARGET_GOAL_SIZE = 0.1f;
     public static float AIMING_TARGET_MULTIPLIER = 1.5f;
-    public static float PLAYER_KICK_RECOVERY_TIME = 300;
     public static float PLAYER_SLOW_ON_SHOT_FACTOR = 0.5f;
 
     //LAYOUT
@@ -93,6 +93,7 @@ public class Constants {
     public static int TARGET_DOT_ALPHA = 150;
     public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF673AB7;
     public static int SHOOT_BUTTON_UP_COLOR = 0xDF471A97;
+    public static float POST_WIDTH_IN_TARGET_PNG = 0.115f;
 
     //RUNNER
     public static long ELAPSED_LIMIT_IN_MILLISECONDS = 150;
@@ -123,7 +124,7 @@ public class Constants {
     public static float MIN_DRIBBLING_VALUE = 0.5f;
     public static float MAX_DRIBBLING_VALUE = 1;
     public static float MIN_DRIBBLING_TARGET = 0.9f;
-    public static float MAX_DRIBBLING_TARGET = 1.2f;
+    public static float MAX_DRIBBLING_TARGET = 1.1f;
     public static float MAX_SHOTPOWER_VALUE = 6f;
     public static float MIN_SHOTPOWER_VALUE = 2f;
     public static float MIN_ACCURACY_DISTANCE = 6;

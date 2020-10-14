@@ -91,7 +91,7 @@ public class TargetGoal {
             targetX *= targetGoalBottom / targetY;
         }
 
-        float aimPositionX = (targetX - targetGoalMiddle) / targetGoalSize * (GOAL_WIDTH + DOUBLE * POST_RADIUS); ///Should calculate post size from pic
+        float aimPositionX = (targetX - targetGoalMiddle) / targetGoalSize * (GOAL_WIDTH + DOUBLE * POST_WIDTH_IN_TARGET_PNG);
 
         if (aimPositionX < -FIELD_WIDTH) {
             aimPositionX = -FIELD_WIDTH;

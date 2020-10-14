@@ -31,7 +31,7 @@ public class Collisions {
         boolean ballControl = playerOrientationCollisionAngle <= player.getControlAngle() && player.getKickRecoveryTimer() == 0;
 
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            if (ballControl && readyToShoot) { ///Add angle criteria
+            if (ballControl && readyToShoot) {
                 float aimDirection = EpicalMath.convertToDirection(aimTarget.getX() - ball.getPosition().getX(), aimTarget.getY() - ball.getPosition().getY());
                 float collisionToAimTargetAngle = EpicalMath.absoluteAngleBetweenDirections(aimDirection, playerCollisionDirection);
 
@@ -83,6 +83,8 @@ public class Collisions {
                                 if (targetMagnitude > player.getDribblingTarget()) {
                                     targetMagnitude = player.getDribblingTarget();
                                 }
+
+                                player.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
 
                                 ball.getSpeed().setMagnitude(targetMagnitude * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED);
                             }
