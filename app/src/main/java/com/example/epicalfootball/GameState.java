@@ -122,6 +122,10 @@ public class GameState {
         player.updateRecoveryTimer(elapsed);
 
         if (shootButtonDown) {
+            float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
+            player.getTargetSpeed().setDirection(playerBallDirection);
+            player.getTargetSpeed().setMagnitude(HALF);
+
             if (this.targetGoal == null) {
                 float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
 

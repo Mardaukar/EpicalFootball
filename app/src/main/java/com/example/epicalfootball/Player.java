@@ -233,4 +233,8 @@ public class Player extends FieldObject {
     public float getAccuracyTargetDot() {
         return accuracyTargetDot;
     }
+
+    public void setTargetSpeed(TargetSpeedVector targetSpeed) {
+        this.targetSpeed = targetSpeed;
+    }
 }
