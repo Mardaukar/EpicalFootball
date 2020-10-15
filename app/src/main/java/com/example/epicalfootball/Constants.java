@@ -56,7 +56,9 @@ public class Constants {
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
     public static float DRIBBLING_KICK_FORWARD = 0.2f;
     public static int SHOT_POWER_METER_OPTIMAL = 100;
-    public static int SHOT_POWER_METER_HIGHER_LIMIT = 120;
+    public static int SHOT_POWER_METER_HIGHER_LIMIT = 130;
+    public static float FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR = 0.2f;
+    public static float FAILED_SHOT_POWER_FACTOR = 0.5f;
     public static int SHOT_POWER_METER_LOWER_LIMIT = 10;
     public static float AIMING_TIME = 1.5f;
     public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
@@ -79,12 +81,14 @@ public class Constants {
     public static float CONTROL_AREA_CENTER_FROM_TOP = 0.75f;
     public static float CONTROL_AREA_TOP_FROM_TOP = 0.5f;
     public static float CONTROL_AREA_LEFT_FROM_LEFT = 0.1f;
+    public static float CONTROL_AREA_RIGHT_FROM_LEFT = 0.9f;
     public static float CONTROL_VIEW_MAXIMUM_LIMIT = 0.8f;
     public static float DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE = 0.12f;
     public static float CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
     public static float TARGET_DOT_RADIUS_OF_CONTROL_SURFACE = 0.05f;
 
     //VISUAL
+    public static int FULL_ALPHA = 255;
     public static int SHADOW_ALPHA = 150;
     public static float SHADOW_OFFSET = 0.0052f;
     public static int DECELERATE_ON_ALPHA = 100;
@@ -94,6 +98,8 @@ public class Constants {
     public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF673AB7;
     public static int SHOOT_BUTTON_UP_COLOR = 0xDF471A97;
     public static float POST_WIDTH_IN_TARGET_PNG = 0.115f;
+    public static int FAILED_SHOT_BASE_ALPHA = 100;
+    public static int FAILED_SHOT_INCREMENTAL_ALPHA = 100;
 
     //RUNNER
     public static long ELAPSED_LIMIT_IN_MILLISECONDS = 150;
@@ -127,14 +133,16 @@ public class Constants {
     public static float MAX_DRIBBLING_TARGET = 1.1f;
     public static float MAX_SHOTPOWER_VALUE = 6f;
     public static float MIN_SHOTPOWER_VALUE = 2f;
+    public static float MIN_MID_SHOT_POWER = 25;
+    public static float MAX_MID_SHOT_POWER = 75;
     public static float MIN_ACCURACY_DISTANCE = 6;
     public static float MAX_ACCURACY_DISTANCE = 12;
     public static float MIN_ACCURACY_TARGET_DOT = 0.1f;
     public static float MAX_ACCURACY_TARGET_DOT = 0.02f;
+    public static float MIN_ACCURACY_GAUSSIAN_FACTOR = 0.1f;
+    public static float MAX_ACCURACY_GAUSSIAN_FACTOR = 0;
     public static float MIN_TARGET_GOAL_SPEED = 1;
     public static float MAX_TARGET_GOAL_SPEED = 0.5f;
-    public static float MIN_MID_SHOT_POWER = 25;
-    public static float MAX_MID_SHOT_POWER = 75;
     public static float MIN_LONGSHOTS_ACCURACY = 1;
     public static float MAX_LONGSHOTS_ACCURACY = 0.5f;
 
@@ -151,6 +159,7 @@ public class Constants {
     public static float SHOTPOWER_VALUE_INCREMENT = (MAX_SHOTPOWER_VALUE - MIN_SHOTPOWER_VALUE) / 10;
     public static float ACCURACY_DISTANCE_INCREMENT = (MAX_ACCURACY_DISTANCE - MIN_ACCURACY_DISTANCE) / 10;
     public static float ACCURACY_TARGET_DOT_INCREMENT = (MAX_ACCURACY_TARGET_DOT - MIN_ACCURACY_TARGET_DOT) / 10;
+    public static float ACCURACY_GAUSSIAN_FACTOR_INCREMENT = (MAX_ACCURACY_GAUSSIAN_FACTOR - MIN_ACCURACY_GAUSSIAN_FACTOR) / 10;
     public static float TARGET_GOAL_SPEED_INCREMENT = (MAX_TARGET_GOAL_SPEED - MIN_TARGET_GOAL_SPEED) / 10;
     public static float MID_SHOT_POWER_INCREMENT = (MAX_MID_SHOT_POWER - MIN_MID_SHOT_POWER) / 10;
     public static float LONGSHOTS_ACCURACY_INCREMENT = (MAX_LONGSHOTS_ACCURACY - MIN_LONGSHOTS_ACCURACY) / 10;

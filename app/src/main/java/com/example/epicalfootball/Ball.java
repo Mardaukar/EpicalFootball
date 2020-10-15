@@ -2,9 +2,12 @@ package com.example.epicalfootball;
 
 import android.util.Log;
 
+import java.util.Random;
+
 import static com.example.epicalfootball.Constants.*;
 
 public class Ball extends FieldObject {
+    Random random = new Random();
 
     public Ball() {
         this.position = new Position();
@@ -118,9 +121,28 @@ public class Ball extends FieldObject {
     }
 
     public void shoot(Player player, float shotPowerMeter, Position aimTarget) {
-        Log.d("ball target x", "" + aimTarget.getX());
-        Log.d("ball target y", "" + aimTarget.getY());
-        this.getSpeed().setMagnitude(shotPowerMeter / 100 * player.getShotpower());
-        this.getSpeed().setDirection(EpicalMath.convertToDirection(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY()));
+        //Log.d("ball target x", "" + aimTarget.getX());
+        //Log.d("ball target y", "" + aimTarget.getY());
+        Log.d("shot power ", "" + shotPowerMeter);
+
+        float failedGaussianFactor;
+        float shotPowerFactor;
+        if (shotPowerMeter <= SHOT_POWER_METER_OPTIMAL) {
+            failedGaussianFactor = 0;
+            shotPowerFactor = shotPowerMeter / SHOT_POWER_METER_OPTIMAL;
+        } else if (shotPowerMeter >= SHOT_POWER_METER_HIGHER_LIMIT) {
+            failedGaussianFactor = FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR;
+            shotPowerFactor = FAILED_SHOT_POWER_FACTOR;
+        } else {
+            failedGaussianFactor = FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR * HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL));
+            shotPowerFactor = FULL;
+        }
+
+        float intendedDirection = EpicalMath.convertToDirection(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY());
+        float realDirection = intendedDirection + (float)random.nextGaussian() * player.getAccuracyGaussianFactor() + failedGaussianFactor;
+        EpicalMath.sanitizeDirection(realDirection);
+
+        this.getSpeed().setDirection(realDirection);
+        this.getSpeed().setMagnitude(shotPowerFactor * player.getShotpower());
     }
 }

@@ -51,46 +51,6 @@ public class GameState {
         this.ball = feedNewBall();
     }
 
-    public void setControl(float touchX, float touchY, float sideLength) {
-        if (shootButtonDown) {
-            setControlOn(touchX, touchY);
-        } else {
-            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
-                setControlOffWithDecelerate(true);
-            } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
-                setControlOn(touchX, touchY);
-            } else {
-                setControlOffWithDecelerate(false);
-            }
-        }
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public int getBallsLeft() {
-        return this.ballsLeft;
-    }
-
-    public int getGoalsScored() {
-        return this.goalsScored;
-    }
-
-    public void addGoal() {
-        this.goalsScored++;
-        gameActivity.updateGoals(Integer.toString(goalsScored));
-    }
-
-    public void substractBall() {
-        this.ballsLeft--;
-        gameActivity.updateBallsLeft(Integer.toString(ballsLeft));
-    }
-
-    public Ball getBall() {
-        return ball;
-    }
-
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
@@ -210,6 +170,7 @@ public class GameState {
             player.getSpeed().setMagnitude(player.getSpeed().getMagnitude() * PLAYER_SLOW_ON_SHOT_FACTOR);
             this.readyToShoot = false;
             this.shotPowerMeter = 0;
+            this.shootingTimer = 0;
         }
 
         this.goalFrame.handleGoalCollision(ball);
@@ -318,5 +279,49 @@ public class GameState {
 
     public GoalFrame getGoalFrame() {
         return goalFrame;
+    }
+
+    public void setControl(float touchX, float touchY, float sideLength) {
+        if (shootButtonDown) {
+            setControlOn(touchX, touchY);
+        } else {
+            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
+                setControlOffWithDecelerate(true);
+            } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
+                setControlOn(touchX, touchY);
+            } else {
+                setControlOffWithDecelerate(false);
+            }
+        }
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getBallsLeft() {
+        return this.ballsLeft;
+    }
+
+    public int getGoalsScored() {
+        return this.goalsScored;
+    }
+
+    public void addGoal() {
+        this.goalsScored++;
+        gameActivity.updateGoals(Integer.toString(goalsScored));
+    }
+
+    public void substractBall() {
+        this.ballsLeft--;
+        gameActivity.updateBallsLeft(Integer.toString(ballsLeft));
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public float getShotPowerMeter() {
+        return shotPowerMeter;
     }
 }

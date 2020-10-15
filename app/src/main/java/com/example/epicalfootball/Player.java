@@ -22,6 +22,7 @@ public class Player extends FieldObject {
     private float longshotsMidShotPower;
     private float longshotsAccuracy;
     private float dribblingTarget;
+    private float accuracyGaussianFactor;
 
     public Player() {
         this.speed = new Vector();
@@ -38,6 +39,7 @@ public class Player extends FieldObject {
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * playerAttributes.get("acceleration")) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed"));
         this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * playerAttributes.get("accuracy");
         this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get("accuracy");
+        this.accuracyGaussianFactor = MIN_ACCURACY_GAUSSIAN_FACTOR + ACCURACY_GAUSSIAN_FACTOR_INCREMENT * playerAttributes.get("accuracy");
         this.shotpower = MIN_SHOTPOWER_VALUE + SHOTPOWER_VALUE_INCREMENT * playerAttributes.get("shotPower");
         this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("finishing");
         this.longshotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("longShots");
@@ -236,5 +238,9 @@ public class Player extends FieldObject {
 
     public void setTargetSpeed(TargetSpeedVector targetSpeed) {
         this.targetSpeed = targetSpeed;
+    }
+
+    public float getAccuracyGaussianFactor() {
+        return accuracyGaussianFactor;
     }
 }

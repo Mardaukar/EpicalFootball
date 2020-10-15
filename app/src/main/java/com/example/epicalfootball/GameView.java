@@ -193,9 +193,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                     float controlX = gameState.getControlX();
                     float controlY = gameState.getControlY();
-                    float controlWidth = gameState.getControlWidth();
                     canvas.drawCircle((HALF + (controlX - HALF) * CONTROL_AREA_FROM_WIDTH) * surfaceWidth, (1 + HALF + (controlY - HALF)) * CONTROL_AREA_FROM_WIDTH * surfaceWidth, CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
                 }
+            }
+
+            if (gameState.getShotPowerMeter() > SHOT_POWER_METER_OPTIMAL) {
+                paint.setColor(Color.RED);
+
+                if (gameState.getShotPowerMeter() >= SHOT_POWER_METER_HIGHER_LIMIT) {
+                    paint.setAlpha(FULL_ALPHA);
+                    Log.d("Over limit ","" + gameState.getShotPowerMeter());
+                } else {
+                    Log.d("Under limit ","" + gameState.getShotPowerMeter());
+                    paint.setAlpha((int)(FAILED_SHOT_BASE_ALPHA + FAILED_SHOT_INCREMENTAL_ALPHA * (gameState.getShotPowerMeter() - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
+                }
+
+                canvas.drawRect(0, CONTROL_AREA_TOP_FROM_TOP * surfaceHeight, surfaceWidth * CONTROL_AREA_LEFT_FROM_LEFT, surfaceHeight, paint);
+                canvas.drawRect(CONTROL_AREA_RIGHT_FROM_LEFT * surfaceWidth, CONTROL_AREA_TOP_FROM_TOP * surfaceHeight, surfaceWidth, surfaceHeight, paint);
             }
 
             surfaceHolder.unlockCanvasAndPost(canvas);
