@@ -27,7 +27,7 @@ public class Collisions {
 
     public static boolean handlePlayerBallCollision(Player player, Ball ball, boolean readyToShoot, Position aimTarget) {
         float playerCollisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
-        float playerOrientationCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, player.getTargetSpeed().getDirection());
+        float playerOrientationCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, player.getOrientation());
         boolean ballControl = playerOrientationCollisionAngle <= player.getControlAngle() && player.getKickRecoveryTimer() == 0;
 
         if (EpicalMath.checkIntersect(player.getPosition().getX(), player.getPosition().getY(), player.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
@@ -70,8 +70,10 @@ public class Collisions {
                 ball.getSpeed().addVector(impulse);
 
                 if (ballControl) {
+                    player.setAimRecoveryTimer(0);
+
                     if (bounce) {
-                        ball.shiftTowardsPlayerDirectionOnBounce(playerCollisionDirection, centersDistance, player.getTargetSpeed().getDirection(), player.getControlAngle());
+                        ball.shiftTowardsPlayerDirectionOnBounce(playerCollisionDirection, centersDistance, player.getOrientation(), player.getControlAngle());
                     } else {
                         ball.getPosition().addVector(playerCollisionDirection, centersDistance);
 

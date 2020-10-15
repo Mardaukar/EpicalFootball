@@ -55,15 +55,7 @@ public class Constants {
     public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
     public static float DRIBBLING_KICK_FORWARD = 0.2f;
-    public static int SHOT_POWER_METER_OPTIMAL = 100;
-    public static int SHOT_POWER_METER_HIGHER_LIMIT = 130;
-    public static float FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR = 0.2f;
-    public static float FAILED_SHOT_POWER_FACTOR = 0.5f;
-    public static int SHOT_POWER_METER_LOWER_LIMIT = 10;
-    public static float AIMING_TIME = 1.5f;
-    public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
     public static long BALL_FEED_TIMER = 500;
-    public static float PLAYER_KICK_RECOVERY_TIME = 300;
 
     //SHOOTING
     public static float LONG_SHOTS_LIMIT = 20;
@@ -74,6 +66,16 @@ public class Constants {
     public static float MIN_TARGET_GOAL_SIZE = 0.1f;
     public static float AIMING_TARGET_MULTIPLIER = 1.5f;
     public static float PLAYER_SLOW_ON_SHOT_FACTOR = 0.5f;
+    public static int SHOT_POWER_METER_OPTIMAL = 100;
+    public static int SHOT_POWER_METER_HIGHER_LIMIT = 130;
+    public static float FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR = 0.2f;
+    public static float FAILED_SHOT_POWER_FACTOR = 0.5f;
+    public static int SHOT_POWER_METER_LOWER_LIMIT = 20;
+    public static float AIMING_TIME = 1.5f;
+    public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
+    public static float PLAYER_KICK_RECOVERY_TIME = 300;
+    public static float AIM_RECOVERY_TIME = 300;
+    public static float AUTOPILOT_SPEED_MAGNITUDE = 0.5f;
 
     //LAYOUT
     public static float CONTROL_AREA_FROM_WIDTH = 0.8f;
@@ -98,7 +100,7 @@ public class Constants {
     public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF673AB7;
     public static int SHOOT_BUTTON_UP_COLOR = 0xDF471A97;
     public static float POST_WIDTH_IN_TARGET_PNG = 0.115f;
-    public static int FAILED_SHOT_BASE_ALPHA = 100;
+    public static int FAILED_SHOT_BASE_ALPHA = 50;
     public static int FAILED_SHOT_INCREMENTAL_ALPHA = 100;
 
     //RUNNER
@@ -113,10 +115,12 @@ public class Constants {
     public static int TWO = 2;
 
     //PLAYER VALUE LIMITS
-    public static float MIN_REACH_VALUE = 0.5f;
-    public static float MAX_REACH_VALUE = 1;
+    public static float MIN_REACH_VALUE = 0.7f;
+    public static float MAX_REACH_VALUE = 0.9f;
     public static float MIN_ACCELERATION_VALUE = 3;
     public static float MAX_ACCELERATION_VALUE = 6;
+    public static float MIN_ACCELERATION_TURN = 3;
+    public static float MAX_ACCELERATION_TURN = 6;
     public static float MIN_SPEED_VALUE = 6;
     public static float MAX_SPEED_VALUE = 12;
     public static float MIN_BALLCONTROL_ANGLE = (float)Math.PI / 4;
@@ -139,7 +143,7 @@ public class Constants {
     public static float MAX_ACCURACY_DISTANCE = 12;
     public static float MIN_ACCURACY_TARGET_DOT = 0.1f;
     public static float MAX_ACCURACY_TARGET_DOT = 0.02f;
-    public static float MIN_ACCURACY_GAUSSIAN_FACTOR = 0.1f;
+    public static float MIN_ACCURACY_GAUSSIAN_FACTOR = 0.05f;
     public static float MAX_ACCURACY_GAUSSIAN_FACTOR = 0;
     public static float MIN_TARGET_GOAL_SPEED = 1;
     public static float MAX_TARGET_GOAL_SPEED = 0.5f;
@@ -149,6 +153,7 @@ public class Constants {
     //PLAYER VALUE INCREMENTS
     public static float REACH_VALUE_INCREMENT = (MAX_REACH_VALUE - MIN_REACH_VALUE) / 10;
     public static float ACCELERATION_VALUE_INCREMENT = (MAX_ACCELERATION_VALUE - MIN_ACCELERATION_VALUE) / 10;
+    public static float ACCELERATION_TURN_INCREMENT = (MAX_ACCELERATION_TURN - MIN_ACCELERATION_TURN) / 10;
     public static float SPEED_VALUE_INCREMENT = (MAX_SPEED_VALUE - MIN_SPEED_VALUE) / 10;
     public static float BALLCONTROL_ANGLE_INCREMENT = (MAX_BALLCONTROL_ANGLE - MIN_BALLCONTROL_ANGLE) / 10;
     public static float BALLCONTROL_RADIUS_INCREMENT = (MAX_BALLCONTROL_RADIUS - MIN_BALLCONTROL_RADIUS) / 10;

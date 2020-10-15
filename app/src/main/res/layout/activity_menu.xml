@@ -54,7 +54,7 @@
                 <TextView
                     android:id="@+id/reach_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -62,7 +62,7 @@
 
                 <Button
                     android:id="@+id/minus_reach_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseReach"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -70,7 +70,7 @@
 
                 <Button
                     android:id="@+id/plus_reach_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseReach"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -88,7 +88,7 @@
                 <TextView
                     android:id="@+id/acceleration_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -96,7 +96,7 @@
 
                 <Button
                     android:id="@+id/minus_acceleration_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseAcceleration"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -104,7 +104,7 @@
 
                 <Button
                     android:id="@+id/plus_acceleration_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseAcceleration"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -122,7 +122,7 @@
                 <TextView
                     android:id="@+id/speed_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -130,7 +130,7 @@
 
                 <Button
                     android:id="@+id/minus_speed_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseSpeed"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -138,7 +138,7 @@
 
                 <Button
                     android:id="@+id/plus_speed_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseSpeed"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -156,7 +156,7 @@
                 <TextView
                     android:id="@+id/ball_control_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -164,7 +164,7 @@
 
                 <Button
                     android:id="@+id/minus_ball_control_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseBallControl"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -172,7 +172,7 @@
 
                 <Button
                     android:id="@+id/plus_ball_control_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseBallControl"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -190,7 +190,7 @@
                 <TextView
                     android:id="@+id/dribbling_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -198,7 +198,7 @@
 
                 <Button
                     android:id="@+id/minus_dribbling_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseDribbling"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -206,7 +206,7 @@
 
                 <Button
                     android:id="@+id/plus_dribbling_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseDribbling"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -224,7 +224,7 @@
                 <TextView
                     android:id="@+id/shot_power_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -232,7 +232,7 @@
 
                 <Button
                     android:id="@+id/minus_shot_power_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseShotPower"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -240,7 +240,7 @@
 
                 <Button
                     android:id="@+id/plus_shot_power_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseShotPower"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -258,7 +258,7 @@
                 <TextView
                     android:id="@+id/accuracy_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -266,7 +266,7 @@
 
                 <Button
                     android:id="@+id/minus_accuracy_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseAccuracy"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -274,7 +274,7 @@
 
                 <Button
                     android:id="@+id/plus_accuracy_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseAccuracy"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -292,7 +292,7 @@
                 <TextView
                     android:id="@+id/finishing_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -300,7 +300,7 @@
 
                 <Button
                     android:id="@+id/minus_finishing_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseFinishing"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -308,7 +308,7 @@
 
                 <Button
                     android:id="@+id/plus_finishing_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseFinishing"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
@@ -326,7 +326,7 @@
                 <TextView
                     android:id="@+id/long_shots_attribute_textView"
                     android:layout_weight="1"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:padding="3dip"
                     android:text=""
                     android:textSize="25sp"
@@ -334,7 +334,7 @@
 
                 <Button
                     android:id="@+id/minus_long_shots_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="decreaseLongShots"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
@@ -342,7 +342,7 @@
 
                 <Button
                     android:id="@+id/plus_long_shots_button"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:onClick="increaseLongShots"
                     android:text="@string/plus_text"
                     android:textSize="25sp"

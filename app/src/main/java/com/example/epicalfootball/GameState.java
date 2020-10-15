@@ -82,9 +82,10 @@ public class GameState {
         player.updateRecoveryTimer(elapsed);
 
         if (shootButtonDown) {
+            player.setAimRecoveryTimer(0);
             float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
             player.getTargetSpeed().setDirection(playerBallDirection);
-            player.getTargetSpeed().setMagnitude(HALF);
+            player.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
 
             if (this.targetGoal == null) {
                 float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
@@ -118,12 +119,6 @@ public class GameState {
                     this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - player.getLongshotsMidShotPower()) / player.getLongshotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 }
             }
-
-            if (controlOn) {
-
-            } else {
-
-            }
         } else {
             if (this.shotPowerMeter < SHOT_POWER_METER_LOWER_LIMIT) {
                 this.readyToShoot = false;
@@ -139,8 +134,9 @@ public class GameState {
                         this.shootingTimer = 0;
                     }
                 } else {
-                    readyToShoot = true;
+                    this.readyToShoot = true;
                     this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
+                    player.setAimRecoveryTimer(AIM_RECOVERY_TIME);
 
                     if (controlOn) {
                         this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
@@ -150,7 +146,19 @@ public class GameState {
                 }
             }
 
-            if (controlOn) {
+            if (player.getAimRecoveryTimer() > 0) {
+                player.setAimRecoveryTimer(player.getAimRecoveryTimer() - elapsed);
+
+                if (player.getAimRecoveryTimer() <= 0) {
+                    player.setAimRecoveryTimer(0);
+                }
+            }
+
+            if (player.getAimRecoveryTimer() > 0) {
+                float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
+                player.getTargetSpeed().setDirection(playerBallDirection);
+                player.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
+            } else if (controlOn) {
                 player.getTargetSpeed().setTargetSpeed(controlX - HALF, controlY - HALF);
             } else {
                 player.getTargetSpeed().nullTargetSpeed();
@@ -171,11 +179,13 @@ public class GameState {
             this.readyToShoot = false;
             this.shotPowerMeter = 0;
             this.shootingTimer = 0;
+            player.setAimRecoveryTimer(0);
         }
 
         this.goalFrame.handleGoalCollision(ball);
 
         player.updatePosition(timeFactor);
+        player.updateOrientation(timeFactor);
         ball.updatePosition(timeFactor);
 
         player.updateSpeed(timeFactor, decelerateOn, ball);

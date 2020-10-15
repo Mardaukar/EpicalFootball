@@ -5,8 +5,8 @@ import static com.example.epicalfootball.MenuActivity.playerAttributes;
 
 public class Player extends FieldObject {
     private TargetSpeedVector targetSpeed;
+    private float aimRecoveryTimer = 0;
     private float kickRecoveryTimer = 0;
-
     private float controlAngle;
     private float controlRadius;
     private float controlBallSpeed;
@@ -23,11 +23,14 @@ public class Player extends FieldObject {
     private float longshotsAccuracy;
     private float dribblingTarget;
     private float accuracyGaussianFactor;
+    private float orientation;
+    private float accelerationTurn;
 
     public Player() {
         this.speed = new Vector();
         this.position = PLAYER_STARTING_POSITION;
         this.targetSpeed = new TargetSpeedVector();
+        this.orientation = 0;
         this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * playerAttributes.get("reach");
         this.controlAngle = MIN_BALLCONTROL_ANGLE + BALLCONTROL_ANGLE_INCREMENT * playerAttributes.get("ballControl");
         this.controlRadius = this.radius + MIN_BALLCONTROL_RADIUS + BALLCONTROL_RADIUS_INCREMENT * playerAttributes.get("ballControl");
@@ -37,6 +40,7 @@ public class Player extends FieldObject {
         this.dribblingTarget = MIN_DRIBBLING_TARGET + DRIBBLING_TARGET_INCREMENT * playerAttributes.get("dribbling");
         this.magnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed");
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * playerAttributes.get("acceleration")) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed"));
+        this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * playerAttributes.get("acceleration");
         this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * playerAttributes.get("accuracy");
         this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get("accuracy");
         this.accuracyGaussianFactor = MIN_ACCURACY_GAUSSIAN_FACTOR + ACCURACY_GAUSSIAN_FACTOR_INCREMENT * playerAttributes.get("accuracy");
@@ -125,12 +129,28 @@ public class Player extends FieldObject {
     }
 
     public float getMagnitudeToOrientation() {
-        float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.getTargetSpeed().getDirection());
+        float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.orientation);
 
         if (angle > Math.PI / 2) {
             return 0;
         } else {
             return (float)Math.cos(angle) * this.getSpeed().getMagnitude();
+        }
+    }
+
+    public void updateOrientation(float timeFactor) {
+        if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) > 0) {
+            this.orientation += timeFactor * this.accelerationTurn;
+
+            if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) < 0) {
+                this.orientation = this.targetSpeed.getDirection();
+            }
+        } else {
+            this.orientation -= timeFactor * this.accelerationTurn;
+
+            if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) > 0) {
+                this.orientation = this.targetSpeed.getDirection();
+            }
         }
     }
 
@@ -242,5 +262,17 @@ public class Player extends FieldObject {
 
     public float getAccuracyGaussianFactor() {
         return accuracyGaussianFactor;
+    }
+
+    public float getOrientation() {
+        return orientation;
+    }
+
+    public float getAimRecoveryTimer() {
+        return aimRecoveryTimer;
+    }
+
+    public void setAimRecoveryTimer(float aimRecoveryTimer) {
+        this.aimRecoveryTimer = aimRecoveryTimer;
     }
 }

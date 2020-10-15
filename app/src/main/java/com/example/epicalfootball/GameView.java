@@ -128,7 +128,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             //DRAW CONTROL SECTOR
             paint.setColor(getResources().getColor(R.color.skinColor));
-            float directionRadians = player.getTargetSpeed().getDirection();
+            float directionRadians = player.getOrientation();
             float directionDegrees = directionRadians / (float) Math.PI * 180;
             float controlConeRadians = player.getControlAngle();
             float controlConeDegrees = controlConeRadians / (float) Math.PI * 180;

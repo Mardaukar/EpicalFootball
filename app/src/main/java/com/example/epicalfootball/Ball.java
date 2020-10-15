@@ -72,23 +72,23 @@ public class Ball extends FieldObject {
         float centersDistance = EpicalMath.calculateDistance(player.getPosition().getX(), player.getPosition().getY(), this.getPosition().getX(), this.getPosition().getY());
         float playerToBallDirection = EpicalMath.convertToDirection(this.getPosition().getX() - player.getPosition().getX(), this.getPosition().getY() - player.getPosition().getY());
         float shiftedPlayerToBallDirection;
-        float playerSpeedDirection = player.getTargetSpeed().getDirection();
-        float playerOrientation = player.getTargetSpeed().getDirection();
+        float playerTargetSpeedDirection = player.getTargetSpeed().getDirection();
+        float playerOrientation = player.getOrientation();
         float angleIncrement = player.getControlAngle() * CONTROL_CONE_SHIFT_MULTIPLIER;
         float playerSpeed = player.getSpeed().getMagnitude() * player.getMagnitudeSpeed();
         float newBallSpeedMagnitude;
 
-        if (EpicalMath.angleBetweenDirections(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
+        if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
             this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
 
-            if (EpicalMath.angleBetweenDirections(playerSpeedDirection, this.getSpeed().getDirection()) < 0) {
-                this.getSpeed().setDirection(playerSpeedDirection);
+            if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) < 0) {
+                this.getSpeed().setDirection(playerTargetSpeedDirection);
             }
         } else {
             this.getSpeed().setDirection(this.getSpeed().getDirection() - angleIncrement);
 
-            if (EpicalMath.angleBetweenDirections(playerSpeedDirection, this.getSpeed().getDirection()) > 0) {
-                this.getSpeed().setDirection(playerSpeedDirection);
+            if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
+                this.getSpeed().setDirection(playerTargetSpeedDirection);
             }
         }
 
