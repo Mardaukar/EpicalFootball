@@ -1,4 +1,4 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.epicalfootball.R;
+import com.example.epicalfootball.activities.GameActivity;
+
 import java.util.HashMap;
 
 public class MenuActivity extends Activity {
@@ -19,7 +23,7 @@ public class MenuActivity extends Activity {
     private int accuracyAttribute = 5;
     private int finishingAttribute = 5;
     private int longShotsAttribute = 5;
-    public static HashMap<String, Integer> playerAttributes= new HashMap<String, Integer>();
+    public static HashMap<String, Integer> playerAttributes = new HashMap<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override

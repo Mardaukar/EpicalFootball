@@ -25,22 +25,6 @@ public class Vector {
         addVector(vector.getDirection(), vector.getMagnitude());
     }
 
-    public void setDirection(float direction) {
-        this.direction = direction;
-    }
-
-    public void setMagnitude(float magnitude) {
-        this.magnitude = magnitude;
-    }
-
-    public float getDirection() {
-        return direction;
-    }
-
-    public float getMagnitude() {
-        return magnitude;
-    }
-
     public void reverseDirection() {
         if (direction >= 0 ) {
             direction -= Math.PI;
@@ -53,5 +37,21 @@ public class Vector {
         this.reverseDirection();
         float bounceDirection = EpicalMath.sanitizeDirection(surfaceDirection + surfaceDirection - this.direction);
         this.direction = bounceDirection;
+    }
+
+    public float getDirection() {
+        return direction;
+    }
+
+    public void setDirection(float direction) {
+        this.direction = direction;
+    }
+
+    public float getMagnitude() {
+        return magnitude;
+    }
+
+    public void setMagnitude(float magnitude) {
+        this.magnitude = magnitude;
     }
 }

@@ -1,10 +1,12 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.epicalfootball.R;
 
 public class ResultActivity extends Activity {
 

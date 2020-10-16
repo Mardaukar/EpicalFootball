@@ -29,20 +29,20 @@ public class GoalFrame {
         Collisions.handleLineSegmentCollision(rearNet, ball);
         Collisions.handleLineSegmentCollision(leftNet, ball);
         Collisions.handleLineSegmentCollision(rightNet, ball);
-        Collisions.handleCircleCollision(leftPost, ball);
-        Collisions.handleCircleCollision(rightPost, ball);
-        Collisions.handleCircleCollision(leftSupport, ball);
-        Collisions.handleCircleCollision(rightSupport,ball);
+        Collisions.handleBallCircleCollision(leftPost, ball);
+        Collisions.handleBallCircleCollision(rightPost, ball);
+        Collisions.handleBallCircleCollision(leftSupport, ball);
+        Collisions.handleBallCircleCollision(rightSupport,ball);
     }
 
     public void handleGoalCollision(Player player) {
         Collisions.handleLineSegmentCollision(rearNet, player);
         Collisions.handleLineSegmentCollision(leftNet, player);
         Collisions.handleLineSegmentCollision(rightNet, player);
-        Collisions.handleCircleCollision(leftPost, player);
-        Collisions.handleCircleCollision(rightPost, player);
-        Collisions.handleCircleCollision(leftSupport, player);
-        Collisions.handleCircleCollision(rightSupport, player);
+        Collisions.handlePlayerCircleCollision(leftPost, player);
+        Collisions.handlePlayerCircleCollision(rightPost, player);
+        Collisions.handlePlayerCircleCollision(leftSupport, player);
+        Collisions.handlePlayerCircleCollision(rightSupport, player);
     }
 
     public RectF getGoalArea() {

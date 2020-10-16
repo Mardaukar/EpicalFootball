@@ -14,22 +14,6 @@ public class Position {
         this.y = y;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
     public Position addVector(float direction, float magnitude) {
         this.x += Math.cos(direction) * magnitude;
         this.y += Math.sin(direction) * magnitude;
@@ -44,5 +28,21 @@ public class Position {
     public void setPosition(Position otherPosition) {
         this.x = otherPosition.getX();
         this.y = otherPosition.getY();
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

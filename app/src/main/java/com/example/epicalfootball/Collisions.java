@@ -7,21 +7,39 @@ import static com.example.epicalfootball.Constants.*;
 
 public class Collisions {
 
-    public static void handleCircleCollision(Circle circle, FieldObject fieldObject) {
-        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), fieldObject.getPosition().getX(), fieldObject.getPosition().getY(), fieldObject.getRadius())) {
-            float centersDistance = circle.getRadius() + fieldObject.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(fieldObject.getPosition().getX() - circle.getX(), fieldObject.getPosition().getY() - circle.getY());
-            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, fieldObject.getSpeed().getDirection());
+    public static void handlePlayerCircleCollision(Circle circle, Player player) {
+        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
+            float centersDistance = circle.getRadius() + player.getRadius();
+            float collisionDirection = EpicalMath.convertToDirection(player.getPosition().getX() - circle.getX(), player.getPosition().getY() - circle.getY());
+            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getSpeed().getDirection());
 
-            fieldObject.getPosition().setPosition(circle.getPosition());
-            fieldObject.getPosition().addVector(collisionDirection, centersDistance);
+            player.getPosition().setPosition(circle.getPosition());
+            player.getPosition().addVector(collisionDirection, centersDistance);
 
             if (fieldObjectCollisionDifference > Math.PI * HALF) {
-                fieldObject.getSpeed().bounceDirection(collisionDirection);
+                player.getSpeed().bounceDirection(collisionDirection);
             }
 
-            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, fieldObject.getSpeed().getDirection());
-            fieldObject.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float)Math.cos(newDifference)) * fieldObject.getSpeed().getMagnitude() * POST_COLLISION_SPEED_MULTIPLIER);
+            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getSpeed().getDirection());
+            player.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float)Math.cos(newDifference)) * player.getSpeed().getMagnitude() * POST_COLLISION_SPEED_MULTIPLIER);
+        }
+    }
+
+    public static void handleBallCircleCollision(Circle circle, Ball ball) {
+        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+            float centersDistance = circle.getRadius() + ball.getRadius();
+            float collisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - circle.getX(), ball.getPosition().getY() - circle.getY());
+            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
+
+            ball.getPosition().setPosition(circle.getPosition());
+            ball.getPosition().addVector(collisionDirection, centersDistance);
+
+            if (fieldObjectCollisionDifference > Math.PI * HALF) {
+                ball.getSpeed().bounceDirection(collisionDirection);
+            }
+
+            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
+            ball.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float)Math.cos(newDifference)) * ball.getSpeed().getMagnitude() * POST_COLLISION_SPEED_MULTIPLIER);
         }
     }
 
@@ -56,9 +74,9 @@ public class Collisions {
                         ball.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float) Math.cos(newBallCollisionAngle)) * ball.getSpeed().getMagnitude() * BALL_PLAYER_COLLISION_SPEED_MULTIPLIER);
                     }
 
-                    impactMagnitude = (float) (Math.cos(playerSpeedCollisionAngle) * player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED);
+                    impactMagnitude = (float) (Math.cos(playerSpeedCollisionAngle) * player.getSpeed().getMagnitude() * player.getFullMagnitudeSpeed() / BALL_REFERENCE_SPEED);
                 } else {
-                    impactMagnitude = (float) (Math.cos(playerSpeedCollisionAngle) * player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED - Math.cos(ballCollisionAngle) * ball.getSpeed().getMagnitude());
+                    impactMagnitude = (float) (Math.cos(playerSpeedCollisionAngle) * player.getSpeed().getMagnitude() * player.getFullMagnitudeSpeed() / BALL_REFERENCE_SPEED - Math.cos(ballCollisionAngle) * ball.getSpeed().getMagnitude());
 
                     if (impactMagnitude < 0) {
                         impactMagnitude = 0;
@@ -78,7 +96,7 @@ public class Collisions {
                         ball.getPosition().addVector(playerCollisionDirection, centersDistance);
 
                         if (player.getTargetSpeed().getMagnitude() == 1) {
-                            if (player.getSpeed().getMagnitude() * player.getMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
+                            if (player.getSpeed().getMagnitude() * player.getFullMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
                                 float targetMagnitude = player.getMagnitudeToOrientation() + DRIBBLING_KICK_FORWARD;
                                 Log.d("targetMagnitude", "" + targetMagnitude);
 
@@ -88,7 +106,7 @@ public class Collisions {
 
                                 player.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
 
-                                ball.getSpeed().setMagnitude(targetMagnitude * player.getMagnitudeSpeed() / BALL_REFERENCE_SPEED);
+                                ball.getSpeed().setMagnitude(targetMagnitude * player.getFullMagnitudeSpeed() / BALL_REFERENCE_SPEED);
                             }
                         }
                     }
@@ -117,7 +135,7 @@ public class Collisions {
             ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINESEGMENT_COLLISION_SPEED_MULTIPLIER);
 
             if (line.height() < line.width()) {
-                if (ball.position.getY() < line.centerY()) {
+                if (ball.getPosition().getY() < line.centerY()) {
                     if (ball.getSpeed().getDirection() > 0) {
                         ball.getSpeed().bounceDirection((float)-Math.PI * HALF);
                     }
@@ -129,7 +147,7 @@ public class Collisions {
                     ball.getPosition().setY(line.bottom + ball.getRadius());
                 }
             } else {
-                if (ball.position.getX() < line.centerX()) {
+                if (ball.getPosition().getX() < line.centerX()) {
                     if (Math.abs(ball.getSpeed().getDirection()) < Math.PI * HALF) {
                         ball.getSpeed().bounceDirection((float) Math.PI);
                     }
@@ -147,7 +165,7 @@ public class Collisions {
     public static void handleLineSegmentCollision(RectF line, Player player) {
         if (EpicalMath.checkIntersect(line, player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
             if (line.height() < line.width()) {
-                if (player.position.getY() < line.centerY()) {
+                if (player.getPosition().getY() < line.centerY()) {
                     /*if (player.getSpeed().getDirection() > 0) {
                         if (player.getSpeed().getDirection() > Math.PI / 2) {
                             player.getSpeed().setDirection((float)Math.PI);
@@ -167,7 +185,7 @@ public class Collisions {
                     player.getPosition().setY(line.bottom + player.getRadius());
                 }
             } else {
-                if (player.position.getX() < line.centerX()) {
+                if (player.getPosition().getX() < line.centerX()) {
                     /*if (Math.abs(player.getSpeed().getDirection()) < Math.PI / 2) {
                         if (player.getSpeed().getDirection() < 0) {
                             player.getSpeed().setDirection((float)-Math.PI / 2);

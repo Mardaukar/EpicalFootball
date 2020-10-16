@@ -1,19 +1,30 @@
 package com.example.epicalfootball;
 
 import android.util.Log;
-
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
 
-public class Ball extends FieldObject {
-    Random random = new Random();
+public class Ball {
+    private final float radius;
+    private final float fullMagnitudeSpeed;
+    private Position position;
+    private Vector speed;
+    private Random random = new Random();
 
     public Ball() {
+        this.radius = BALL_RADIUS;
+        this.fullMagnitudeSpeed = BALL_REFERENCE_SPEED;
         this.position = new Position();
         this.speed = new Vector();
-        this.radius = BALL_RADIUS;
-        this.magnitudeSpeed = BALL_REFERENCE_SPEED;
+    }
+
+    public void updatePosition(float timeFactor) {
+        float x = this.position.getX();
+        float y = this.position.getY();
+        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
+        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
+        this.position = new Position(x, y);
     }
 
     public void updateSpeed(float timeFactor) {
@@ -75,7 +86,7 @@ public class Ball extends FieldObject {
         float playerTargetSpeedDirection = player.getTargetSpeed().getDirection();
         float playerOrientation = player.getOrientation();
         float angleIncrement = player.getControlAngle() * CONTROL_CONE_SHIFT_MULTIPLIER;
-        float playerSpeed = player.getSpeed().getMagnitude() * player.getMagnitudeSpeed();
+        float playerSpeed = player.getSpeed().getMagnitude() * player.getFullMagnitudeSpeed();
         float newBallSpeedMagnitude;
 
         if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
@@ -121,10 +132,6 @@ public class Ball extends FieldObject {
     }
 
     public void shoot(Player player, float shotPowerMeter, Position aimTarget) {
-        //Log.d("ball target x", "" + aimTarget.getX());
-        //Log.d("ball target y", "" + aimTarget.getY());
-        Log.d("shot power ", "" + shotPowerMeter);
-
         float failedGaussianFactor;
         float shotPowerFactor;
         if (shotPowerMeter <= SHOT_POWER_METER_OPTIMAL) {
@@ -143,6 +150,30 @@ public class Ball extends FieldObject {
         EpicalMath.sanitizeDirection(realDirection);
 
         this.getSpeed().setDirection(realDirection);
-        this.getSpeed().setMagnitude(shotPowerFactor * player.getShotpower());
+        this.getSpeed().setMagnitude(shotPowerFactor * player.getShotPower());
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public float getFullMagnitudeSpeed() {
+        return fullMagnitudeSpeed;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Vector getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Vector speed) {
+        this.speed = speed;
     }
 }

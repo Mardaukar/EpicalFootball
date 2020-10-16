@@ -9,17 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".MenuActivity" android:screenOrientation="portrait">
+        <activity android:name=".activities.MenuActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity" android:screenOrientation="portrait">
+        <activity android:name=".activities.GameActivity" android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".ResultActivity" android:screenOrientation="portrait">
+        <activity android:name=".activities.ResultActivity" android:screenOrientation="portrait">
 
         </activity>
     </application>

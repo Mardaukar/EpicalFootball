@@ -2,6 +2,8 @@ package com.example.epicalfootball;
 
 import android.graphics.RectF;
 
+import com.example.epicalfootball.activities.GameActivity;
+
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
@@ -225,7 +227,7 @@ public class GameState {
     }
 
     public boolean ballInGoal() {
-        return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.position.getX(), ball.position.getY(), ball.getRadius());
+        return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius());
     }
 
     public void handleBoundaryCollision(Player player) {

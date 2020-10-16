@@ -26,7 +26,6 @@ public class GameRunner extends Thread {
         while(running) {
             begin = System.currentTimeMillis();
             elapsed = begin - lastTime;
-            //Log.d("Elapsed: ", "" + elapsed);
             lastTime = begin;
 
             gameState.updateGameState(elapsed);
@@ -40,15 +39,11 @@ public class GameRunner extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } else {
-                //Log.d("Elapsed: ", "SPLURGE");
             }
         }
-
     }
 
     public void shutdown() {
         running = false;
     }
-
 }
