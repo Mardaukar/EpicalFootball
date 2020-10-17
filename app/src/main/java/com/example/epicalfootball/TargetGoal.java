@@ -15,8 +15,8 @@ public class TargetGoal {
     private float horizontalSpeed;
     Random random = new Random();
 
-    public TargetGoal(float distance, boolean longshot, Player player) {
-        if (!longshot) {
+    public TargetGoal(float distance, boolean longShot, Player player) {
+        if (!longShot) {
             this.size = player.getAccuracyDistance() / distance;
         } else {
             this.size = player.getAccuracyDistance() / (LONG_SHOTS_LIMIT + (distance - LONG_SHOTS_LIMIT) * player.getLongshotsAccuracy());
@@ -37,7 +37,7 @@ public class TargetGoal {
             this.positionX = random.nextFloat() * (FULL - this.size);
             this.positionY = random.nextFloat() * (FULL - this.size) / TARGET_GOAL_WIDTH_TO_HEIGHT;
 
-            if (!longshot) {
+            if (!longShot) {
                 speed = (FULL - this.size) * TARGET_GOAL_MOVE_SPEED * player.getFinishingTargetGoalSpeed();
             } else {
                 speed = (FULL - this.size) * TARGET_GOAL_MOVE_SPEED * player.getLongshotsTargetGoalSpeed();

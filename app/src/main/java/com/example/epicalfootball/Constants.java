@@ -5,9 +5,13 @@ public class Constants {
     //PLAYER
     public static Position PLAYER_STARTING_POSITION = new Position(5, 30);
     public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
+    public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
+    public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
+    public static float PLAYER_BASE_DECELERATION = 0.3f;
+    public static float DRIBBLING_KICK_FORWARD = 0.2f;
 
     //BALL
-    public static float BALL_RADIUS = 0.4f;
+    public static float BALL_RADIUS = 0.35f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
     public static float BALL_BASE_DECELERATION = 0.2f;
 
@@ -18,7 +22,8 @@ public class Constants {
     public static float FIELD_IMAGE_TOUCHLINE_FROM_TOP_PIXELS = 30;
     public static float FIELD_IMAGE_GOAL_DEPTH_PIXELS = 27;
     public static float FIELD_IMAGE_BOX_HEIGHT_PIXELS = 170;
-    public static float FIELD_IMAGE_HEIGHT_WIDTH_RATIO =  FIELD_IMAGE_HEIGHT_PIXELS / FIELD_IMAGE_WIDTH_PIXELS;*/
+    public static float FIELD_IMAGE_HEIGHT_WIDTH_RATIO =  FIELD_IMAGE_HEIGHT_PIXELS / FIELD_IMAGE_WIDTH_PIXELS;
+    */
 
     //FIELD IMAGE (smallfield)
     public static float FIELD_IMAGE_WIDTH_PIXELS = 500;
@@ -36,25 +41,17 @@ public class Constants {
     public static float GOAL_DEPTH = FIELD_IMAGE_GOAL_DEPTH_PIXELS * METERS_PER_PIXELS;
     public static float TOUCHLINE_FROM_TOP = FIELD_IMAGE_TOUCHLINE_FROM_TOP_PIXELS * METERS_PER_PIXELS;
     public static float BOUNDARY_WIDTH = 1;
-
-    //GOAL
     public static float POST_RADIUS = 0.15f;
     public static float GOAL_WIDTH = 7.32f;
 
-    //MATCH
-    public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
+    //MATCH PLAY
     public static int BALLS_AT_START = 10;
-
-    //GAME PLAY
+    public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
     public static int GAME_UPDATE_TIME = 30;
-    public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
-    public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
-    public static float PLAYER_BASE_DECELERATION = 0.3f;
-    public static float LINESEGMENT_COLLISION_SPEED_MULTIPLIER = 0.3f;
+    public static float LINE_SEGMENT_COLLISION_SPEED_MULTIPLIER = 0.3f;
     public static float POST_COLLISION_SPEED_MULTIPLIER = 0.6f;
     public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
-    public static float DRIBBLING_KICK_FORWARD = 0.2f;
     public static long BALL_FEED_TIMER = 500;
 
     //SHOOTING
@@ -87,7 +84,6 @@ public class Constants {
     public static float CONTROL_VIEW_MAXIMUM_LIMIT = 0.8f;
     public static float DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE = 0.12f;
     public static float CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE = 0.1f;
-    public static float TARGET_DOT_RADIUS_OF_CONTROL_SURFACE = 0.05f;
 
     //VISUAL
     public static int FULL_ALPHA = 255;
@@ -102,10 +98,6 @@ public class Constants {
     public static float POST_WIDTH_IN_TARGET_PNG = 0.115f;
     public static int FAILED_SHOT_BASE_ALPHA = 50;
     public static int FAILED_SHOT_INCREMENTAL_ALPHA = 100;
-
-    //RUNNER
-    public static long ELAPSED_LIMIT_IN_MILLISECONDS = 150;
-    public static long SLEEP_TIME_IN_MILLISECONDS = 10;
 
     //MATHEMATICAL
     public static float FULL_MAGNITUDE = 1f;
@@ -123,20 +115,20 @@ public class Constants {
     public static float MAX_ACCELERATION_TURN = 6;
     public static float MIN_SPEED_VALUE = 6;
     public static float MAX_SPEED_VALUE = 12;
-    public static float MIN_BALLCONTROL_ANGLE = (float)Math.PI / 4;
-    public static float MAX_BALLCONTROL_ANGLE = (float)Math.PI / 2.2f;
-    public static float MIN_BALLCONTROL_RADIUS = 0f;
-    public static float MAX_BALLCONTROL_RADIUS = 0.6f;
-    public static float MIN_BALLCONTROL_BALL_SPEED = 0.01f;
-    public static float MAX_BALLCONTROL_BALL_SPEED = 0.03f;
-    public static float MIN_BALLCONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER;
-    public static float MAX_BALLCONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER / 5;
-    public static float MIN_DRIBBLING_VALUE = 0.5f;
-    public static float MAX_DRIBBLING_VALUE = 1;
+    public static float MIN_BALL_CONTROL_ANGLE = (float)Math.PI / 4;
+    public static float MAX_BALL_CONTROL_ANGLE = (float)Math.PI / 2.2f;
+    public static float MIN_BALL_CONTROL_RADIUS = 0f;
+    public static float MAX_BALL_CONTROL_RADIUS = 0.6f;
+    public static float MIN_BALL_CONTROL_BALL_SPEED = 0.01f;
+    public static float MAX_BALL_CONTROL_BALL_SPEED = 0.03f;
+    public static float MIN_BALL_CONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER;
+    public static float MAX_BALL_CONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER / 5;
+    public static float MIN_DRIBBLING_LIMIT = 0.5f;
+    public static float MAX_DRIBBLING_LIMIT = 1;
     public static float MIN_DRIBBLING_TARGET = 0.9f;
     public static float MAX_DRIBBLING_TARGET = 1.1f;
-    public static float MAX_SHOTPOWER_VALUE = 6f;
-    public static float MIN_SHOTPOWER_VALUE = 2f;
+    public static float MAX_SHOT_POWER_VALUE = 6f;
+    public static float MIN_SHOT_POWER_VALUE = 2f;
     public static float MIN_MID_SHOT_POWER = 25;
     public static float MAX_MID_SHOT_POWER = 75;
     public static float MIN_ACCURACY_DISTANCE = 6;
@@ -147,25 +139,25 @@ public class Constants {
     public static float MAX_ACCURACY_GAUSSIAN_FACTOR = 0;
     public static float MIN_TARGET_GOAL_SPEED = 1;
     public static float MAX_TARGET_GOAL_SPEED = 0.5f;
-    public static float MIN_LONGSHOTS_ACCURACY = 1;
-    public static float MAX_LONGSHOTS_ACCURACY = 0.5f;
+    public static float MIN_LONG_SHOTS_ACCURACY = 1;
+    public static float MAX_LONG_SHOTS_ACCURACY = 0.5f;
 
     //PLAYER VALUE INCREMENTS
     public static float REACH_VALUE_INCREMENT = (MAX_REACH_VALUE - MIN_REACH_VALUE) / 10;
     public static float ACCELERATION_VALUE_INCREMENT = (MAX_ACCELERATION_VALUE - MIN_ACCELERATION_VALUE) / 10;
     public static float ACCELERATION_TURN_INCREMENT = (MAX_ACCELERATION_TURN - MIN_ACCELERATION_TURN) / 10;
     public static float SPEED_VALUE_INCREMENT = (MAX_SPEED_VALUE - MIN_SPEED_VALUE) / 10;
-    public static float BALLCONTROL_ANGLE_INCREMENT = (MAX_BALLCONTROL_ANGLE - MIN_BALLCONTROL_ANGLE) / 10;
-    public static float BALLCONTROL_RADIUS_INCREMENT = (MAX_BALLCONTROL_RADIUS - MIN_BALLCONTROL_RADIUS) / 10;
-    public static float BALLCONTROL_BALL_SPEED_INCREMENT = (MAX_BALLCONTROL_BALL_SPEED - MIN_BALLCONTROL_BALL_SPEED) / 10;
-    public static float BALLCONTROL_FIRST_TOUCH_INCREMENT = (MAX_BALLCONTROL_FIRST_TOUCH - MIN_BALLCONTROL_FIRST_TOUCH) / 10;
-    public static float DRIBBLING_VALUE_INCREMENT = (MAX_DRIBBLING_VALUE - MIN_DRIBBLING_VALUE) / 10;
+    public static float BALL_CONTROL_ANGLE_INCREMENT = (MAX_BALL_CONTROL_ANGLE - MIN_BALL_CONTROL_ANGLE) / 10;
+    public static float BALL_CONTROL_RADIUS_INCREMENT = (MAX_BALL_CONTROL_RADIUS - MIN_BALL_CONTROL_RADIUS) / 10;
+    public static float BALL_CONTROL_BALL_SPEED_INCREMENT = (MAX_BALL_CONTROL_BALL_SPEED - MIN_BALL_CONTROL_BALL_SPEED) / 10;
+    public static float BALL_CONTROL_FIRST_TOUCH_INCREMENT = (MAX_BALL_CONTROL_FIRST_TOUCH - MIN_BALL_CONTROL_FIRST_TOUCH) / 10;
+    public static float DRIBBLING_LIMIT_INCREMENT = (MAX_DRIBBLING_LIMIT - MIN_DRIBBLING_LIMIT) / 10;
     public static float DRIBBLING_TARGET_INCREMENT = (MAX_DRIBBLING_TARGET - MIN_DRIBBLING_TARGET) / 10;
-    public static float SHOTPOWER_VALUE_INCREMENT = (MAX_SHOTPOWER_VALUE - MIN_SHOTPOWER_VALUE) / 10;
+    public static float SHOT_POWER_VALUE_INCREMENT = (MAX_SHOT_POWER_VALUE - MIN_SHOT_POWER_VALUE) / 10;
     public static float ACCURACY_DISTANCE_INCREMENT = (MAX_ACCURACY_DISTANCE - MIN_ACCURACY_DISTANCE) / 10;
     public static float ACCURACY_TARGET_DOT_INCREMENT = (MAX_ACCURACY_TARGET_DOT - MIN_ACCURACY_TARGET_DOT) / 10;
     public static float ACCURACY_GAUSSIAN_FACTOR_INCREMENT = (MAX_ACCURACY_GAUSSIAN_FACTOR - MIN_ACCURACY_GAUSSIAN_FACTOR) / 10;
     public static float TARGET_GOAL_SPEED_INCREMENT = (MAX_TARGET_GOAL_SPEED - MIN_TARGET_GOAL_SPEED) / 10;
     public static float MID_SHOT_POWER_INCREMENT = (MAX_MID_SHOT_POWER - MIN_MID_SHOT_POWER) / 10;
-    public static float LONGSHOTS_ACCURACY_INCREMENT = (MAX_LONGSHOTS_ACCURACY - MIN_LONGSHOTS_ACCURACY) / 10;
+    public static float LONG_SHOTS_ACCURACY_INCREMENT = (MAX_LONG_SHOTS_ACCURACY - MIN_LONG_SHOTS_ACCURACY) / 10;
 }

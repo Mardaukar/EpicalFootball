@@ -55,7 +55,6 @@ public class MatchActivity extends Activity {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
                         matchState.setControl(touchX / sideLength, touchY / sideLength, sideLength);
-                        //Log.d("activity control", "" + touchX + " " + touchY + " " + sideLength);
                         break;
                     default:
                         matchState.setControlOffWithDecelerate(false);

@@ -132,7 +132,7 @@ public class Collisions {
 
     public static void handleLineSegmentCollision(RectF line, Ball ball) {
         if (EpicalMath.checkIntersect(line, ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
-            ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINESEGMENT_COLLISION_SPEED_MULTIPLIER);
+            ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINE_SEGMENT_COLLISION_SPEED_MULTIPLIER);
 
             if (line.height() < line.width()) {
                 if (ball.getPosition().getY() < line.centerY()) {

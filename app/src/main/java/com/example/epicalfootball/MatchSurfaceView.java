@@ -31,11 +31,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         paint = new Paint();
         clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
         this.matchState = matchState;
-
-        //What is this?
-        //setFocusable(true);
 
         if(surfaceHolder == null) {
             surfaceHolder = getHolder();
@@ -77,6 +73,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         Player player = matchState.getPlayer();
         GoalFrame goalFrame = matchState.getGoalFrame();
         float pixelPerMeter = surfaceWidth / FIELD_WIDTH;
+        float touchlineFromTop = TOUCHLINE_FROM_TOP * pixelPerMeter;
 
         Canvas canvas = surfaceHolder.lockCanvas();
 
@@ -84,19 +81,22 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             //CLEAR FIELD SURFACE
             canvas.drawRect(0, 0, surfaceWidth, surfaceWidth * FIELD_IMAGE_HEIGHT_WIDTH_RATIO, clearPaint);
 
-            //DRAW BALL SHADOW
+            //DRAW SHADOWS
             paint.setColor(Color.BLACK);
             paint.setAlpha(SHADOW_ALPHA);
+            float shadowOffset = surfaceWidth * SHADOW_OFFSET;
+
+            //DRAW BALL SHADOW
             Position ballPosition = matchState.getBall().getPosition();
             drawPositionX = ballPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
-            drawPositionY = ballPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
-            canvas.drawCircle(drawPositionX + surfaceWidth * SHADOW_OFFSET, drawPositionY + surfaceWidth * SHADOW_OFFSET, pixelPerMeter * BALL_RADIUS, paint);
+            drawPositionY = ballPosition.getY() * pixelPerMeter + touchlineFromTop;
+            canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * BALL_RADIUS, paint);
 
             //DRAW PLAYER SHADOW
             Position playerPosition = player.getPosition();
             drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
-            drawPositionY = playerPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
-            canvas.drawCircle(drawPositionX + surfaceWidth * SHADOW_OFFSET, drawPositionY + surfaceWidth * SHADOW_OFFSET, pixelPerMeter * player.getRadius(), paint);
+            drawPositionY = playerPosition.getY() * pixelPerMeter + touchlineFromTop;
+            canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * player.getRadius(), paint);
 
             //DRAW GOAL SHADOW
             Circle leftPost = goalFrame.getLeftPost();
@@ -106,23 +106,23 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             RectF leftNet = goalFrame.getLeftNet();
             RectF rightNet = goalFrame.getRightNet();
             RectF rearNet = goalFrame.getRearNet();
-            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, leftPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rightPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, leftSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rightSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, leftNet.right * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, leftNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, paint);
-            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rightNet.right * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rightNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, paint);
-            canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rearNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, rearNet.right * pixelPerMeter + surfaceWidth * HALF + surfaceWidth * SHADOW_OFFSET, rearNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter + surfaceWidth * SHADOW_OFFSET, paint);
+            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftPost.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, leftPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightPost.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, rightPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftSupport.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, leftSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightSupport.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, rightSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, leftNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
+            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, rightNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
+            canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rearNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, rearNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rearNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
 
             //DRAW BALL
             paint.setColor(Color.WHITE);
             drawPositionX = ballPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
-            drawPositionY = ballPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
+            drawPositionY = ballPosition.getY() * pixelPerMeter + touchlineFromTop;
             canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * BALL_RADIUS, paint);
 
             //DRAW PLAYER
             drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
-            drawPositionY = playerPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
+            drawPositionY = playerPosition.getY() * pixelPerMeter + touchlineFromTop;
             paint.setColor(getResources().getColor(R.color.playerColor));
             canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * player.getRadius(), paint);
 
@@ -136,20 +136,18 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
             //DRAW GOAL
             paint.setColor(Color.WHITE);
-            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF, leftPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, leftPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF, rightPost.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, rightPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF, leftSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, leftSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF, rightSupport.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, rightSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF, leftNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, leftNet.right * pixelPerMeter + surfaceWidth * HALF, leftNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, paint);
-            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF, rightNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, rightNet.right * pixelPerMeter + surfaceWidth * HALF, rightNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, paint);
-            canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF, rearNet.top * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, rearNet.right * pixelPerMeter + surfaceWidth * HALF, rearNet.bottom * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter, paint);
+            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF, leftPost.getY() * pixelPerMeter + touchlineFromTop, leftPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF, rightPost.getY() * pixelPerMeter + touchlineFromTop, rightPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF, leftSupport.getY() * pixelPerMeter + touchlineFromTop, leftSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF, rightSupport.getY() * pixelPerMeter + touchlineFromTop, rightSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF, leftNet.top * pixelPerMeter + touchlineFromTop, leftNet.right * pixelPerMeter + surfaceWidth * HALF, leftNet.bottom * pixelPerMeter + touchlineFromTop, paint);
+            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF, rightNet.top * pixelPerMeter + touchlineFromTop, rightNet.right * pixelPerMeter + surfaceWidth * HALF, rightNet.bottom * pixelPerMeter + touchlineFromTop, paint);
+            canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF, rearNet.top * pixelPerMeter + touchlineFromTop, rearNet.right * pixelPerMeter + surfaceWidth * HALF, rearNet.bottom * pixelPerMeter + touchlineFromTop, paint);
 
             //CLEAR CONTROL SURFACE
             canvas.drawRect(0, surfaceWidth * FIELD_IMAGE_HEIGHT_WIDTH_RATIO, surfaceWidth, surfaceHeight, clearPaint);
 
             if (matchState.isShootButtonDown()) {
-                //Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.)
-                //canvas.drawBitmap(bm, 0, 0, null);
                 Drawable targetGoalImage = getResources().getDrawable(R.drawable.football_goal, null);
 
                 if (matchState.getTargetGoal() != null) {
@@ -159,9 +157,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                     float targetGoalBottom = targetGoalTop + matchState.getTargetGoal().getSize() / 3 * CONTROL_AREA_FROM_HEIGHT;
 
                     targetGoalImage.setBounds((int) (targetGoalLeft * surfaceWidth), (int) (targetGoalTop * surfaceHeight), (int) (targetGoalRight * surfaceWidth), (int) (targetGoalBottom * surfaceHeight));
-                    //targetGoalImage.setBounds(0, 0, 50, 50);
                     targetGoalImage.draw(canvas);
-                    //canvas.drawCircle(surfaceWidth * HALF, surfaceHeight * CONTROL_AREA_CENTER_FROM_TOP, DECELERATE_DOT_RADIUS, paint);
                 }
 
                 if (matchState.isControlOn()) {
