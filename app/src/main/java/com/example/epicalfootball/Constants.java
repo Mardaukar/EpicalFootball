@@ -3,7 +3,10 @@ package com.example.epicalfootball;
 public class Constants {
 
     //PLAYER
-    public static Position PLAYER_STARTING_POSITION = new Position(5, 30);
+    public static Position OUTFIELD_PLAYER_STARTING_POSITION = new Position(5, 30);
+    public static float OUTFIELD_PLAYER_STARTING_ORIENTATION = (float)-Math.PI / 2;
+    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
+    public static float GOALKEEPER_STARTING_ORIENTATION = (float)Math.PI / 2;
     public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle

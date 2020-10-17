@@ -6,6 +6,11 @@ public abstract class Player {
     TargetSpeedVector targetSpeed;
     Vector speed;
 
+    float radius;
+    float acceleration;
+    float accelerationTurn;
+    float fullMagnitudeSpeed;
+
     public float getMagnitudeToOrientation() {
         float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.orientation);
 
@@ -46,5 +51,37 @@ public abstract class Player {
 
     public void setSpeed(Vector speed) {
         this.speed = speed;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public float getAcceleration() {
+        return acceleration;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public float getAccelerationTurn() {
+        return accelerationTurn;
+    }
+
+    public void setAccelerationTurn(float accelerationTurn) {
+        this.accelerationTurn = accelerationTurn;
+    }
+
+    public float getFullMagnitudeSpeed() {
+        return fullMagnitudeSpeed;
+    }
+
+    public void setFullMagnitudeSpeed(float fullMagnitudeSpeed) {
+        this.fullMagnitudeSpeed = fullMagnitudeSpeed;
     }
 }

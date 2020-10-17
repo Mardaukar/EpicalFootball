@@ -7,21 +7,21 @@ import static com.example.epicalfootball.Constants.*;
 
 public class Collisions {
 
-    public static void handlePlayerCircleCollision(Circle circle, OutfieldPlayer outfieldPlayer) {
-        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), outfieldPlayer.getRadius())) {
-            float centersDistance = circle.getRadius() + outfieldPlayer.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(outfieldPlayer.getPosition().getX() - circle.getX(), outfieldPlayer.getPosition().getY() - circle.getY());
-            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, outfieldPlayer.getSpeed().getDirection());
+    public static void handlePlayerCircleCollision(Circle circle, Player player) {
+        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
+            float centersDistance = circle.getRadius() + player.getRadius();
+            float collisionDirection = EpicalMath.convertToDirection(player.getPosition().getX() - circle.getX(), player.getPosition().getY() - circle.getY());
+            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getSpeed().getDirection());
 
-            outfieldPlayer.getPosition().setPosition(circle.getPosition());
-            outfieldPlayer.getPosition().addVector(collisionDirection, centersDistance);
+            player.getPosition().setPosition(circle.getPosition());
+            player.getPosition().addVector(collisionDirection, centersDistance);
 
             if (fieldObjectCollisionDifference > Math.PI * HALF) {
-                outfieldPlayer.getSpeed().bounceDirection(collisionDirection);
+                player.getSpeed().bounceDirection(collisionDirection);
             }
 
-            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, outfieldPlayer.getSpeed().getDirection());
-            outfieldPlayer.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float)Math.cos(newDifference)) * outfieldPlayer.getSpeed().getMagnitude() * POST_COLLISION_SPEED_MULTIPLIER);
+            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getSpeed().getDirection());
+            player.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float)Math.cos(newDifference)) * player.getSpeed().getMagnitude() * POST_COLLISION_SPEED_MULTIPLIER);
         }
     }
 
@@ -162,10 +162,10 @@ public class Collisions {
         }
     }
 
-    public static void handleLineSegmentCollision(RectF line, OutfieldPlayer outfieldPlayer) {
-        if (EpicalMath.checkIntersect(line, outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), outfieldPlayer.getRadius())) {
+    public static void handleLineSegmentCollision(RectF line, Player player) {
+        if (EpicalMath.checkIntersect(line, player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
             if (line.height() < line.width()) {
-                if (outfieldPlayer.getPosition().getY() < line.centerY()) {
+                if (player.getPosition().getY() < line.centerY()) {
                     /*if (player.getSpeed().getDirection() > 0) {
                         if (player.getSpeed().getDirection() > Math.PI / 2) {
                             player.getSpeed().setDirection((float)Math.PI);
@@ -173,7 +173,7 @@ public class Collisions {
                             player.getSpeed().setDirection(0);
                         }
                     }*/
-                    outfieldPlayer.getPosition().setY(line.top - outfieldPlayer.getRadius());
+                    player.getPosition().setY(line.top - player.getRadius());
                 } else {
                     /*if (player.getSpeed().getDirection() < 0) {
                         if (player.getSpeed().getDirection() < -Math.PI / 2) {
@@ -182,10 +182,10 @@ public class Collisions {
                             player.getSpeed().setDirection(0);
                         }
                     }*/
-                    outfieldPlayer.getPosition().setY(line.bottom + outfieldPlayer.getRadius());
+                    player.getPosition().setY(line.bottom + player.getRadius());
                 }
             } else {
-                if (outfieldPlayer.getPosition().getX() < line.centerX()) {
+                if (player.getPosition().getX() < line.centerX()) {
                     /*if (Math.abs(player.getSpeed().getDirection()) < Math.PI / 2) {
                         if (player.getSpeed().getDirection() < 0) {
                             player.getSpeed().setDirection((float)-Math.PI / 2);
@@ -193,7 +193,7 @@ public class Collisions {
                             player.getSpeed().setDirection((float)Math.PI / 2);
                         }
                     }*/
-                    outfieldPlayer.getPosition().setX(line.left - outfieldPlayer.getRadius());
+                    player.getPosition().setX(line.left - player.getRadius());
                 } else {
                     /*if (Math.abs(player.getSpeed().getDirection()) > Math.PI / 2) {
                         if (player.getSpeed().getDirection() < 0) {
@@ -202,7 +202,7 @@ public class Collisions {
                             player.getSpeed().setDirection((float)Math.PI / 2);
                         }
                     }*/
-                    outfieldPlayer.getPosition().setX(line.right + outfieldPlayer.getRadius());
+                    player.getPosition().setX(line.right + player.getRadius());
                 }
             }
         }

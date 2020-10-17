@@ -4,10 +4,6 @@ import static com.example.epicalfootball.Constants.*;
 import static com.example.epicalfootball.activities.MenuActivity.playerAttributes;
 
 public class OutfieldPlayer extends Player {
-    private float radius;
-    private float acceleration;
-    private float accelerationTurn;
-    private float fullMagnitudeSpeed;
     private float controlAngle;
     private float controlRadius;
     private float controlBallSpeed;
@@ -36,8 +32,8 @@ public class OutfieldPlayer extends Player {
     }
 
     public OutfieldPlayer() {
-        this.position = PLAYER_STARTING_POSITION;
-        this.orientation = 0;
+        this.position = OUTFIELD_PLAYER_STARTING_POSITION;
+        this.orientation = OUTFIELD_PLAYER_STARTING_ORIENTATION;
         this.targetSpeed = new TargetSpeedVector();
         this.speed = new Vector();
 
@@ -162,38 +158,6 @@ public class OutfieldPlayer extends Player {
                 this.kickRecoveryTimer = 0;
             }
         }
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
-
-    public float getAcceleration() {
-        return acceleration;
-    }
-
-    public void setAcceleration(float acceleration) {
-        this.acceleration = acceleration;
-    }
-
-    public float getAccelerationTurn() {
-        return accelerationTurn;
-    }
-
-    public void setAccelerationTurn(float accelerationTurn) {
-        this.accelerationTurn = accelerationTurn;
-    }
-
-    public float getFullMagnitudeSpeed() {
-        return fullMagnitudeSpeed;
-    }
-
-    public void setFullMagnitudeSpeed(float fullMagnitudeSpeed) {
-        this.fullMagnitudeSpeed = fullMagnitudeSpeed;
     }
 
     public float getControlAngle() {

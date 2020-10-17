@@ -71,6 +71,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         float surfaceWidth = this.getWidth();
         float surfaceHeight = this.getHeight();
         OutfieldPlayer outfieldPlayer = matchState.getOutfieldPlayer();
+        Goalkeeper goalkeeper = matchState.getGoalkeeper();
         GoalFrame goalFrame = matchState.getGoalFrame();
         float pixelPerMeter = surfaceWidth / FIELD_WIDTH;
         float touchlineFromTop = TOUCHLINE_FROM_TOP * pixelPerMeter;
@@ -92,10 +93,16 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             drawPositionY = ballPosition.getY() * pixelPerMeter + touchlineFromTop;
             canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * BALL_RADIUS, paint);
 
-            //DRAW PLAYER SHADOW
-            Position playerPosition = outfieldPlayer.getPosition();
-            drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
-            drawPositionY = playerPosition.getY() * pixelPerMeter + touchlineFromTop;
+            //DRAW GOALKEEPER SHADOW
+            Position goalkeeperPosition = goalkeeper.getPosition();
+            drawPositionX = goalkeeperPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+            drawPositionY = goalkeeperPosition.getY() * pixelPerMeter + touchlineFromTop;
+            canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * goalkeeper.getRadius(), paint);
+
+            //DRAW OUTFIELD PLAYER SHADOW
+            Position outfieldPlayerPosition = outfieldPlayer.getPosition();
+            drawPositionX = outfieldPlayerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+            drawPositionY = outfieldPlayerPosition.getY() * pixelPerMeter + touchlineFromTop;
             canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * outfieldPlayer.getRadius(), paint);
 
             //DRAW GOAL SHADOW
@@ -120,10 +127,16 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             drawPositionY = ballPosition.getY() * pixelPerMeter + touchlineFromTop;
             canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * BALL_RADIUS, paint);
 
-            //DRAW PLAYER
-            drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
-            drawPositionY = playerPosition.getY() * pixelPerMeter + touchlineFromTop;
-            paint.setColor(getResources().getColor(R.color.playerColor));
+            //DRAW GOALKEEPER
+            drawPositionX = goalkeeperPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+            drawPositionY = goalkeeperPosition.getY() * pixelPerMeter + touchlineFromTop;
+            paint.setColor(getResources().getColor(R.color.goalkeeperColor));
+            canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * goalkeeper.getRadius(), paint);
+
+            //DRAW OUTFIELD PLAYER
+            drawPositionX = outfieldPlayerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
+            drawPositionY = outfieldPlayerPosition.getY() * pixelPerMeter + touchlineFromTop;
+            paint.setColor(getResources().getColor(R.color.outfieldPlayerColor));
             canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * outfieldPlayer.getRadius(), paint);
 
             //DRAW CONTROL SECTOR

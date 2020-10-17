@@ -14,6 +14,7 @@ public class MatchState {
     private int ballsLeft;
     private int goalsScored;
     private final GoalFrame goalFrame;
+    private Goalkeeper goalkeeper;
     private OutfieldPlayer outfieldPlayer;
     private Ball ball;
     private boolean canScore;
@@ -39,6 +40,7 @@ public class MatchState {
 
     public MatchState(MatchActivity matchActivity) {
         this.matchActivity = matchActivity;
+        this.goalkeeper = new Goalkeeper();
         this.outfieldPlayer = new OutfieldPlayer();
         this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
@@ -58,6 +60,7 @@ public class MatchState {
         handlePlayerControls(elapsed, timeFactor);
         this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
         handleBoundaryCollision(outfieldPlayer);
+        this.goalFrame.handleGoalCollision(goalkeeper);
         this.goalFrame.handleGoalCollision(outfieldPlayer);
 
         if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
@@ -65,9 +68,12 @@ public class MatchState {
         }
 
         this.goalFrame.handleGoalCollision(ball);
+        goalkeeper.updatePosition(timeFactor);
+        goalkeeper.updateOrientation(timeFactor);
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);
         ball.updatePosition(timeFactor);
+        goalkeeper.updateSpeed(timeFactor);
         outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
         ball.updateSpeed(timeFactor);
         checkBallOver();
@@ -299,6 +305,14 @@ public class MatchState {
 
     public GoalFrame getGoalFrame() {
         return goalFrame;
+    }
+
+    public Goalkeeper getGoalkeeper() {
+        return goalkeeper;
+    }
+
+    public void setGoalkeeper(Goalkeeper goalkeeper) {
+        this.goalkeeper = goalkeeper;
     }
 
     public OutfieldPlayer getOutfieldPlayer() {
