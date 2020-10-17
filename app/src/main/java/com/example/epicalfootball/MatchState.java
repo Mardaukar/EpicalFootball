@@ -11,35 +11,31 @@ import static com.example.epicalfootball.Constants.*;
 public class MatchState {
 
     private MatchActivity matchActivity;
-    private Player player;
-    private Ball ball;
     private int ballsLeft;
     private int goalsScored;
+    private final GoalFrame goalFrame;
+    private Player player;
+    private Ball ball;
+    private boolean canScore;
+    private long newBallTimer;
+    private long ballFeedTimer;
+    private final Random random = new Random();
+    private final RectF leftBoundary = new RectF(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH, -TOUCHLINE_FROM_TOP, -FIELD_WIDTH * HALF, FIELD_HEIGHT);
+    private final RectF rightBoundary = new RectF(FIELD_WIDTH * HALF, -TOUCHLINE_FROM_TOP, FIELD_WIDTH * HALF + BOUNDARY_WIDTH, FIELD_HEIGHT);
+    private final RectF topBoundary = new RectF(-FIELD_WIDTH, -TOUCHLINE_FROM_TOP - BOUNDARY_WIDTH, FIELD_WIDTH, -TOUCHLINE_FROM_TOP);
+    private final RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT + BOUNDARY_WIDTH);
 
     private boolean controlOn = false;
     private float controlX;
     private float controlY;
-    private float controlWidth;
     private boolean decelerateOn = false;
     private boolean shootButtonDown = false;
     private boolean readyToShoot = false;
     private float shotPowerMeter = 0;
     private float shootingTimer = 0;
-    private GoalFrame goalFrame;
     private TargetGoal targetGoal;
     private Position aimTarget;
-    private boolean longshot;
-
-    private boolean canScore;
-    private long newBallTimer;
-    private long ballFeedTimer;
-
-    private Random random = new Random();
-
-    private RectF leftBoundary = new RectF(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH, -TOUCHLINE_FROM_TOP, -FIELD_WIDTH * HALF, FIELD_HEIGHT);
-    private RectF rightBoundary = new RectF(FIELD_WIDTH * HALF, -TOUCHLINE_FROM_TOP, FIELD_WIDTH * HALF + BOUNDARY_WIDTH, FIELD_HEIGHT);
-    private RectF topBoundary = new RectF(-FIELD_WIDTH, -TOUCHLINE_FROM_TOP - BOUNDARY_WIDTH, FIELD_WIDTH, -TOUCHLINE_FROM_TOP);
-    private RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT + BOUNDARY_WIDTH);
+    private boolean longShot;
 
     public MatchState(MatchActivity matchActivity) {
         this.matchActivity = matchActivity;
@@ -56,33 +52,28 @@ public class MatchState {
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
-        if (ballFeedTimer > 0) {
-            ballFeedTimer -= elapsed;
+        updateBallFeedTimer(elapsed);
+        updateNewBallTimer(elapsed);
+        player.updateKickRecoveryTimer(elapsed);
+        handlePlayerControls(elapsed, timeFactor);
+        this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
+        handleBoundaryCollision(player);
+        this.goalFrame.handleGoalCollision(player);
 
-            if (ballFeedTimer <= 0) {
-                ballFeedTimer = 0;
-                canScore = true;
-            }
+        if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot, aimTarget)) {
+            handleShootBall();
         }
 
-        if (newBallTimer > 0) {
-            newBallTimer -= elapsed;
+        this.goalFrame.handleGoalCollision(ball);
+        player.updatePosition(timeFactor);
+        player.updateOrientation(timeFactor);
+        ball.updatePosition(timeFactor);
+        player.updateSpeed(timeFactor, decelerateOn, ball);
+        ball.updateSpeed(timeFactor);
+        checkBallOver();
+    }
 
-            if (newBallTimer <= 0) {
-                newBallTimer = 0;
-
-                if (this.ballsLeft > 1) {
-                    ballFeedTimer = BALL_FEED_TIMER;
-                    substractBall();
-                    this.ball = feedNewBall();
-                } else {
-                    matchActivity.goToResult(this.goalsScored);
-                }
-            }
-        }
-
-        player.updateRecoveryTimer(elapsed);
-
+    public void handlePlayerControls(float elapsed, float timeFactor) {
         if (shootButtonDown) {
             player.setAimRecoveryTimer(0);
             float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
@@ -93,12 +84,12 @@ public class MatchState {
                 float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
 
                 if (distance < LONG_SHOTS_LIMIT) {
-                    longshot = false;
+                    longShot = false;
                 } else {
-                    longshot = true;
+                    longShot = true;
                 }
 
-                this.targetGoal = new TargetGoal(distance, longshot, this.getPlayer());
+                this.targetGoal = new TargetGoal(distance, longShot, this.getPlayer());
             }
 
             targetGoal.updatePosition(timeFactor);
@@ -108,7 +99,7 @@ public class MatchState {
                 this.shotPowerMeter = 0;
             }
 
-            if (!longshot) {
+            if (!longShot) {
                 if (this.shotPowerMeter < player.getFinishingMidShotPower()) {
                     this.shotPowerMeter += player.getFinishingMidShotPower() / (SHOT_POWER_METER_OPTIMAL - player.getFinishingMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 } else {
@@ -168,38 +159,34 @@ public class MatchState {
 
             this.targetGoal = null;
         }
+    }
 
-        this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
+    public void updateBallFeedTimer(float elapsed) {
+        if (ballFeedTimer > 0) {
+            ballFeedTimer -= elapsed;
 
-        handleBoundaryCollision(player);
-        this.goalFrame.handleGoalCollision(player);
-
-        if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot, aimTarget)) {
-            this.ball.shoot(player, shotPowerMeter, aimTarget);
-            player.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
-            player.getSpeed().setMagnitude(player.getSpeed().getMagnitude() * PLAYER_SLOW_ON_SHOT_FACTOR);
-            this.readyToShoot = false;
-            this.shotPowerMeter = 0;
-            this.shootingTimer = 0;
-            player.setAimRecoveryTimer(0);
+            if (ballFeedTimer <= 0) {
+                ballFeedTimer = 0;
+                canScore = true;
+            }
         }
+    }
 
-        this.goalFrame.handleGoalCollision(ball);
+    public void updateNewBallTimer(float elapsed) {
+        if (newBallTimer > 0) {
+            newBallTimer -= elapsed;
 
-        player.updatePosition(timeFactor);
-        player.updateOrientation(timeFactor);
-        ball.updatePosition(timeFactor);
+            if (newBallTimer <= 0) {
+                newBallTimer = 0;
 
-        player.updateSpeed(timeFactor, decelerateOn, ball);
-        ball.updateSpeed(timeFactor);
-
-        if (ballInGoal() && canScore) {
-            addGoal();
-            canScore = false;
-            newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
-        } else if (ballOutOfBounds() && canScore) {
-            canScore = false;
-            newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+                if (this.ballsLeft > 1) {
+                    ballFeedTimer = BALL_FEED_TIMER;
+                    substractBall();
+                    this.ball = feedNewBall();
+                } else {
+                    matchActivity.goToResult(this.goalsScored);
+                }
+            }
         }
     }
 
@@ -217,6 +204,27 @@ public class MatchState {
         }
 
         return ball;
+    }
+
+    public void checkBallOver() {
+        if (ballInGoal() && canScore) {
+            addGoal();
+            canScore = false;
+            newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+        } else if (ballOutOfBounds() && canScore) {
+            canScore = false;
+            newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+        }
+    }
+
+    public void handleShootBall() {
+        this.ball.shoot(player, shotPowerMeter, aimTarget);
+        player.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
+        player.getSpeed().setMagnitude(player.getSpeed().getMagnitude() * PLAYER_SLOW_ON_SHOT_FACTOR);
+        this.readyToShoot = false;
+        this.shotPowerMeter = 0;
+        this.shootingTimer = 0;
+        player.setAimRecoveryTimer(0);
     }
 
     public boolean ballOutOfBounds() {
@@ -237,10 +245,6 @@ public class MatchState {
         Collisions.handleLineSegmentCollision(bottomBoundary, player);
     }
 
-    public boolean isDecelerateOn() {
-        return decelerateOn;
-    }
-
     public void setControlOn(float x, float y) {
         controlOn = true;
         controlX = x;
@@ -248,25 +252,145 @@ public class MatchState {
         decelerateOn = false;
     }
 
+    public void setControlOffWithDecelerate(boolean decelerate) {
+        controlOn = false;
+        decelerateOn = decelerate;
+    }
+
+    public void setControl(float touchX, float touchY, float sideLength) {
+        if (shootButtonDown) {
+            setControlOn(touchX, touchY);
+        } else {
+            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
+                setControlOffWithDecelerate(true);
+            } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
+                setControlOn(touchX, touchY);
+            } else {
+                setControlOffWithDecelerate(false);
+            }
+        }
+    }
+
+    public void addGoal() {
+        this.goalsScored++;
+        matchActivity.updateGoals(Integer.toString(goalsScored));
+    }
+
+    public void substractBall() {
+        this.ballsLeft--;
+        matchActivity.updateBallsLeft(Integer.toString(ballsLeft));
+    }
+
+    public int getBallsLeft() {
+        return ballsLeft;
+    }
+
+    public void setBallsLeft(int ballsLeft) {
+        this.ballsLeft = ballsLeft;
+    }
+
+    public int getGoalsScored() {
+        return goalsScored;
+    }
+
+    public void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+
+    public GoalFrame getGoalFrame() {
+        return goalFrame;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
+    public boolean isCanScore() {
+        return canScore;
+    }
+
+    public void setCanScore(boolean canScore) {
+        this.canScore = canScore;
+    }
+
+    public long getNewBallTimer() {
+        return newBallTimer;
+    }
+
+    public void setNewBallTimer(long newBallTimer) {
+        this.newBallTimer = newBallTimer;
+    }
+
+    public long getBallFeedTimer() {
+        return ballFeedTimer;
+    }
+
+    public void setBallFeedTimer(long ballFeedTimer) {
+        this.ballFeedTimer = ballFeedTimer;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public RectF getLeftBoundary() {
+        return leftBoundary;
+    }
+
+    public RectF getRightBoundary() {
+        return rightBoundary;
+    }
+
+    public RectF getTopBoundary() {
+        return topBoundary;
+    }
+
+    public RectF getBottomBoundary() {
+        return bottomBoundary;
+    }
+
     public boolean isControlOn() {
         return controlOn;
+    }
+
+    public void setControlOn(boolean controlOn) {
+        this.controlOn = controlOn;
     }
 
     public float getControlX() {
         return controlX;
     }
 
+    public void setControlX(float controlX) {
+        this.controlX = controlX;
+    }
+
     public float getControlY() {
         return controlY;
     }
 
-    public void setControlOffWithDecelerate(boolean decelerate) {
-        controlOn = false;
-        decelerateOn = decelerate;
+    public void setControlY(float controlY) {
+        this.controlY = controlY;
     }
 
-    public float getControlWidth() {
-        return controlWidth;
+    public boolean isDecelerateOn() {
+        return decelerateOn;
+    }
+
+    public void setDecelerateOn(boolean decelerateOn) {
+        this.decelerateOn = decelerateOn;
     }
 
     public boolean isShootButtonDown() {
@@ -285,55 +409,43 @@ public class MatchState {
         this.readyToShoot = readyToShoot;
     }
 
+    public float getShotPowerMeter() {
+        return shotPowerMeter;
+    }
+
+    public void setShotPowerMeter(float shotPowerMeter) {
+        this.shotPowerMeter = shotPowerMeter;
+    }
+
+    public float getShootingTimer() {
+        return shootingTimer;
+    }
+
+    public void setShootingTimer(float shootingTimer) {
+        this.shootingTimer = shootingTimer;
+    }
+
     public TargetGoal getTargetGoal() {
         return targetGoal;
     }
 
-    public GoalFrame getGoalFrame() {
-        return goalFrame;
+    public void setTargetGoal(TargetGoal targetGoal) {
+        this.targetGoal = targetGoal;
     }
 
-    public void setControl(float touchX, float touchY, float sideLength) {
-        if (shootButtonDown) {
-            setControlOn(touchX, touchY);
-        } else {
-            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
-                setControlOffWithDecelerate(true);
-            } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
-                setControlOn(touchX, touchY);
-            } else {
-                setControlOffWithDecelerate(false);
-            }
-        }
+    public Position getAimTarget() {
+        return aimTarget;
     }
 
-    public Player getPlayer() {
-        return player;
+    public void setAimTarget(Position aimTarget) {
+        this.aimTarget = aimTarget;
     }
 
-    public int getBallsLeft() {
-        return this.ballsLeft;
+    public boolean isLongShot() {
+        return longShot;
     }
 
-    public int getGoalsScored() {
-        return this.goalsScored;
-    }
-
-    public void addGoal() {
-        this.goalsScored++;
-        matchActivity.updateGoals(Integer.toString(goalsScored));
-    }
-
-    public void substractBall() {
-        this.ballsLeft--;
-        matchActivity.updateBallsLeft(Integer.toString(ballsLeft));
-    }
-
-    public Ball getBall() {
-        return ball;
-    }
-
-    public float getShotPowerMeter() {
-        return shotPowerMeter;
+    public void setLongShot(boolean longShot) {
+        this.longShot = longShot;
     }
 }

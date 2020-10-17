@@ -170,7 +170,7 @@ public class Player {
         }
     }
 
-    public void updateRecoveryTimer(float elapsed) {
+    public void updateKickRecoveryTimer(float elapsed) {
         if (this.kickRecoveryTimer > 0) {
             this.kickRecoveryTimer -= elapsed;
 
