@@ -12,16 +12,16 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.epicalfootball.GameState;
-import com.example.epicalfootball.GameView;
+import com.example.epicalfootball.MatchState;
+import com.example.epicalfootball.MatchSurfaceView;
 import com.example.epicalfootball.R;
 
 import static com.example.epicalfootball.Constants.*;
 
-public class GameActivity extends Activity {
+public class MatchActivity extends Activity {
 
-    private GameState gameState;
-    private GameView gameView;
+    private MatchState matchState;
+    private MatchSurfaceView matchSurfaceView;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -30,17 +30,17 @@ public class GameActivity extends Activity {
         toFullScreen();
         setContentView(R.layout.activity_game);
 
-        gameState = new GameState(this);
-        gameView = new GameView(this, gameState);
+        matchState = new MatchState(this);
+        matchSurfaceView = new MatchSurfaceView(this, matchState);
 
         ConstraintLayout gameLayout = findViewById(R.id.game_layout);
-        gameLayout.addView(gameView);
+        gameLayout.addView(matchSurfaceView);
 
         TextView balls_left_textView = findViewById(R.id.balls_number_textView);
-        balls_left_textView.setText(String.format("%d", gameState.getBallsLeft()));
+        balls_left_textView.setText(String.format("%d", matchState.getBallsLeft()));
 
         TextView goals_scored_textView = findViewById(R.id.goals_number_textView);
-        goals_scored_textView.setText(String.format("%d", gameState.getGoalsScored()));
+        goals_scored_textView.setText(String.format("%d", matchState.getGoalsScored()));
 
         View controlSurface = findViewById(R.id.control_surface);
         controlSurface.setOnTouchListener(new View.OnTouchListener() {
@@ -54,11 +54,11 @@ public class GameActivity extends Activity {
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        gameState.setControl(touchX / sideLength, touchY / sideLength, sideLength);
+                        matchState.setControl(touchX / sideLength, touchY / sideLength, sideLength);
                         //Log.d("activity control", "" + touchX + " " + touchY + " " + sideLength);
                         break;
                     default:
-                        gameState.setControlOffWithDecelerate(false);
+                        matchState.setControlOffWithDecelerate(false);
                         break;
                 }
 
@@ -75,12 +75,12 @@ public class GameActivity extends Activity {
 
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
-                        gameState.setShootButtonDown(true);
+                        matchState.setShootButtonDown(true);
                         shootButton.setBackgroundColor(SHOOT_BUTTON_DOWN_COLOR);
                         controlBackground.setImageResource(R.drawable.campnou_grass);
                         break;
                     case MotionEvent.ACTION_UP:
-                        gameState.setShootButtonDown(false);
+                        matchState.setShootButtonDown(false);
                         shootButton.setBackgroundColor(SHOOT_BUTTON_UP_COLOR);
                         controlBackground.setImageResource(R.drawable.fire_ring_medium);
                         break;
@@ -137,7 +137,7 @@ public class GameActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(GameActivity.this, ResultActivity.class);
+                Intent intent = new Intent(MatchActivity.this, ResultActivity.class);
                 intent.putExtra("goals_scored", goalsScored);
                 startActivity(intent);
             }

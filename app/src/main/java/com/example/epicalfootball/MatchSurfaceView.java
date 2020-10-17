@@ -15,24 +15,24 @@ import android.view.SurfaceView;
 
 import static com.example.epicalfootball.Constants.*;
 
-public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder surfaceHolder = null;
     private Paint paint;
     private Paint clearPaint;
     private float drawPositionX;
     private float drawPositionY;
 
-    private GameState gameState;
-    private GameRunner gameRunner;
+    private MatchState matchState;
+    private MatchRunner matchRunner;
 
-    public GameView (Context context, GameState gameState) {
+    public MatchSurfaceView(Context context, MatchState matchState) {
         super(context);
 
         paint = new Paint();
         clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
-        this.gameState = gameState;
+        this.matchState = matchState;
 
         //What is this?
         //setFocusable(true);
@@ -48,8 +48,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        gameRunner = new GameRunner(this, gameState);
-        gameRunner.start();
+        matchRunner = new MatchRunner(this, matchState);
+        matchRunner.start();
     }
 
     @Override
@@ -58,13 +58,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        if (gameRunner != null) {
-            gameRunner.shutdown();
+        if (matchRunner != null) {
+            matchRunner.shutdown();
 
-            while (gameRunner != null) {
+            while (matchRunner != null) {
                 try {
-                    gameRunner.join();
-                    gameRunner = null;
+                    matchRunner.join();
+                    matchRunner = null;
                 } catch (InterruptedException e) {
                 }
             }
@@ -74,8 +74,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void drawOnSurface() {
         float surfaceWidth = this.getWidth();
         float surfaceHeight = this.getHeight();
-        Player player = gameState.getPlayer();
-        GoalFrame goalFrame = gameState.getGoalFrame();
+        Player player = matchState.getPlayer();
+        GoalFrame goalFrame = matchState.getGoalFrame();
         float pixelPerMeter = surfaceWidth / FIELD_WIDTH;
 
         Canvas canvas = surfaceHolder.lockCanvas();
@@ -87,7 +87,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //DRAW BALL SHADOW
             paint.setColor(Color.BLACK);
             paint.setAlpha(SHADOW_ALPHA);
-            Position ballPosition = gameState.getBall().getPosition();
+            Position ballPosition = matchState.getBall().getPosition();
             drawPositionX = ballPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
             drawPositionY = ballPosition.getY() * pixelPerMeter + TOUCHLINE_FROM_TOP * pixelPerMeter;
             canvas.drawCircle(drawPositionX + surfaceWidth * SHADOW_OFFSET, drawPositionY + surfaceWidth * SHADOW_OFFSET, pixelPerMeter * BALL_RADIUS, paint);
@@ -147,16 +147,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //CLEAR CONTROL SURFACE
             canvas.drawRect(0, surfaceWidth * FIELD_IMAGE_HEIGHT_WIDTH_RATIO, surfaceWidth, surfaceHeight, clearPaint);
 
-            if (gameState.isShootButtonDown()) {
+            if (matchState.isShootButtonDown()) {
                 //Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.)
                 //canvas.drawBitmap(bm, 0, 0, null);
                 Drawable targetGoalImage = getResources().getDrawable(R.drawable.football_goal, null);
 
-                if (gameState.getTargetGoal() != null) {
-                    float targetGoalLeft = CONTROL_AREA_LEFT_FROM_LEFT + gameState.getTargetGoal().getPositionX() * CONTROL_AREA_FROM_WIDTH;
-                    float targetGoalTop = CONTROL_AREA_TOP_FROM_TOP + gameState.getTargetGoal().getPositionY() * CONTROL_AREA_FROM_HEIGHT;
-                    float targetGoalRight = targetGoalLeft + gameState.getTargetGoal().getSize() * CONTROL_AREA_FROM_WIDTH;
-                    float targetGoalBottom = targetGoalTop + gameState.getTargetGoal().getSize() / 3 * CONTROL_AREA_FROM_HEIGHT;
+                if (matchState.getTargetGoal() != null) {
+                    float targetGoalLeft = CONTROL_AREA_LEFT_FROM_LEFT + matchState.getTargetGoal().getPositionX() * CONTROL_AREA_FROM_WIDTH;
+                    float targetGoalTop = CONTROL_AREA_TOP_FROM_TOP + matchState.getTargetGoal().getPositionY() * CONTROL_AREA_FROM_HEIGHT;
+                    float targetGoalRight = targetGoalLeft + matchState.getTargetGoal().getSize() * CONTROL_AREA_FROM_WIDTH;
+                    float targetGoalBottom = targetGoalTop + matchState.getTargetGoal().getSize() / 3 * CONTROL_AREA_FROM_HEIGHT;
 
                     targetGoalImage.setBounds((int) (targetGoalLeft * surfaceWidth), (int) (targetGoalTop * surfaceHeight), (int) (targetGoalRight * surfaceWidth), (int) (targetGoalBottom * surfaceHeight));
                     //targetGoalImage.setBounds(0, 0, 50, 50);
@@ -164,17 +164,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     //canvas.drawCircle(surfaceWidth * HALF, surfaceHeight * CONTROL_AREA_CENTER_FROM_TOP, DECELERATE_DOT_RADIUS, paint);
                 }
 
-                if (gameState.isControlOn()) {
+                if (matchState.isControlOn()) {
                     paint.setColor(Color.WHITE);
                     paint.setAlpha(TARGET_DOT_ALPHA);
-                    float controlX = gameState.getControlX();
-                    float controlY = gameState.getControlY();
+                    float controlX = matchState.getControlX();
+                    float controlY = matchState.getControlY();
                     canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + 1) * surfaceHeight, player.getAccuracyTargetDot() * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
                 }
             } else {
                 paint.setColor(Color.BLUE);
 
-                if (gameState.isDecelerateOn()) {
+                if (matchState.isDecelerateOn()) {
                     paint.setAlpha(DECELERATE_ON_ALPHA);
                 } else {
                     paint.setAlpha(DECELERATE_OFF_ALPHA);
@@ -182,7 +182,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                 canvas.drawCircle(surfaceWidth * HALF, surfaceHeight * CONTROL_AREA_CENTER_FROM_TOP, DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
 
-                if (gameState.isControlOn()) {
+                if (matchState.isControlOn()) {
                     paint.setColor(Color.MAGENTA);
 
                     if (player.getTargetSpeed().getMagnitude() < 1) {
@@ -191,21 +191,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         paint.setAlpha(CONTROL_DOT_ALPHA + 100);
                     }
 
-                    float controlX = gameState.getControlX();
-                    float controlY = gameState.getControlY();
+                    float controlX = matchState.getControlX();
+                    float controlY = matchState.getControlY();
                     canvas.drawCircle((HALF + (controlX - HALF) * CONTROL_AREA_FROM_WIDTH) * surfaceWidth, (1 + HALF + (controlY - HALF)) * CONTROL_AREA_FROM_WIDTH * surfaceWidth, CONTROL_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
                 }
             }
 
-            if (gameState.getShotPowerMeter() > SHOT_POWER_METER_OPTIMAL) {
+            if (matchState.getShotPowerMeter() > SHOT_POWER_METER_OPTIMAL) {
                 paint.setColor(Color.RED);
 
-                if (gameState.getShotPowerMeter() >= SHOT_POWER_METER_HIGHER_LIMIT) {
+                if (matchState.getShotPowerMeter() >= SHOT_POWER_METER_HIGHER_LIMIT) {
                     paint.setAlpha(FULL_ALPHA);
-                    Log.d("Over limit ","" + gameState.getShotPowerMeter());
+                    Log.d("Over limit ","" + matchState.getShotPowerMeter());
                 } else {
-                    Log.d("Under limit ","" + gameState.getShotPowerMeter());
-                    paint.setAlpha((int)(FAILED_SHOT_BASE_ALPHA + FAILED_SHOT_INCREMENTAL_ALPHA * (gameState.getShotPowerMeter() - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
+                    Log.d("Under limit ","" + matchState.getShotPowerMeter());
+                    paint.setAlpha((int)(FAILED_SHOT_BASE_ALPHA + FAILED_SHOT_INCREMENTAL_ALPHA * (matchState.getShotPowerMeter() - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
                 }
 
                 canvas.drawRect(0, CONTROL_AREA_TOP_FROM_TOP * surfaceHeight, surfaceWidth * CONTROL_AREA_LEFT_FROM_LEFT, surfaceHeight, paint);

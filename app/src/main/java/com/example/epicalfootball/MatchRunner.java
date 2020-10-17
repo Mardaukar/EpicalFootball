@@ -1,18 +1,16 @@
 package com.example.epicalfootball;
 
-import android.util.Log;
-
 import static com.example.epicalfootball.Constants.*;
 
-public class GameRunner extends Thread {
+public class MatchRunner extends Thread {
 
     private volatile boolean running = true;
-    private GameView gameView;
-    private GameState gameState;
+    private MatchSurfaceView matchSurfaceView;
+    private MatchState matchState;
 
-    public GameRunner(GameView gameView, GameState gameState) {
-        this.gameView = gameView;
-        this.gameState = gameState;
+    public MatchRunner(MatchSurfaceView matchSurfaceView, MatchState matchState) {
+        this.matchSurfaceView = matchSurfaceView;
+        this.matchState = matchState;
     }
 
     @Override
@@ -28,8 +26,8 @@ public class GameRunner extends Thread {
             elapsed = begin - lastTime;
             lastTime = begin;
 
-            gameState.updateGameState(elapsed);
-            gameView.drawOnSurface();
+            matchState.updateGameState(elapsed);
+            matchSurfaceView.drawOnSurface();
 
             delta = System.currentTimeMillis() - begin;
 

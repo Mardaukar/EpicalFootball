@@ -2,15 +2,15 @@ package com.example.epicalfootball;
 
 import android.graphics.RectF;
 
-import com.example.epicalfootball.activities.GameActivity;
+import com.example.epicalfootball.activities.MatchActivity;
 
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
 
-public class GameState {
+public class MatchState {
 
-    private GameActivity gameActivity;
+    private MatchActivity matchActivity;
     private Player player;
     private Ball ball;
     private int ballsLeft;
@@ -41,8 +41,8 @@ public class GameState {
     private RectF topBoundary = new RectF(-FIELD_WIDTH, -TOUCHLINE_FROM_TOP - BOUNDARY_WIDTH, FIELD_WIDTH, -TOUCHLINE_FROM_TOP);
     private RectF bottomBoundary = new RectF(-FIELD_WIDTH, FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT + BOUNDARY_WIDTH);
 
-    public GameState(GameActivity gameActivity) {
-        this.gameActivity = gameActivity;
+    public MatchState(MatchActivity matchActivity) {
+        this.matchActivity = matchActivity;
         this.player = new Player();
         this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
@@ -76,7 +76,7 @@ public class GameState {
                     substractBall();
                     this.ball = feedNewBall();
                 } else {
-                    gameActivity.goToResult(this.goalsScored);
+                    matchActivity.goToResult(this.goalsScored);
                 }
             }
         }
@@ -169,7 +169,7 @@ public class GameState {
             this.targetGoal = null;
         }
 
-        this.gameActivity.updatePowerBars((int)this.shotPowerMeter);
+        this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
 
         handleBoundaryCollision(player);
         this.goalFrame.handleGoalCollision(player);
@@ -321,12 +321,12 @@ public class GameState {
 
     public void addGoal() {
         this.goalsScored++;
-        gameActivity.updateGoals(Integer.toString(goalsScored));
+        matchActivity.updateGoals(Integer.toString(goalsScored));
     }
 
     public void substractBall() {
         this.ballsLeft--;
-        gameActivity.updateBallsLeft(Integer.toString(ballsLeft));
+        matchActivity.updateBallsLeft(Integer.toString(ballsLeft));
     }
 
     public Ball getBall() {

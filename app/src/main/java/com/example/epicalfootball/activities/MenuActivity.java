@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.epicalfootball.R;
-import com.example.epicalfootball.activities.GameActivity;
 
 import java.util.HashMap;
 
@@ -83,7 +82,7 @@ public class MenuActivity extends Activity {
     }
 
     public void startGame(View view) {
-        Intent startGameIntent = new Intent(this, GameActivity.class);
+        Intent startGameIntent = new Intent(this, MatchActivity.class);
         playerAttributes.put("reach", reachAttribute);
         playerAttributes.put("acceleration", accelerationAttribute);
         playerAttributes.put("speed", speedAttribute);
