@@ -14,7 +14,7 @@ public class MatchState {
     private int ballsLeft;
     private int goalsScored;
     private final GoalFrame goalFrame;
-    private Player player;
+    private OutfieldPlayer outfieldPlayer;
     private Ball ball;
     private boolean canScore;
     private long newBallTimer;
@@ -39,7 +39,7 @@ public class MatchState {
 
     public MatchState(MatchActivity matchActivity) {
         this.matchActivity = matchActivity;
-        this.player = new Player();
+        this.outfieldPlayer = new OutfieldPlayer();
         this.ballsLeft = BALLS_AT_START;
         this.goalsScored = 0;
         this.goalFrame = new GoalFrame();
@@ -54,31 +54,31 @@ public class MatchState {
 
         updateBallFeedTimer(elapsed);
         updateNewBallTimer(elapsed);
-        player.updateKickRecoveryTimer(elapsed);
+        outfieldPlayer.updateKickRecoveryTimer(elapsed);
         handlePlayerControls(elapsed, timeFactor);
         this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
-        handleBoundaryCollision(player);
-        this.goalFrame.handleGoalCollision(player);
+        handleBoundaryCollision(outfieldPlayer);
+        this.goalFrame.handleGoalCollision(outfieldPlayer);
 
-        if (Collisions.handlePlayerBallCollision(player, ball, readyToShoot, aimTarget)) {
+        if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
             handleShootBall();
         }
 
         this.goalFrame.handleGoalCollision(ball);
-        player.updatePosition(timeFactor);
-        player.updateOrientation(timeFactor);
+        outfieldPlayer.updatePosition(timeFactor);
+        outfieldPlayer.updateOrientation(timeFactor);
         ball.updatePosition(timeFactor);
-        player.updateSpeed(timeFactor, decelerateOn, ball);
+        outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
         ball.updateSpeed(timeFactor);
         checkBallOver();
     }
 
     public void handlePlayerControls(float elapsed, float timeFactor) {
         if (shootButtonDown) {
-            player.setAimRecoveryTimer(0);
-            float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
-            player.getTargetSpeed().setDirection(playerBallDirection);
-            player.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
+            outfieldPlayer.setAimRecoveryTimer(0);
+            float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
+            outfieldPlayer.getTargetSpeed().setDirection(playerBallDirection);
+            outfieldPlayer.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
 
             if (this.targetGoal == null) {
                 float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
@@ -89,7 +89,7 @@ public class MatchState {
                     longShot = true;
                 }
 
-                this.targetGoal = new TargetGoal(distance, longShot, this.getPlayer());
+                this.targetGoal = new TargetGoal(distance, longShot, this.getOutfieldPlayer());
             }
 
             targetGoal.updatePosition(timeFactor);
@@ -100,16 +100,16 @@ public class MatchState {
             }
 
             if (!longShot) {
-                if (this.shotPowerMeter < player.getFinishingMidShotPower()) {
-                    this.shotPowerMeter += player.getFinishingMidShotPower() / (SHOT_POWER_METER_OPTIMAL - player.getFinishingMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                if (this.shotPowerMeter < outfieldPlayer.getFinishingMidShotPower()) {
+                    this.shotPowerMeter += outfieldPlayer.getFinishingMidShotPower() / (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getFinishingMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 } else {
-                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - player.getFinishingMidShotPower()) / player.getFinishingMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getFinishingMidShotPower()) / outfieldPlayer.getFinishingMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 }
             } else {
-                if (this.shotPowerMeter < player.getLongshotsMidShotPower()) {
-                    this.shotPowerMeter += player.getLongshotsMidShotPower() / (SHOT_POWER_METER_OPTIMAL - player.getLongshotsMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                if (this.shotPowerMeter < outfieldPlayer.getLongShotsMidShotPower()) {
+                    this.shotPowerMeter += outfieldPlayer.getLongShotsMidShotPower() / (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 } else {
-                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - player.getLongshotsMidShotPower()) / player.getLongshotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) / outfieldPlayer.getLongShotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 }
             }
         } else {
@@ -129,7 +129,7 @@ public class MatchState {
                 } else {
                     this.readyToShoot = true;
                     this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
-                    player.setAimRecoveryTimer(AIM_RECOVERY_TIME);
+                    outfieldPlayer.setAimRecoveryTimer(AIM_RECOVERY_TIME);
 
                     if (controlOn) {
                         this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
@@ -139,22 +139,22 @@ public class MatchState {
                 }
             }
 
-            if (player.getAimRecoveryTimer() > 0) {
-                player.setAimRecoveryTimer(player.getAimRecoveryTimer() - elapsed);
+            if (outfieldPlayer.getAimRecoveryTimer() > 0) {
+                outfieldPlayer.setAimRecoveryTimer(outfieldPlayer.getAimRecoveryTimer() - elapsed);
 
-                if (player.getAimRecoveryTimer() <= 0) {
-                    player.setAimRecoveryTimer(0);
+                if (outfieldPlayer.getAimRecoveryTimer() <= 0) {
+                    outfieldPlayer.setAimRecoveryTimer(0);
                 }
             }
 
-            if (player.getAimRecoveryTimer() > 0) {
-                float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - player.getPosition().getX(), ball.getPosition().getY() - player.getPosition().getY());
-                player.getTargetSpeed().setDirection(playerBallDirection);
-                player.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
+            if (outfieldPlayer.getAimRecoveryTimer() > 0) {
+                float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
+                outfieldPlayer.getTargetSpeed().setDirection(playerBallDirection);
+                outfieldPlayer.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
             } else if (controlOn) {
-                player.getTargetSpeed().setTargetSpeed(controlX - HALF, controlY - HALF);
+                outfieldPlayer.getTargetSpeed().setTargetSpeed(controlX - HALF, controlY - HALF);
             } else {
-                player.getTargetSpeed().nullTargetSpeed();
+                outfieldPlayer.getTargetSpeed().nullTargetSpeed();
             }
 
             this.targetGoal = null;
@@ -218,13 +218,13 @@ public class MatchState {
     }
 
     public void handleShootBall() {
-        this.ball.shoot(player, shotPowerMeter, aimTarget);
-        player.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
-        player.getSpeed().setMagnitude(player.getSpeed().getMagnitude() * PLAYER_SLOW_ON_SHOT_FACTOR);
+        this.ball.shoot(outfieldPlayer, shotPowerMeter, aimTarget);
+        outfieldPlayer.setKickRecoveryTimer(PLAYER_KICK_RECOVERY_TIME);
+        outfieldPlayer.getSpeed().setMagnitude(outfieldPlayer.getSpeed().getMagnitude() * PLAYER_SLOW_ON_SHOT_FACTOR);
         this.readyToShoot = false;
         this.shotPowerMeter = 0;
         this.shootingTimer = 0;
-        player.setAimRecoveryTimer(0);
+        outfieldPlayer.setAimRecoveryTimer(0);
     }
 
     public boolean ballOutOfBounds() {
@@ -238,11 +238,11 @@ public class MatchState {
         return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius());
     }
 
-    public void handleBoundaryCollision(Player player) {
-        Collisions.handleLineSegmentCollision(leftBoundary, player);
-        Collisions.handleLineSegmentCollision(rightBoundary, player);
-        Collisions.handleLineSegmentCollision(topBoundary, player);
-        Collisions.handleLineSegmentCollision(bottomBoundary, player);
+    public void handleBoundaryCollision(OutfieldPlayer outfieldPlayer) {
+        Collisions.handleLineSegmentCollision(leftBoundary, outfieldPlayer);
+        Collisions.handleLineSegmentCollision(rightBoundary, outfieldPlayer);
+        Collisions.handleLineSegmentCollision(topBoundary, outfieldPlayer);
+        Collisions.handleLineSegmentCollision(bottomBoundary, outfieldPlayer);
     }
 
     public void setControlOn(float x, float y) {
@@ -301,12 +301,12 @@ public class MatchState {
         return goalFrame;
     }
 
-    public Player getPlayer() {
-        return player;
+    public OutfieldPlayer getOutfieldPlayer() {
+        return outfieldPlayer;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setOutfieldPlayer(OutfieldPlayer outfieldPlayer) {
+        this.outfieldPlayer = outfieldPlayer;
     }
 
     public Ball getBall() {

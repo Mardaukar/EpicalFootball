@@ -70,7 +70,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public void drawOnSurface() {
         float surfaceWidth = this.getWidth();
         float surfaceHeight = this.getHeight();
-        Player player = matchState.getPlayer();
+        OutfieldPlayer outfieldPlayer = matchState.getOutfieldPlayer();
         GoalFrame goalFrame = matchState.getGoalFrame();
         float pixelPerMeter = surfaceWidth / FIELD_WIDTH;
         float touchlineFromTop = TOUCHLINE_FROM_TOP * pixelPerMeter;
@@ -93,10 +93,10 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * BALL_RADIUS, paint);
 
             //DRAW PLAYER SHADOW
-            Position playerPosition = player.getPosition();
+            Position playerPosition = outfieldPlayer.getPosition();
             drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
             drawPositionY = playerPosition.getY() * pixelPerMeter + touchlineFromTop;
-            canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * player.getRadius(), paint);
+            canvas.drawCircle(drawPositionX + shadowOffset, drawPositionY + shadowOffset, pixelPerMeter * outfieldPlayer.getRadius(), paint);
 
             //DRAW GOAL SHADOW
             Circle leftPost = goalFrame.getLeftPost();
@@ -124,15 +124,15 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             drawPositionX = playerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
             drawPositionY = playerPosition.getY() * pixelPerMeter + touchlineFromTop;
             paint.setColor(getResources().getColor(R.color.playerColor));
-            canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * player.getRadius(), paint);
+            canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * outfieldPlayer.getRadius(), paint);
 
             //DRAW CONTROL SECTOR
             paint.setColor(getResources().getColor(R.color.skinColor));
-            float directionRadians = player.getOrientation();
+            float directionRadians = outfieldPlayer.getOrientation();
             float directionDegrees = directionRadians / (float) Math.PI * 180;
-            float controlConeRadians = player.getControlAngle();
+            float controlConeRadians = outfieldPlayer.getControlAngle();
             float controlConeDegrees = controlConeRadians / (float) Math.PI * 180;
-            canvas.drawArc(drawPositionX - pixelPerMeter * player.getRadius(), drawPositionY - pixelPerMeter * player.getRadius(), drawPositionX + pixelPerMeter * player.getRadius(), drawPositionY + pixelPerMeter * player.getRadius(), directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
+            canvas.drawArc(drawPositionX - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionX + pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY + pixelPerMeter * outfieldPlayer.getRadius(), directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
 
             //DRAW GOAL
             paint.setColor(Color.WHITE);
@@ -165,7 +165,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                     paint.setAlpha(TARGET_DOT_ALPHA);
                     float controlX = matchState.getControlX();
                     float controlY = matchState.getControlY();
-                    canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + 1) * surfaceHeight, player.getAccuracyTargetDot() * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
+                    canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + 1) * surfaceHeight, outfieldPlayer.getAccuracyTargetDot() * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
                 }
             } else {
                 paint.setColor(Color.BLUE);
@@ -181,7 +181,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 if (matchState.isControlOn()) {
                     paint.setColor(Color.MAGENTA);
 
-                    if (player.getTargetSpeed().getMagnitude() < 1) {
+                    if (outfieldPlayer.getTargetSpeed().getMagnitude() < 1) {
                         paint.setAlpha(CONTROL_DOT_ALPHA);
                     } else {
                         paint.setAlpha(CONTROL_DOT_ALPHA + 100);

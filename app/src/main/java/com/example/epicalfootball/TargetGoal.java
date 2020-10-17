@@ -1,7 +1,5 @@
 package com.example.epicalfootball;
 
-import android.util.Log;
-
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
@@ -15,11 +13,11 @@ public class TargetGoal {
     private float horizontalSpeed;
     Random random = new Random();
 
-    public TargetGoal(float distance, boolean longShot, Player player) {
+    public TargetGoal(float distance, boolean longShot, OutfieldPlayer outfieldPlayer) {
         if (!longShot) {
-            this.size = player.getAccuracyDistance() / distance;
+            this.size = outfieldPlayer.getAccuracyDistance() / distance;
         } else {
-            this.size = player.getAccuracyDistance() / (LONG_SHOTS_LIMIT + (distance - LONG_SHOTS_LIMIT) * player.getLongshotsAccuracy());
+            this.size = outfieldPlayer.getAccuracyDistance() / (LONG_SHOTS_LIMIT + (distance - LONG_SHOTS_LIMIT) * outfieldPlayer.getLongShotsAccuracy());
         }
 
         if (this.size > MAX_TARGET_GOAL_MOVE_SIZE) {
@@ -38,9 +36,9 @@ public class TargetGoal {
             this.positionY = random.nextFloat() * (FULL - this.size) / TARGET_GOAL_WIDTH_TO_HEIGHT;
 
             if (!longShot) {
-                speed = (FULL - this.size) * TARGET_GOAL_MOVE_SPEED * player.getFinishingTargetGoalSpeed();
+                speed = (FULL - this.size) * TARGET_GOAL_MOVE_SPEED * outfieldPlayer.getFinishingTargetGoalSpeed();
             } else {
-                speed = (FULL - this.size) * TARGET_GOAL_MOVE_SPEED * player.getLongshotsTargetGoalSpeed();
+                speed = (FULL - this.size) * TARGET_GOAL_MOVE_SPEED * outfieldPlayer.getLongShotsTargetGoalSpeed();
             }
 
             horizontalSpeed = speed;
