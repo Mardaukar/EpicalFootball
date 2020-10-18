@@ -25,7 +25,7 @@ public class Circle {
     }
 
     public void setPosition(Position position) {
-        this.position = position;
+        this.position = new Position(position.getX(), position.getY());
     }
 
     public float getRadius() {

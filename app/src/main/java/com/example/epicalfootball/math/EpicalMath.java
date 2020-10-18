@@ -4,6 +4,8 @@ import android.graphics.RectF;
 
 import com.example.epicalfootball.items.Circle;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class EpicalMath {
 
     public static float calculateMagnitude(float x, float y, float relationDivisor) {
@@ -28,6 +30,32 @@ public class EpicalMath {
 
     public static float convertToDirectionFromOrigo(float x, float y) {
         float direction;
+
+        if (x > 0) {
+            direction = (float)Math.atan(y / x);
+        } else if(x < 0) {
+            if (y >= 0) {
+                direction = (float)(Math.PI + Math.atan(y / x));
+            } else {
+                direction = (float)(Math.atan(y / x) - Math.PI);
+            }
+        } else {
+            if (y > 0) {
+                direction = (float)Math.PI * 0.5f;
+            } else if (y < 0) {
+                direction = (float)Math.PI * -0.5f;
+            } else {
+                direction = 0;
+            }
+        }
+
+        return direction;
+    }
+
+    public static float convertToDirection(Position position1, Position position2) {
+        float direction;
+        float x = position2.getX() - position1.getX();
+        float y = position2.getY() - position1.getY();
 
         if (x > 0) {
             direction = (float)Math.atan(y / x);
@@ -83,6 +111,11 @@ public class EpicalMath {
         }
 
         return direction;
+    }
+
+    public static float reversedDirection(float direction) {
+        float reversedDirection = direction + HALF_CIRCLE;
+        return sanitizeDirection(reversedDirection);
     }
 
     public static float absoluteAngleBetweenDirections(float direction1, float direction2) {

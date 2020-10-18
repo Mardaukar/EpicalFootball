@@ -111,6 +111,13 @@ public class Constants {
     public static float HALF = 0.5f;
     public static float DOUBLE = 2;
     public static int TWO = 2;
+    public static float DOWN = (float)Math.PI / 2;
+    public static float UP = (float)-Math.PI / 2;
+    public static float LEFT = (float)Math.PI;
+    public static float RIGHT = 0;
+    public static float FULL_CIRCLE = 2 * (float)Math.PI;
+    public static float HALF_CIRCLE = (float)Math.PI;
+    public static float QUARTER_CIRCLE = (float)Math.PI / 2;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.7f;

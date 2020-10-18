@@ -1,8 +1,12 @@
 package com.example.epicalfootball.items;
 
+import android.util.Log;
+
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.TargetSpeedVector;
 import com.example.epicalfootball.math.Vector;
+
+import static com.example.epicalfootball.Constants.*;
 
 public abstract class Player extends Circle {
     float orientation;
@@ -20,6 +24,20 @@ public abstract class Player extends Circle {
             return 0;
         } else {
             return (float)Math.cos(angle) * this.getSpeed().getMagnitude();
+        }
+    }
+
+    public void removeSpeedComponent(float direction) {
+        float speedDirectionObstructionDifference = EpicalMath.angleBetweenDirections(direction, this.getSpeed().getDirection());
+
+        if (Math.abs(speedDirectionObstructionDifference) < QUARTER_CIRCLE) {
+            if (speedDirectionObstructionDifference > 0) {
+                this.getSpeed().setDirection(EpicalMath.sanitizeDirection(direction - QUARTER_CIRCLE));
+            } else {
+                this.getSpeed().setDirection(EpicalMath.sanitizeDirection(direction + QUARTER_CIRCLE));
+            }
+
+            this.getSpeed().setMagnitude(this.getSpeed().getMagnitude() * (float) Math.abs(Math.sin(speedDirectionObstructionDifference)));
         }
     }
 

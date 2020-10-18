@@ -70,7 +70,7 @@ public class MatchState {
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);
 
-        //handleGoalkeeperPlayerCollision
+        Collisions.handlePlayerPlayerCollision(outfieldPlayer, goalkeeper);
         handleBoundaryCollision(outfieldPlayer);
         this.goalFrame.handleGoalCollision(goalkeeper);
         this.goalFrame.handleGoalCollision(outfieldPlayer);
