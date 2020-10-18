@@ -130,7 +130,7 @@ public class Collisions {
         return false;
     }
 
-    public static void handleLineSegmentCollision(RectF line, Ball ball) {
+    public static void handleBallLineSegmentCollision(RectF line, Ball ball) {
         if (EpicalMath.checkIntersect(line, ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
             ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINE_SEGMENT_COLLISION_SPEED_MULTIPLIER);
 
@@ -162,46 +162,18 @@ public class Collisions {
         }
     }
 
-    public static void handleLineSegmentCollision(RectF line, Player player) {
+    public static void handlePlayerLineSegmentCollision(RectF line, Player player) {
         if (EpicalMath.checkIntersect(line, player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
             if (line.height() < line.width()) {
                 if (player.getPosition().getY() < line.centerY()) {
-                    /*if (player.getSpeed().getDirection() > 0) {
-                        if (player.getSpeed().getDirection() > Math.PI / 2) {
-                            player.getSpeed().setDirection((float)Math.PI);
-                        } else {
-                            player.getSpeed().setDirection(0);
-                        }
-                    }*/
                     player.getPosition().setY(line.top - player.getRadius());
                 } else {
-                    /*if (player.getSpeed().getDirection() < 0) {
-                        if (player.getSpeed().getDirection() < -Math.PI / 2) {
-                            player.getSpeed().setDirection((float)Math.PI);
-                        } else {
-                            player.getSpeed().setDirection(0);
-                        }
-                    }*/
                     player.getPosition().setY(line.bottom + player.getRadius());
                 }
             } else {
                 if (player.getPosition().getX() < line.centerX()) {
-                    /*if (Math.abs(player.getSpeed().getDirection()) < Math.PI / 2) {
-                        if (player.getSpeed().getDirection() < 0) {
-                            player.getSpeed().setDirection((float)-Math.PI / 2);
-                        } else {
-                            player.getSpeed().setDirection((float)Math.PI / 2);
-                        }
-                    }*/
                     player.getPosition().setX(line.left - player.getRadius());
                 } else {
-                    /*if (Math.abs(player.getSpeed().getDirection()) > Math.PI / 2) {
-                        if (player.getSpeed().getDirection() < 0) {
-                            player.getSpeed().setDirection((float)-Math.PI / 2);
-                        } else {
-                            player.getSpeed().setDirection((float)Math.PI / 2);
-                        }
-                    }*/
                     player.getPosition().setX(line.right + player.getRadius());
                 }
             }

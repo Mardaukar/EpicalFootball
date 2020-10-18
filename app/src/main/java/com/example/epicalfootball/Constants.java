@@ -17,6 +17,7 @@ public class Constants {
     public static float BALL_RADIUS = 0.35f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
     public static float BALL_BASE_DECELERATION = 0.2f;
+    public static int BALL_UPDATES_PER_CYCLE = 5;
 
     //FIELD IMAGE (superminifield)
     /*

@@ -26,9 +26,9 @@ public class GoalFrame {
     }
 
     public void handleGoalCollision(Ball ball) {
-        Collisions.handleLineSegmentCollision(rearNet, ball);
-        Collisions.handleLineSegmentCollision(leftNet, ball);
-        Collisions.handleLineSegmentCollision(rightNet, ball);
+        Collisions.handleBallLineSegmentCollision(rearNet, ball);
+        Collisions.handleBallLineSegmentCollision(leftNet, ball);
+        Collisions.handleBallLineSegmentCollision(rightNet, ball);
         Collisions.handleBallCircleCollision(leftPost, ball);
         Collisions.handleBallCircleCollision(rightPost, ball);
         Collisions.handleBallCircleCollision(leftSupport, ball);
@@ -36,9 +36,9 @@ public class GoalFrame {
     }
 
     public void handleGoalCollision(Player player) {
-        Collisions.handleLineSegmentCollision(rearNet, player);
-        Collisions.handleLineSegmentCollision(leftNet, player);
-        Collisions.handleLineSegmentCollision(rightNet, player);
+        Collisions.handlePlayerLineSegmentCollision(rearNet, player);
+        Collisions.handlePlayerLineSegmentCollision(leftNet, player);
+        Collisions.handlePlayerLineSegmentCollision(rightNet, player);
         Collisions.handlePlayerCircleCollision(leftPost, player);
         Collisions.handlePlayerCircleCollision(rightPost, player);
         Collisions.handlePlayerCircleCollision(leftSupport, player);

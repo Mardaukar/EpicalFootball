@@ -54,28 +54,39 @@ public class MatchState {
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
-        updateBallFeedTimer(elapsed);
-        updateNewBallTimer(elapsed);
-        outfieldPlayer.updateKickRecoveryTimer(elapsed);
+        //Goalkeeper AI
         handlePlayerControls(elapsed, timeFactor);
-        this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
-        handleBoundaryCollision(outfieldPlayer);
-        this.goalFrame.handleGoalCollision(goalkeeper);
-        this.goalFrame.handleGoalCollision(outfieldPlayer);
 
-        if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
-            handleShootBall();
-        }
-
-        this.goalFrame.handleGoalCollision(ball);
+        goalkeeper.updateSpeed(timeFactor);
+        outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
         goalkeeper.updatePosition(timeFactor);
         goalkeeper.updateOrientation(timeFactor);
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);
-        ball.updatePosition(timeFactor);
-        goalkeeper.updateSpeed(timeFactor);
-        outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
-        ball.updateSpeed(timeFactor);
+
+        //handleGoalkeeperPlayerCollision
+        handleBoundaryCollision(outfieldPlayer);
+        this.goalFrame.handleGoalCollision(goalkeeper);
+        this.goalFrame.handleGoalCollision(outfieldPlayer);
+
+        for (int x = 0; x < BALL_UPDATES_PER_CYCLE; x++) {
+            ball.updateSpeed(timeFactor / BALL_UPDATES_PER_CYCLE);
+            ball.updatePosition(timeFactor / BALL_UPDATES_PER_CYCLE);
+
+            //GoalkeeperBallCollision
+
+            if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
+                handleShootBall();
+            }
+
+            this.goalFrame.handleGoalCollision(ball);
+        }
+
+        updateBallFeedTimer(elapsed);
+        updateNewBallTimer(elapsed);
+        outfieldPlayer.updateKickRecoveryTimer(elapsed);
+        this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
+
         checkBallOver();
     }
 
@@ -213,13 +224,18 @@ public class MatchState {
     }
 
     public void checkBallOver() {
-        if (ballInGoal() && canScore) {
-            addGoal();
-            canScore = false;
-            newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
-        } else if (ballOutOfBounds() && canScore) {
-            canScore = false;
-            newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+        if (canScore) {
+            if (ballInGoal()) {
+                addGoal();
+                canScore = false;
+                newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+            } else if (ballOutOfBounds()) {
+                canScore = false;
+                newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+            } else if (ball.getSpeed().getMagnitude() == 0 && EpicalMath.checkIntersect(goalkeeper.getPosition().getX(), goalkeeper.getPosition().getY(), goalkeeper.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+                canScore = false;
+                newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
+            }
         }
     }
 
@@ -245,10 +261,10 @@ public class MatchState {
     }
 
     public void handleBoundaryCollision(OutfieldPlayer outfieldPlayer) {
-        Collisions.handleLineSegmentCollision(leftBoundary, outfieldPlayer);
-        Collisions.handleLineSegmentCollision(rightBoundary, outfieldPlayer);
-        Collisions.handleLineSegmentCollision(topBoundary, outfieldPlayer);
-        Collisions.handleLineSegmentCollision(bottomBoundary, outfieldPlayer);
+        Collisions.handlePlayerLineSegmentCollision(leftBoundary, outfieldPlayer);
+        Collisions.handlePlayerLineSegmentCollision(rightBoundary, outfieldPlayer);
+        Collisions.handlePlayerLineSegmentCollision(topBoundary, outfieldPlayer);
+        Collisions.handlePlayerLineSegmentCollision(bottomBoundary, outfieldPlayer);
     }
 
     public void setControlOn(float x, float y) {

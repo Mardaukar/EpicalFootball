@@ -23,14 +23,6 @@ public class OutfieldPlayer extends Player {
     private float aimRecoveryTimer = 0;
     private float kickRecoveryTimer = 0;
 
-    public void updatePosition(float timeFactor) {
-        float x = this.position.getX();
-        float y = this.position.getY();
-        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
-        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
-        this.position = new Position(x, y);
-    }
-
     public OutfieldPlayer() {
         this.position = OUTFIELD_PLAYER_STARTING_POSITION;
         this.orientation = OUTFIELD_PLAYER_STARTING_ORIENTATION;
@@ -56,6 +48,14 @@ public class OutfieldPlayer extends Player {
         this.longShotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("longShots");
         this.longShotsMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * playerAttributes.get("longShots");
         this.longShotsAccuracy = MIN_LONG_SHOTS_ACCURACY + LONG_SHOTS_ACCURACY_INCREMENT * playerAttributes.get("longShots");
+    }
+
+    public void updatePosition(float timeFactor) {
+        float x = this.position.getX();
+        float y = this.position.getY();
+        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
+        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
+        this.position = new Position(x, y);
     }
 
     public void updateSpeed(float timeFactor, boolean decelerateOn, Ball ball) {
