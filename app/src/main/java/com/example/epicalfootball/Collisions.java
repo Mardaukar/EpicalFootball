@@ -3,15 +3,8 @@ package com.example.epicalfootball;
 import android.graphics.RectF;
 import android.util.Log;
 
-import com.example.epicalfootball.items.Ball;
-import com.example.epicalfootball.items.Circle;
-import com.example.epicalfootball.items.GoalPost;
-import com.example.epicalfootball.items.OutfieldPlayer;
-import com.example.epicalfootball.items.Player;
-import com.example.epicalfootball.math.EpicalMath;
-import com.example.epicalfootball.math.Position;
-import com.example.epicalfootball.math.Vector;
-
+import com.example.epicalfootball.items.*;
+import com.example.epicalfootball.math.*;
 import static com.example.epicalfootball.Constants.*;
 
 public class Collisions {
@@ -63,64 +56,67 @@ public class Collisions {
         }
     }
 
+    public static void handleBallGoalNetCollision(GoalNet goalNet, Ball ball) {
+        if (EpicalMath.checkIntersect(goalNet, ball)) {
+            ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * GOAL_NET_COLLISION_SPEED_MULTIPLIER);
 
-
-
-
-
-
-
-
-
-    public static void handleBallLineSegmentCollision(RectF line, Ball ball) {
-        if (EpicalMath.checkIntersect(line, ball)) {
-            ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINE_SEGMENT_COLLISION_SPEED_MULTIPLIER);
-
-            if (line.height() < line.width()) {
-                if (ball.getPosition().getY() < line.centerY()) {
-                    if (ball.getSpeed().getDirection() > 0) {
-                        ball.getSpeed().bounceDirection((float)-Math.PI * HALF);
+            if (goalNet.height() < goalNet.width()) {
+                if (ball.getPosition().getY() < goalNet.centerY()) {
+                    if (ball.getSpeed().getDirection() > RIGHT) {
+                        ball.getSpeed().bounceDirection(UP);
                     }
-                    ball.getPosition().setY(line.top - ball.getRadius());
+                    ball.getPosition().setY(goalNet.top - ball.getRadius());
                 } else {
-                    if (ball.getSpeed().getDirection() < 0) {
-                        ball.getSpeed().bounceDirection((float)Math.PI * HALF);
+                    if (ball.getSpeed().getDirection() < RIGHT) {
+                        ball.getSpeed().bounceDirection(DOWN);
                     }
-                    ball.getPosition().setY(line.bottom + ball.getRadius());
+                    ball.getPosition().setY(goalNet.bottom + ball.getRadius());
                 }
             } else {
-                if (ball.getPosition().getX() < line.centerX()) {
-                    if (Math.abs(ball.getSpeed().getDirection()) < Math.PI * HALF) {
-                        ball.getSpeed().bounceDirection((float) Math.PI);
+                if (ball.getPosition().getX() < goalNet.centerX()) {
+                    if (Math.abs(ball.getSpeed().getDirection()) < DOWN) {
+                        ball.getSpeed().bounceDirection(LEFT);
                     }
-                    ball.getPosition().setX(line.left - ball.getRadius());
+                    ball.getPosition().setX(goalNet.left - ball.getRadius());
                 } else {
-                    if (Math.abs(ball.getSpeed().getDirection()) > Math.PI * HALF) {
-                        ball.getSpeed().bounceDirection(0);
+                    if (Math.abs(ball.getSpeed().getDirection()) > DOWN) {
+                        ball.getSpeed().bounceDirection(RIGHT);
                     }
-                    ball.getPosition().setX(line.right + ball.getRadius());
+                    ball.getPosition().setX(goalNet.right + ball.getRadius());
                 }
             }
         }
     }
 
-    public static void handleBallCircleCollision(Circle circle, Ball ball) {
-        if (EpicalMath.checkIntersect(circle, ball)) {
-            float centersDistance = circle.getRadius() + ball.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(ball.getPosition(), circle.getPosition());
-            float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
+    public static void handleBallGoalPostCollision(GoalPost goalPost, Ball ball) {
+        if (EpicalMath.checkIntersect(goalPost, ball)) {
+            float radiusSum = goalPost.getRadius() + ball.getRadius();
+            float goalPostToCollisionDirection = EpicalMath.convertToDirection(goalPost.getPosition(), ball.getPosition());
+            float goalPostToCollisionDirectionBallSpeedDirectionDifference = EpicalMath.absoluteAngleBetweenDirections(goalPostToCollisionDirection, ball.getSpeed().getDirection());
 
-            ball.getPosition().setPosition(circle.getPosition());
-            ball.getPosition().addVector(collisionDirection, centersDistance);
+            ball.getPosition().setPosition(goalPost.getPosition());
+            ball.getPosition().addVector(goalPostToCollisionDirection, radiusSum);
 
-            if (fieldObjectCollisionDifference > Math.PI * HALF) {
-                ball.getSpeed().bounceDirection(collisionDirection);
+            if (goalPostToCollisionDirectionBallSpeedDirectionDifference > QUARTER_CIRCLE) {
+                ball.getSpeed().bounceDirection(goalPostToCollisionDirection);
             }
 
-            float newDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
-            ball.getSpeed().setMagnitude((1 - COLLISION_ANGLE_SPEED_MULTIPLIER * (float)Math.cos(newDifference)) * ball.getSpeed().getMagnitude() * POST_COLLISION_SPEED_MULTIPLIER);
+            float newDifference = EpicalMath.absoluteAngleBetweenDirections(goalPostToCollisionDirection, ball.getSpeed().getDirection());
+            ball.getSpeed().setMagnitude((FULL - (float)Math.cos(newDifference) * (FULL - GOAL_POST_COLLISION_SPEED_MULTIPLIER)) * ball.getSpeed().getMagnitude());
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static boolean handlePlayerBallCollision(OutfieldPlayer outfieldPlayer, Ball ball, boolean readyToShoot, Position aimTarget) {
         float playerCollisionDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());

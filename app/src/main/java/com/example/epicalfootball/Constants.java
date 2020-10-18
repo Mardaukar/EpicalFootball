@@ -54,9 +54,9 @@ public class Constants {
     public static int BALLS_AT_START = 10;
     public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
     public static int GAME_UPDATE_TIME = 30;
-    public static float LINE_SEGMENT_COLLISION_SPEED_MULTIPLIER = 0.3f;
-    public static float POST_COLLISION_SPEED_MULTIPLIER = 0.6f;
-    public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f;
+    public static float GOAL_NET_COLLISION_SPEED_MULTIPLIER = 0.3f;
+    public static float GOAL_POST_COLLISION_SPEED_MULTIPLIER = 0.6f;
+    public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f; //needed?
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
     public static long BALL_FEED_TIMER = 500;
 
