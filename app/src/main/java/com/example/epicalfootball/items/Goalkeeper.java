@@ -1,4 +1,9 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.items;
+
+import com.example.epicalfootball.math.EpicalMath;
+import com.example.epicalfootball.math.Position;
+import com.example.epicalfootball.TargetSpeedVector;
+import com.example.epicalfootball.math.Vector;
 
 import static com.example.epicalfootball.Constants.*;
 import static com.example.epicalfootball.activities.MenuActivity.playerAttributes;
@@ -75,7 +80,7 @@ public class Goalkeeper extends Player {
                 }
             }
 
-            float newDirection = EpicalMath.convertToDirection(newSpeedMagnitudeX, newSpeedMagnitudeY);
+            float newDirection = EpicalMath.convertToDirectionFromOrigo(newSpeedMagnitudeX, newSpeedMagnitudeY);
             float newSpeedMagnitude = EpicalMath.calculateMagnitude(newSpeedMagnitudeX, newSpeedMagnitudeY);
 
             if (newSpeedMagnitude > oldSpeedMagnitude) {

@@ -13,6 +13,12 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.epicalfootball.items.Circle;
+import com.example.epicalfootball.items.GoalFrame;
+import com.example.epicalfootball.items.Goalkeeper;
+import com.example.epicalfootball.items.OutfieldPlayer;
+import com.example.epicalfootball.math.Position;
+
 import static com.example.epicalfootball.Constants.*;
 
 public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
@@ -113,10 +119,10 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             RectF leftNet = goalFrame.getLeftNet();
             RectF rightNet = goalFrame.getRightNet();
             RectF rearNet = goalFrame.getRearNet();
-            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftPost.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, leftPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightPost.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, rightPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftSupport.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, leftSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightSupport.getY() * pixelPerMeter + touchlineFromTop + shadowOffset, rightSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftPost.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftPost.getPosition().getY() * pixelPerMeter + touchlineFromTop + shadowOffset, leftPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightPost.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightPost.getPosition().getY() * pixelPerMeter + touchlineFromTop + shadowOffset, rightPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop + shadowOffset, leftSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop + shadowOffset, rightSupport.getRadius() * pixelPerMeter, paint);
             canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, leftNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
             canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, rightNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
             canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rearNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, rearNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rearNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
@@ -149,10 +155,10 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
             //DRAW GOAL
             paint.setColor(Color.WHITE);
-            canvas.drawCircle(leftPost.getX() * pixelPerMeter + surfaceWidth * HALF, leftPost.getY() * pixelPerMeter + touchlineFromTop, leftPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightPost.getX() * pixelPerMeter + surfaceWidth * HALF, rightPost.getY() * pixelPerMeter + touchlineFromTop, rightPost.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(leftSupport.getX() * pixelPerMeter + surfaceWidth * HALF, leftSupport.getY() * pixelPerMeter + touchlineFromTop, leftSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawCircle(rightSupport.getX() * pixelPerMeter + surfaceWidth * HALF, rightSupport.getY() * pixelPerMeter + touchlineFromTop, rightSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftPost.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, leftPost.getPosition().getY() * pixelPerMeter + touchlineFromTop, leftPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightPost.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, rightPost.getPosition().getY() * pixelPerMeter + touchlineFromTop, rightPost.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(leftSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, leftSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop, leftSupport.getRadius() * pixelPerMeter, paint);
+            canvas.drawCircle(rightSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, rightSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop, rightSupport.getRadius() * pixelPerMeter, paint);
             canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF, leftNet.top * pixelPerMeter + touchlineFromTop, leftNet.right * pixelPerMeter + surfaceWidth * HALF, leftNet.bottom * pixelPerMeter + touchlineFromTop, paint);
             canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF, rightNet.top * pixelPerMeter + touchlineFromTop, rightNet.right * pixelPerMeter + surfaceWidth * HALF, rightNet.bottom * pixelPerMeter + touchlineFromTop, paint);
             canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF, rearNet.top * pixelPerMeter + touchlineFromTop, rearNet.right * pixelPerMeter + surfaceWidth * HALF, rearNet.bottom * pixelPerMeter + touchlineFromTop, paint);

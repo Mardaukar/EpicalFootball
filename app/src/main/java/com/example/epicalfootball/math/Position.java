@@ -1,4 +1,4 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.math;
 
 public class Position {
     private float x;

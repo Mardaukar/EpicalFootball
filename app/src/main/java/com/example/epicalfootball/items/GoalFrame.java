@@ -1,28 +1,30 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.items;
 
 import android.graphics.RectF;
+
+import com.example.epicalfootball.Collisions;
 
 import static com.example.epicalfootball.Constants.*;
 
 public class GoalFrame {
     private RectF goalArea;
-    private RectF rearNet;
-    private RectF leftNet;
-    private RectF rightNet;
-    private Circle leftPost;
-    private Circle rightPost;
-    private Circle leftSupport;
-    private Circle rightSupport;
+    private GoalNet rearNet;
+    private GoalNet leftNet;
+    private GoalNet rightNet;
+    private GoalPost leftPost;
+    private GoalPost rightPost;
+    private GoalPost leftSupport;
+    private GoalPost rightSupport;
 
     public GoalFrame() {
-        this.goalArea = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF, -DOUBLE * BALL_RADIUS);
-        this.rearNet = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH - DOUBLE * POST_RADIUS, GOAL_WIDTH * HALF, -GOAL_DEPTH);
-        this.leftNet = new RectF(-GOAL_WIDTH * HALF - DOUBLE * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH * HALF, -POST_RADIUS);
-        this.rightNet = new RectF(GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF + DOUBLE * POST_RADIUS, -POST_RADIUS);
-        this.leftPost = new Circle(-GOAL_WIDTH * HALF - POST_RADIUS, 0, POST_RADIUS);
-        this.rightPost = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, 0, POST_RADIUS);
-        this.leftSupport = new Circle(-GOAL_WIDTH * HALF - POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
-        this.rightSupport = new Circle(GOAL_WIDTH * HALF + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
+        this.goalArea = new GoalNet(-GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF, -DOUBLE * BALL_RADIUS);
+        this.rearNet = new GoalNet(-GOAL_WIDTH * HALF, -GOAL_DEPTH - DOUBLE * POST_RADIUS, GOAL_WIDTH * HALF, -GOAL_DEPTH);
+        this.leftNet = new GoalNet(-GOAL_WIDTH * HALF - DOUBLE * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH * HALF, -POST_RADIUS);
+        this.rightNet = new GoalNet(GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF + DOUBLE * POST_RADIUS, -POST_RADIUS);
+        this.leftPost = new GoalPost(-GOAL_WIDTH * HALF - POST_RADIUS, 0, POST_RADIUS);
+        this.rightPost = new GoalPost(GOAL_WIDTH * HALF + POST_RADIUS, 0, POST_RADIUS);
+        this.leftSupport = new GoalPost(-GOAL_WIDTH * HALF - POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
+        this.rightSupport = new GoalPost(GOAL_WIDTH * HALF + POST_RADIUS, -GOAL_DEPTH - POST_RADIUS, POST_RADIUS);
     }
 
     public void handleGoalCollision(Ball ball) {

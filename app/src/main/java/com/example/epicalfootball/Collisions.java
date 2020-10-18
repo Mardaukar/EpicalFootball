@@ -3,14 +3,22 @@ package com.example.epicalfootball;
 import android.graphics.RectF;
 import android.util.Log;
 
+import com.example.epicalfootball.items.Ball;
+import com.example.epicalfootball.items.Circle;
+import com.example.epicalfootball.items.OutfieldPlayer;
+import com.example.epicalfootball.items.Player;
+import com.example.epicalfootball.math.EpicalMath;
+import com.example.epicalfootball.math.Position;
+import com.example.epicalfootball.math.Vector;
+
 import static com.example.epicalfootball.Constants.*;
 
 public class Collisions {
 
     public static void handlePlayerCircleCollision(Circle circle, Player player) {
-        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
+        if (EpicalMath.checkIntersect(circle, player)) {
             float centersDistance = circle.getRadius() + player.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(player.getPosition().getX() - circle.getX(), player.getPosition().getY() - circle.getY());
+            float collisionDirection = EpicalMath.convertToDirectionFromOrigo(player.getPosition().getX() - circle.getPosition().getX(), player.getPosition().getY() - circle.getPosition().getY());
             float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, player.getSpeed().getDirection());
 
             player.getPosition().setPosition(circle.getPosition());
@@ -26,9 +34,9 @@ public class Collisions {
     }
 
     public static void handleBallCircleCollision(Circle circle, Ball ball) {
-        if (EpicalMath.checkIntersect(circle.getX(), circle.getY(), circle.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+        if (EpicalMath.checkIntersect(circle, ball)) {
             float centersDistance = circle.getRadius() + ball.getRadius();
-            float collisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - circle.getX(), ball.getPosition().getY() - circle.getY());
+            float collisionDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition().getX() - circle.getPosition().getX(), ball.getPosition().getY() - circle.getPosition().getY());
             float fieldObjectCollisionDifference = EpicalMath.absoluteAngleBetweenDirections(collisionDirection, ball.getSpeed().getDirection());
 
             ball.getPosition().setPosition(circle.getPosition());
@@ -44,13 +52,13 @@ public class Collisions {
     }
 
     public static boolean handlePlayerBallCollision(OutfieldPlayer outfieldPlayer, Ball ball, boolean readyToShoot, Position aimTarget) {
-        float playerCollisionDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
+        float playerCollisionDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
         float playerOrientationCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, outfieldPlayer.getOrientation());
         boolean ballControl = playerOrientationCollisionAngle <= outfieldPlayer.getControlAngle() && outfieldPlayer.getKickRecoveryTimer() == 0;
 
-        if (EpicalMath.checkIntersect(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), outfieldPlayer.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+        if (EpicalMath.checkIntersect(outfieldPlayer, ball)) {
             if (ballControl && readyToShoot) {
-                float aimDirection = EpicalMath.convertToDirection(aimTarget.getX() - ball.getPosition().getX(), aimTarget.getY() - ball.getPosition().getY());
+                float aimDirection = EpicalMath.convertToDirectionFromOrigo(aimTarget.getX() - ball.getPosition().getX(), aimTarget.getY() - ball.getPosition().getY());
                 float collisionToAimTargetAngle = EpicalMath.absoluteAngleBetweenDirections(aimDirection, playerCollisionDirection);
 
                 if (collisionToAimTargetAngle < Math.PI / 2) {
@@ -121,7 +129,8 @@ public class Collisions {
         }
 
         //CONTROL CONE
-        if (EpicalMath.checkIntersect(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), outfieldPlayer.getControlRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+        Circle controlCircle = new Circle(outfieldPlayer.getPosition(), outfieldPlayer.getControlRadius());
+        if (EpicalMath.checkIntersect(controlCircle, ball)) {
             if (ballControl) {
                 ball.shiftWithControlCone(outfieldPlayer);
             }
@@ -131,7 +140,7 @@ public class Collisions {
     }
 
     public static void handleBallLineSegmentCollision(RectF line, Ball ball) {
-        if (EpicalMath.checkIntersect(line, ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+        if (EpicalMath.checkIntersect(line, ball)) {
             ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * LINE_SEGMENT_COLLISION_SPEED_MULTIPLIER);
 
             if (line.height() < line.width()) {
@@ -163,7 +172,7 @@ public class Collisions {
     }
 
     public static void handlePlayerLineSegmentCollision(RectF line, Player player) {
-        if (EpicalMath.checkIntersect(line, player.getPosition().getX(), player.getPosition().getY(), player.getRadius())) {
+        if (EpicalMath.checkIntersect(line, player)) {
             if (line.height() < line.width()) {
                 if (player.getPosition().getY() < line.centerY()) {
                     player.getPosition().setY(line.top - player.getRadius());

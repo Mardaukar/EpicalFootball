@@ -1,5 +1,8 @@
 package com.example.epicalfootball;
 
+import com.example.epicalfootball.items.OutfieldPlayer;
+import com.example.epicalfootball.math.Position;
+
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;

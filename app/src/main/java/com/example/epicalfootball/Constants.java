@@ -1,5 +1,7 @@
 package com.example.epicalfootball;
 
+import com.example.epicalfootball.math.Position;
+
 public class Constants {
 
     //PLAYER

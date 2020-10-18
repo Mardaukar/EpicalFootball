@@ -1,4 +1,4 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.math;
 
 public class Vector {
     protected float direction;
@@ -17,8 +17,8 @@ public class Vector {
     public void addVector(float direction, float magnitude) {
         float directionX = (float)(Math.cos(this.direction) * this.magnitude + Math.cos(direction) * magnitude);
         float directionY = (float)(Math.sin(this.direction) * this.magnitude + Math.sin(direction) * magnitude);
-        this.direction = EpicalMath.convertToDirection(directionX, directionY);
-        this.magnitude = EpicalMath.calculateDistance(directionX, directionY);
+        this.direction = EpicalMath.convertToDirectionFromOrigo(directionX, directionY);
+        this.magnitude = EpicalMath.calculateDistanceFromOrigo(directionX, directionY);
     }
 
     public void addVector(Vector vector) {

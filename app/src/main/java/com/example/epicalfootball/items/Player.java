@@ -1,12 +1,14 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.items;
 
-public abstract class Player {
-    Position position;
+import com.example.epicalfootball.math.EpicalMath;
+import com.example.epicalfootball.TargetSpeedVector;
+import com.example.epicalfootball.math.Vector;
+
+public abstract class Player extends Circle {
     float orientation;
     TargetSpeedVector targetSpeed;
     Vector speed;
 
-    float radius;
     float acceleration;
     float accelerationTurn;
     float fullMagnitudeSpeed;
@@ -19,14 +21,6 @@ public abstract class Player {
         } else {
             return (float)Math.cos(angle) * this.getSpeed().getMagnitude();
         }
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     public float getOrientation() {
@@ -51,14 +45,6 @@ public abstract class Player {
 
     public void setSpeed(Vector speed) {
         this.speed = speed;
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
     }
 
     public float getAcceleration() {

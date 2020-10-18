@@ -3,6 +3,12 @@ package com.example.epicalfootball;
 import android.graphics.RectF;
 
 import com.example.epicalfootball.activities.MatchActivity;
+import com.example.epicalfootball.items.Ball;
+import com.example.epicalfootball.items.GoalFrame;
+import com.example.epicalfootball.items.Goalkeeper;
+import com.example.epicalfootball.items.OutfieldPlayer;
+import com.example.epicalfootball.math.EpicalMath;
+import com.example.epicalfootball.math.Position;
 
 import java.util.Random;
 
@@ -93,12 +99,12 @@ public class MatchState {
     public void handlePlayerControls(float elapsed, float timeFactor) {
         if (shootButtonDown) {
             outfieldPlayer.setAimRecoveryTimer(0);
-            float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
+            float playerBallDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
             outfieldPlayer.getTargetSpeed().setDirection(playerBallDirection);
             outfieldPlayer.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
 
             if (this.targetGoal == null) {
-                float distance = EpicalMath.calculateDistance(this.ball.getPosition().getX(), this.ball.getPosition().getY());
+                float distance = EpicalMath.calculateDistanceFromOrigo(this.ball.getPosition().getX(), this.ball.getPosition().getY());
 
                 if (distance < LONG_SHOTS_LIMIT) {
                     longShot = false;
@@ -165,7 +171,7 @@ public class MatchState {
             }
 
             if (outfieldPlayer.getAimRecoveryTimer() > 0) {
-                float playerBallDirection = EpicalMath.convertToDirection(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
+                float playerBallDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
                 outfieldPlayer.getTargetSpeed().setDirection(playerBallDirection);
                 outfieldPlayer.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
             } else if (controlOn) {
@@ -232,7 +238,7 @@ public class MatchState {
             } else if (ballOutOfBounds()) {
                 canScore = false;
                 newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
-            } else if (ball.getSpeed().getMagnitude() == 0 && EpicalMath.checkIntersect(goalkeeper.getPosition().getX(), goalkeeper.getPosition().getY(), goalkeeper.getRadius(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius())) {
+            } else if (ball.getSpeed().getMagnitude() == 0 && EpicalMath.checkIntersect(goalkeeper, ball)) {
                 canScore = false;
                 newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
             }
@@ -257,7 +263,7 @@ public class MatchState {
     }
 
     public boolean ballInGoal() {
-        return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball.getPosition().getX(), ball.getPosition().getY(), ball.getRadius());
+        return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball);
     }
 
     public void handleBoundaryCollision(OutfieldPlayer outfieldPlayer) {

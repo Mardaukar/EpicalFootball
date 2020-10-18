@@ -1,7 +1,8 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.math;
 
 import android.graphics.RectF;
-import android.util.Log;
+
+import com.example.epicalfootball.items.Circle;
 
 public class EpicalMath {
 
@@ -25,7 +26,7 @@ public class EpicalMath {
         return newMagnitude;
     }
 
-    public static float convertToDirection(float x, float y) {
+    public static float convertToDirectionFromOrigo(float x, float y) {
         float direction;
 
         if (x > 0) {
@@ -49,21 +50,29 @@ public class EpicalMath {
         return direction;
     }
 
-    public static boolean checkIntersect(RectF rect, float x, float y, float radius) {
-        return (x + radius >= rect.left && x - radius <= rect.right && y + radius >= rect.top && y - radius <= rect.bottom);
+    public static boolean checkIntersect(RectF rect, Circle circle) {
+        return (circle.getPosition().getX() + circle.getRadius() >= rect.left && circle.getPosition().getX() - circle.getRadius() <= rect.right && circle.getPosition().getY() + circle.getRadius() >= rect.top && circle.getPosition().getY() - circle.getRadius() <= rect.bottom);
     }
 
-    public static boolean checkIntersect(float x1, float y1, float radius1, float x2, float y2, float radius2) {
-        float distance = calculateDistance(x1, y1, x2, y2);
-        return distance <= radius1 + radius2;
+    public static boolean checkIntersect(Circle circle1, Circle circle2) {
+        float distance = calculateDistance(circle1.getPosition().getX(), circle1.getPosition().getY(), circle2.getPosition().getX(), circle2.getPosition().getY());
+        return distance <= circle1.getRadius() + circle2.getRadius();
     }
 
     public static float calculateDistance(float x1, float y1, float x2, float y2) {
         return (float)Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
     }
 
-    public static float calculateDistance(float x, float y) {
+    public static float calculateDistance(Position position1, Position position2) {
+        return calculateDistance(position1.getX(), position1.getY(), position2.getX(), position2.getY());
+    }
+
+    public static float calculateDistanceFromOrigo(float x, float y) {
         return (float)Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+
+    public static float calculateDistanceFromOrigo(Position position) {
+        return calculateDistanceFromOrigo(position.getX(), position.getY());
     }
 
     public static float sanitizeDirection(float direction) {

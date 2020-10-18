@@ -1,13 +1,15 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.items;
+
+import com.example.epicalfootball.math.EpicalMath;
+import com.example.epicalfootball.math.Position;
+import com.example.epicalfootball.math.Vector;
 
 import java.util.Random;
 
 import static com.example.epicalfootball.Constants.*;
 
-public class Ball {
-    private final float radius;
+public class Ball extends Circle {
     private final float fullMagnitudeSpeed;
-    private Position position;
     private Vector speed;
     private Random random = new Random();
 
@@ -80,7 +82,7 @@ public class Ball {
 
     public void shiftWithControlCone(OutfieldPlayer outfieldPlayer) {
         float centersDistance = EpicalMath.calculateDistance(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), this.getPosition().getX(), this.getPosition().getY());
-        float playerToBallDirection = EpicalMath.convertToDirection(this.getPosition().getX() - outfieldPlayer.getPosition().getX(), this.getPosition().getY() - outfieldPlayer.getPosition().getY());
+        float playerToBallDirection = EpicalMath.convertToDirectionFromOrigo(this.getPosition().getX() - outfieldPlayer.getPosition().getX(), this.getPosition().getY() - outfieldPlayer.getPosition().getY());
         float shiftedPlayerToBallDirection;
         float playerTargetSpeedDirection = outfieldPlayer.getTargetSpeed().getDirection();
         float playerOrientation = outfieldPlayer.getOrientation();
@@ -144,7 +146,7 @@ public class Ball {
             shotPowerFactor = FULL;
         }
 
-        float intendedDirection = EpicalMath.convertToDirection(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY());
+        float intendedDirection = EpicalMath.convertToDirectionFromOrigo(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY());
         float realDirection = intendedDirection + (float)random.nextGaussian() * outfieldPlayer.getAccuracyGaussianFactor() + failedGaussianFactor;
         EpicalMath.sanitizeDirection(realDirection);
 
