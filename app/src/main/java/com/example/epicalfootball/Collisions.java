@@ -94,15 +94,15 @@ public class Collisions {
             float goalPostToCollisionDirection = EpicalMath.convertToDirection(goalPost.getPosition(), ball.getPosition());
             float goalPostToCollisionDirectionBallSpeedDirectionDifference = EpicalMath.absoluteAngleBetweenDirections(goalPostToCollisionDirection, ball.getSpeed().getDirection());
 
-            ball.getPosition().setPosition(goalPost.getPosition());
-            ball.getPosition().addVector(goalPostToCollisionDirection, radiusSum);
-
             if (goalPostToCollisionDirectionBallSpeedDirectionDifference > QUARTER_CIRCLE) {
                 ball.getSpeed().bounceDirection(goalPostToCollisionDirection);
+                float multiplierAngle = goalPostToCollisionDirectionBallSpeedDirectionDifference - QUARTER_CIRCLE;
+                float speedMultiplier = FULL - (float)Math.sin(multiplierAngle) * (FULL - GOAL_POST_COLLISION_SPEED_MULTIPLIER);
+                ball.getSpeed().setMagnitude(speedMultiplier * ball.getSpeed().getMagnitude());
             }
 
-            float newDifference = EpicalMath.absoluteAngleBetweenDirections(goalPostToCollisionDirection, ball.getSpeed().getDirection());
-            ball.getSpeed().setMagnitude((FULL - (float)Math.cos(newDifference) * (FULL - GOAL_POST_COLLISION_SPEED_MULTIPLIER)) * ball.getSpeed().getMagnitude());
+            ball.getPosition().setPosition(goalPost.getPosition());
+            ball.getPosition().addVector(goalPostToCollisionDirection, radiusSum);
         }
     }
 

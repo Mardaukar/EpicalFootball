@@ -146,8 +146,9 @@ public class Ball extends Circle {
             shotPowerFactor = FULL;
         }
 
-        float intendedDirection = EpicalMath.convertToDirectionFromOrigo(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY());
-        float realDirection = intendedDirection + (float)random.nextGaussian() * outfieldPlayer.getAccuracyGaussianFactor() + failedGaussianFactor;
+        //float intendedDirection = EpicalMath.convertToDirectionFromOrigo(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY());
+        float intendedDirection = EpicalMath.convertToDirection(this.getPosition(), aimTarget);
+        float realDirection = intendedDirection + (float)random.nextGaussian() * (outfieldPlayer.getAccuracyGaussianFactor() + failedGaussianFactor);
         EpicalMath.sanitizeDirection(realDirection);
 
         this.getSpeed().setDirection(realDirection);
