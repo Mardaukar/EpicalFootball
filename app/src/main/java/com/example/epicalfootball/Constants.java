@@ -18,17 +18,6 @@ public class Constants {
     public static float HALF_CIRCLE = (float)Math.PI;
     public static float QUARTER_CIRCLE = (float)Math.PI / 2;
 
-    //PLAYER
-    public static Position OUTFIELD_PLAYER_STARTING_POSITION = new Position(5, 30);
-    public static float OUTFIELD_PLAYER_STARTING_ORIENTATION = UP;
-    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
-    public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
-    public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
-    public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
-    public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
-    public static float PLAYER_BASE_DECELERATION = 0.3f;
-    public static float DRIBBLING_KICK_FORWARD = 0.2f;
-
     //BALL
     public static float BALL_RADIUS = 0.35f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
@@ -118,6 +107,26 @@ public class Constants {
     public static float POST_WIDTH_IN_TARGET_PNG = 0.115f;
     public static int FAILED_SHOT_BASE_ALPHA = 50;
     public static int FAILED_SHOT_INCREMENTAL_ALPHA = 100;
+
+    //GOALKEEPER
+    public static String MOVE_ACTION = "move";
+    public static String SAVE_ACTION = "save";
+    public static String INTERCEPT_ACTION = "intercept";
+    public static int GK_AI_DECISION_TIMER = 1000;
+    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1;
+    public static int GK_REFLEX_TIME = 400;
+    public static float GK_AI_INTERCEPT_RADIUS = 12;
+
+    //PLAYER
+    public static Position OUTFIELD_PLAYER_STARTING_POSITION = new Position(5, 30);
+    public static float OUTFIELD_PLAYER_STARTING_ORIENTATION = UP;
+    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
+    public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
+    public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
+    public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
+    public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
+    public static float PLAYER_BASE_DECELERATION = 0.3f;
+    public static float DRIBBLING_KICK_FORWARD = 0.2f;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.7f;

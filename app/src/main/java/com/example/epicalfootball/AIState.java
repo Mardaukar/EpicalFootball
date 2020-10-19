@@ -13,34 +13,63 @@ public class AIState {
     private MatchState matchState;
     private Goalkeeper goalkeeper;
     private AIAction goalkeeperAIAction;
+    private int aiDecisionCounter;
+    private boolean shotPerceived;
 
     public AIState(MatchState matchState) {
         this.matchState = matchState;
         this.goalkeeper = matchState.getGoalkeeper();
         this.goalkeeperAIAction = new AIAction();
+        this.shotPerceived = false;
     }
 
     public void update(float elapsed) {
         Log.d("AIState", "" + goalkeeperAIAction.getTargetPosition().getX() + " " + goalkeeperAIAction.getTargetPosition().getY());
-        //Log.d("AIState", "...");
 
         Ball ball = matchState.getBall();
 
-        Position maxLeftBasePosition = new Position(-(GOAL_WIDTH * HALF + POST_RADIUS), goalkeeper.getRadius() + POST_RADIUS);
-        Position maxRightBasePosition = new Position(GOAL_WIDTH * HALF + POST_RADIUS, goalkeeper.getRadius() + POST_RADIUS);
-        float maxLeftBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxLeftBasePosition);
-        float maxRightBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxRightBasePosition);
-        float basePositionRadius = EpicalMath.calculateDistanceFromOrigo(maxRightBasePosition);
-        float ballDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition());
-
-        if (ballDirection > maxRightBasePositionDirection && ballDirection < maxLeftBasePositionDirection) {
-            goalkeeperAIAction.setTargetPosition(EpicalMath.convertToPositionFromOrigo(ballDirection, basePositionRadius));
-        } else if (Math.abs(ballDirection) > QUARTER_CIRCLE) {
-            goalkeeperAIAction.setTargetPosition(maxLeftBasePosition);
-        } else {
-            goalkeeperAIAction.setTargetPosition(maxRightBasePosition);
+        if (ball.getSpeed().getMagnitude() >= GK_AI_BALL_SPEED_PERCEIVED_SHOT && this.shotPerceived == false) {
+            this.shotPerceived = true;
+            this.aiDecisionCounter = GK_REFLEX_TIME;
+        } else if(ball.getSpeed().getMagnitude() < GK_AI_BALL_SPEED_PERCEIVED_SHOT) {
+            this.shotPerceived = false;
         }
 
-        goalkeeperAIAction.setAction("move");
+        if (aiDecisionCounter <= 0) {
+            if (shotPerceived) {
+                goalkeeperAIAction.setAction(SAVE_ACTION);
+                aiDecisionCounter = GK_REFLEX_TIME;
+            } else if(EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= GK_AI_INTERCEPT_RADIUS) {
+                goalkeeperAIAction.setTargetPosition(matchState.getGoalkeeper().getPosition());
+                goalkeeperAIAction.setAction(INTERCEPT_ACTION);
+                aiDecisionCounter = GK_AI_DECISION_TIMER;
+            } else {
+                Position maxLeftBasePosition = new Position(-(GOAL_WIDTH * HALF + POST_RADIUS), goalkeeper.getRadius() + POST_RADIUS);
+                Position maxRightBasePosition = new Position(GOAL_WIDTH * HALF + POST_RADIUS, goalkeeper.getRadius() + POST_RADIUS);
+                float maxLeftBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxLeftBasePosition);
+                float maxRightBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxRightBasePosition);
+                float basePositionRadius = EpicalMath.calculateDistanceFromOrigo(maxRightBasePosition);
+                float ballDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition());
+
+                if (ballDirection > maxRightBasePositionDirection && ballDirection < maxLeftBasePositionDirection) {
+                    goalkeeperAIAction.setTargetPosition(EpicalMath.convertToPositionFromOrigo(ballDirection, basePositionRadius));
+                } else if (Math.abs(ballDirection) > QUARTER_CIRCLE) {
+                    goalkeeperAIAction.setTargetPosition(maxLeftBasePosition);
+                } else {
+                    goalkeeperAIAction.setTargetPosition(maxRightBasePosition);
+                }
+
+                goalkeeperAIAction.setAction(MOVE_ACTION);
+                aiDecisionCounter = GK_AI_DECISION_TIMER;
+            }
+        } else {
+            aiDecisionCounter -= elapsed;
+        }
+    }
+
+    public AIAction getGoalkeeperAIAction() {
+        return goalkeeperAIAction;
     }
 }
+
+

@@ -1,6 +1,7 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.example.epicalfootball.activities.MatchActivity;
 import com.example.epicalfootball.items.Ball;
@@ -9,6 +10,7 @@ import com.example.epicalfootball.items.Goalkeeper;
 import com.example.epicalfootball.items.OutfieldPlayer;
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
+import com.example.epicalfootball.math.Vector;
 
 import java.util.Random;
 
@@ -67,7 +69,7 @@ public class MatchState {
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
-        //Add Goalkeeper AI
+        handleGoalkeeperAI(aiState.getGoalkeeperAIAction());
         handlePlayerControls(elapsed, timeFactor);
 
         goalkeeper.updateSpeed(timeFactor);
@@ -188,6 +190,20 @@ public class MatchState {
             }
 
             this.targetGoal = null;
+        }
+    }
+
+    public void handleGoalkeeperAI(AIAction aiAction) {
+        if (aiAction.getAction().equals(MOVE_ACTION)) {
+            Log.d("GK", "move");
+            float goalkeeperToPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
+            goalkeeper.setTargetSpeed(new TargetSpeedVector(goalkeeperToPositionDirection, FULL));
+        } else if (aiAction.getAction().equals(INTERCEPT_ACTION)) {
+            Log.d("GK", "intercept");
+            float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());
+            goalkeeper.setTargetSpeed(new TargetSpeedVector(goalkeeperToBallDirection, FULL));
+        } else if (aiAction.getAction().equals(SAVE_ACTION)) {
+            Log.d("GK", "save");
         }
     }
 
