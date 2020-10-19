@@ -52,6 +52,10 @@ public class EpicalMath {
         return direction;
     }
 
+    public static float convertToDirectionFromOrigo(Position position) {
+        return convertToDirectionFromOrigo(position.getX(), position.getY());
+    }
+
     public static float convertToDirection(Position position1, Position position2) {
         float x = position2.getX() - position1.getX();
         float y = position2.getY() - position1.getY();
@@ -106,5 +110,11 @@ public class EpicalMath {
     public static float angleBetweenDirections(float direction1, float direction2) {
         float difference = sanitizeDirection(direction1 - direction2);
         return difference;
+    }
+
+    public static Position convertToPositionFromOrigo(float direction, float distance) {
+        Position position = new Position();
+        position.addVector(direction, distance);
+        return position;
     }
 }

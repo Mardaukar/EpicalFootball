@@ -16,6 +16,9 @@ import static com.example.epicalfootball.Constants.*;
 
 public class MatchState {
 
+    private AIRunner aiRunner;
+    private AIState aiState;
+
     private MatchActivity matchActivity;
     private int ballsLeft;
     private int goalsScored;
@@ -55,6 +58,10 @@ public class MatchState {
         this.ballFeedTimer = BALL_FEED_TIMER;
         this.newBallTimer = 0;
         this.ball = feedNewBall();
+
+        this.aiState = new AIState(this);
+        aiRunner = new AIRunner(aiState);
+        aiRunner.start();
     }
 
     public void updateGameState(long elapsed) {
@@ -207,6 +214,17 @@ public class MatchState {
                     substractBall();
                     this.ball = feedNewBall();
                 } else {
+                    if (aiRunner != null) {
+                        aiRunner.shutdown();
+
+                        while (aiRunner != null) {
+                            try {
+                                aiRunner.join();
+                                aiRunner = null;
+                            } catch (InterruptedException e) {
+                            }
+                        }
+                    }
                     matchActivity.goToResult(this.goalsScored);
                 }
             }
