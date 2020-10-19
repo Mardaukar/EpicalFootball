@@ -60,13 +60,13 @@ public class MatchState {
     public void updateGameState(long elapsed) {
         float timeFactor = elapsed/1000f;
 
-        //Goalkeeper AI
+        //Add Goalkeeper AI
         handlePlayerControls(elapsed, timeFactor);
 
         goalkeeper.updateSpeed(timeFactor);
-        outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
         goalkeeper.updatePosition(timeFactor);
         goalkeeper.updateOrientation(timeFactor);
+        outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);
 
@@ -219,10 +219,10 @@ public class MatchState {
         ball.getPosition().setY(random.nextInt(7) + 24);
 
         if (random.nextInt(TWO) == 0) {
-            ball.getSpeed().setDirection(0);
+            ball.getSpeed().setDirection(RIGHT);
             ball.getPosition().setX(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH);
         } else {
-            ball.getSpeed().setDirection((float)Math.PI);
+            ball.getSpeed().setDirection(LEFT);
             ball.getPosition().setX(FIELD_WIDTH * HALF + BOUNDARY_WIDTH);
         }
 

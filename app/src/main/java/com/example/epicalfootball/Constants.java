@@ -4,11 +4,25 @@ import com.example.epicalfootball.math.Position;
 
 public class Constants {
 
+    //MATHEMATICAL
+    public static float FULL_MAGNITUDE = 1f;
+    public static float FULL = 1f;
+    public static float HALF = 0.5f;
+    public static float DOUBLE = 2;
+    public static int TWO = 2;
+    public static float DOWN = (float)Math.PI / 2;
+    public static float UP = (float)-Math.PI / 2;
+    public static float LEFT = (float)Math.PI;
+    public static float RIGHT = 0;
+    public static float FULL_CIRCLE = 2 * (float)Math.PI;
+    public static float HALF_CIRCLE = (float)Math.PI;
+    public static float QUARTER_CIRCLE = (float)Math.PI / 2;
+
     //PLAYER
     public static Position OUTFIELD_PLAYER_STARTING_POSITION = new Position(5, 30);
-    public static float OUTFIELD_PLAYER_STARTING_ORIENTATION = (float)-Math.PI / 2;
+    public static float OUTFIELD_PLAYER_STARTING_ORIENTATION = UP;
     public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
-    public static float GOALKEEPER_STARTING_ORIENTATION = (float)Math.PI / 2;
+    public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
     public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
@@ -105,20 +119,6 @@ public class Constants {
     public static int FAILED_SHOT_BASE_ALPHA = 50;
     public static int FAILED_SHOT_INCREMENTAL_ALPHA = 100;
 
-    //MATHEMATICAL
-    public static float FULL_MAGNITUDE = 1f;
-    public static float FULL = 1f;
-    public static float HALF = 0.5f;
-    public static float DOUBLE = 2;
-    public static int TWO = 2;
-    public static float DOWN = (float)Math.PI / 2;
-    public static float UP = (float)-Math.PI / 2;
-    public static float LEFT = (float)Math.PI;
-    public static float RIGHT = 0;
-    public static float FULL_CIRCLE = 2 * (float)Math.PI;
-    public static float HALF_CIRCLE = (float)Math.PI;
-    public static float QUARTER_CIRCLE = (float)Math.PI / 2;
-
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.7f;
     public static float MAX_REACH_VALUE = 0.9f;
@@ -128,8 +128,8 @@ public class Constants {
     public static float MAX_ACCELERATION_TURN = 6;
     public static float MIN_SPEED_VALUE = 6;
     public static float MAX_SPEED_VALUE = 12;
-    public static float MIN_BALL_CONTROL_ANGLE = (float)Math.PI / 4;
-    public static float MAX_BALL_CONTROL_ANGLE = (float)Math.PI / 2.2f;
+    public static float MIN_BALL_CONTROL_ANGLE = HALF_CIRCLE / 4;
+    public static float MAX_BALL_CONTROL_ANGLE = HALF_CIRCLE / 2.2f;
     public static float MIN_BALL_CONTROL_RADIUS = 0f;
     public static float MAX_BALL_CONTROL_RADIUS = 0.6f;
     public static float MIN_BALL_CONTROL_BALL_SPEED = 0.01f;

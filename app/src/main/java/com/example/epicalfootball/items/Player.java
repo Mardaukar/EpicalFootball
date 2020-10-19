@@ -20,7 +20,7 @@ public abstract class Player extends Circle {
     public float getMagnitudeToOrientation() {
         float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.orientation);
 
-        if (angle > Math.PI / 2) {
+        if (angle > QUARTER_CIRCLE) {
             return 0;
         } else {
             return (float)Math.cos(angle) * this.getSpeed().getMagnitude();

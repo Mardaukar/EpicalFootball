@@ -35,15 +35,15 @@ public class EpicalMath {
             direction = (float)Math.atan(y / x);
         } else if(x < 0) {
             if (y >= 0) {
-                direction = (float)(Math.PI + Math.atan(y / x));
+                direction = (float)(HALF_CIRCLE + Math.atan(y / x));
             } else {
-                direction = (float)(Math.atan(y / x) - Math.PI);
+                direction = (float)(Math.atan(y / x) - HALF_CIRCLE);
             }
         } else {
             if (y > 0) {
-                direction = (float)Math.PI * 0.5f;
+                direction = DOWN;
             } else if (y < 0) {
-                direction = (float)Math.PI * -0.5f;
+                direction = UP;
             } else {
                 direction = 0;
             }
@@ -53,29 +53,9 @@ public class EpicalMath {
     }
 
     public static float convertToDirection(Position position1, Position position2) {
-        float direction;
         float x = position2.getX() - position1.getX();
         float y = position2.getY() - position1.getY();
-
-        if (x > 0) {
-            direction = (float)Math.atan(y / x);
-        } else if(x < 0) {
-            if (y >= 0) {
-                direction = (float)(Math.PI + Math.atan(y / x));
-            } else {
-                direction = (float)(Math.atan(y / x) - Math.PI);
-            }
-        } else {
-            if (y > 0) {
-                direction = (float)Math.PI * 0.5f;
-            } else if (y < 0) {
-                direction = (float)Math.PI * -0.5f;
-            } else {
-                direction = 0;
-            }
-        }
-
-        return direction;
+        return convertToDirectionFromOrigo(x, y);
     }
 
     public static boolean checkIntersect(RectF rect, Circle circle) {
@@ -104,10 +84,10 @@ public class EpicalMath {
     }
 
     public static float sanitizeDirection(float direction) {
-        if (direction < -Math.PI) {
-            direction += 2*Math.PI;
-        } else if (direction > Math.PI) {
-            direction -= 2*Math.PI;
+        if (direction < -HALF_CIRCLE) {
+            direction += FULL_CIRCLE;
+        } else if (direction > HALF_CIRCLE) {
+            direction -= FULL_CIRCLE;
         }
 
         return direction;

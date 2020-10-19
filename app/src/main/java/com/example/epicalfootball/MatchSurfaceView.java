@@ -148,9 +148,9 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             //DRAW CONTROL SECTOR
             paint.setColor(getResources().getColor(R.color.skinColor));
             float directionRadians = outfieldPlayer.getOrientation();
-            float directionDegrees = directionRadians / (float) Math.PI * 180;
+            float directionDegrees = directionRadians / HALF_CIRCLE * 180;
             float controlConeRadians = outfieldPlayer.getControlAngle();
-            float controlConeDegrees = controlConeRadians / (float) Math.PI * 180;
+            float controlConeDegrees = controlConeRadians / HALF_CIRCLE * 180;
             canvas.drawArc(drawPositionX - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionX + pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY + pixelPerMeter * outfieldPlayer.getRadius(), directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
 
             //DRAW GOAL

@@ -128,7 +128,7 @@ public class Collisions {
                 float aimDirection = EpicalMath.convertToDirectionFromOrigo(aimTarget.getX() - ball.getPosition().getX(), aimTarget.getY() - ball.getPosition().getY());
                 float collisionToAimTargetAngle = EpicalMath.absoluteAngleBetweenDirections(aimDirection, playerCollisionDirection);
 
-                if (collisionToAimTargetAngle < Math.PI / 2) {
+                if (collisionToAimTargetAngle < QUARTER_CIRCLE) {
                     return true;
                 }
             }
@@ -138,7 +138,7 @@ public class Collisions {
                 float ballCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(playerCollisionDirection, ball.getSpeed().getDirection());
                 Vector impulse;
                 float impactMagnitude;
-                boolean bounce = ballCollisionAngle > Math.PI * HALF && ball.getSpeed().getMagnitude() > 0;
+                boolean bounce = ballCollisionAngle > QUARTER_CIRCLE && ball.getSpeed().getMagnitude() > 0;
 
                 if (bounce) {
                     ball.getSpeed().bounceDirection(playerCollisionDirection);

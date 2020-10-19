@@ -1,5 +1,7 @@
 package com.example.epicalfootball.math;
 
+import static com.example.epicalfootball.Constants.*;
+
 public class Vector {
     protected float direction;
     protected float magnitude;
@@ -27,9 +29,9 @@ public class Vector {
 
     public void reverseDirection() {
         if (direction >= 0 ) {
-            direction -= Math.PI;
+            direction -= HALF_CIRCLE;
         } else {
-            direction += Math.PI;
+            direction += HALF_CIRCLE;
         }
     }
 
