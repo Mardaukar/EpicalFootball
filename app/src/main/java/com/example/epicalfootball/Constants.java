@@ -59,8 +59,8 @@ public class Constants {
     public static int GAME_UPDATE_TIME = 30;
     public static float GOAL_NET_COLLISION_SPEED_MULTIPLIER = 0.15f;
     public static float GOAL_POST_COLLISION_SPEED_MULTIPLIER = 0.25f;
-    public static float COLLISION_ANGLE_SPEED_MULTIPLIER = 0.5f; //needed?
-    public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.5f;
+    public static float BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER = 0.8f;
+    public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.625f;
     public static long BALL_FEED_TIMER = 500;
 
     //SHOOTING
@@ -123,10 +123,11 @@ public class Constants {
     public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
     public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
     public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
-    public static float CONTROL_CONE_SHIFT_MULTIPLIER = 0.1f; //How much control cone shifts ball, of player's control angle
-    public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.2f; //How much bounce shifts ball in control, of player's control angle
+    public static float CONTROL_CONE_SHIFT_MULTIPLIER = 3; //How much control cone shifts ball, of player's control angle
+    public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.5f; //How much bounce shifts ball direction in control, of player's control angle
     public static float PLAYER_BASE_DECELERATION = 0.3f;
     public static float DRIBBLING_KICK_FORWARD = 0.2f;
+    public static float DRIBBLING_KICK_ANGLE = (float)Math.PI / 8;
 
     //PLAYER VALUE LIMITS
     public static float MIN_REACH_VALUE = 0.7f;
@@ -139,12 +140,12 @@ public class Constants {
     public static float MAX_SPEED_VALUE = 12;
     public static float MIN_BALL_CONTROL_ANGLE = HALF_CIRCLE / 4;
     public static float MAX_BALL_CONTROL_ANGLE = HALF_CIRCLE / 2.2f;
-    public static float MIN_BALL_CONTROL_RADIUS = 0f;
-    public static float MAX_BALL_CONTROL_RADIUS = 0.6f;
-    public static float MIN_BALL_CONTROL_BALL_SPEED = 0.01f;
-    public static float MAX_BALL_CONTROL_BALL_SPEED = 0.03f;
-    public static float MIN_BALL_CONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER;
-    public static float MAX_BALL_CONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER / 5;
+    public static float MIN_BALL_CONTROL_RADIUS = 0.1f;
+    public static float MAX_BALL_CONTROL_RADIUS = 0.3f;
+    public static float MIN_BALL_CONTROL_BALL_SPEED = 1f;
+    public static float MAX_BALL_CONTROL_BALL_SPEED = 2f;
+    public static float MIN_BALL_CONTROL_FIRST_TOUCH = BALL_PLAYER_COLLISION_SPEED_MULTIPLIER * BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER;
+    public static float MAX_BALL_CONTROL_FIRST_TOUCH = MIN_BALL_CONTROL_FIRST_TOUCH / 5;
     public static float MIN_DRIBBLING_LIMIT = 0.5f;
     public static float MAX_DRIBBLING_LIMIT = 1;
     public static float MIN_DRIBBLING_TARGET = 0.9f;

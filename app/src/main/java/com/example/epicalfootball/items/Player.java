@@ -17,8 +17,18 @@ public abstract class Player extends Circle {
     float accelerationTurn;
     float fullMagnitudeSpeed;
 
-    public float getMagnitudeToOrientation() {
+    public float getSpeedMagnitudeToOrientation() {
         float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.orientation);
+
+        if (angle > QUARTER_CIRCLE) {
+            return 0;
+        } else {
+            return (float)Math.cos(angle) * this.getSpeed().getMagnitude();
+        }
+    }
+
+    public float getSpeedMagnitudeToTargetSpeedDirection() {
+        float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.getTargetSpeed().getDirection());
 
         if (angle > QUARTER_CIRCLE) {
             return 0;

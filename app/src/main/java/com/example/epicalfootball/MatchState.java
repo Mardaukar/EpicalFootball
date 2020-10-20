@@ -85,13 +85,16 @@ public class MatchState {
         this.goalFrame.handleGoalCollision(outfieldPlayer);
 
         for (int x = 0; x < BALL_UPDATES_PER_CYCLE; x++) {
-            ball.updateSpeed(timeFactor / BALL_UPDATES_PER_CYCLE);
-            ball.updatePosition(timeFactor / BALL_UPDATES_PER_CYCLE);
+            float ballTimeFactor = timeFactor / BALL_UPDATES_PER_CYCLE;
+            ball.updateSpeed(ballTimeFactor);
+            ball.updatePosition(ballTimeFactor);
 
             //GoalkeeperBallCollision
 
             if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
                 handleShootBall();
+            } else {
+                Collisions.handlePlayerControlConeBallCollision(ballTimeFactor, outfieldPlayer, ball);
             }
 
             this.goalFrame.handleGoalCollision(ball);

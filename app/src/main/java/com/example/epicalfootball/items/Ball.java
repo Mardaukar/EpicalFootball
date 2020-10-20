@@ -45,9 +45,9 @@ public class Ball extends Circle {
         this.speed.setMagnitude(deceleratedSpeedMagnitude);
     }
 
-    public void shiftTowardsPlayerDirectionOnBounce(float collisionDirection, float centersDistance, float playerOrientation, float playerControlAngle) {
-        float angleIncrement = playerControlAngle * CONTROL_BOUNCE_SHIFT_MULTIPLIER;
-        float shiftedCollisionDirection;
+    public void shiftTowardsPlayerDirectionOnBounce(OutfieldPlayer player) {
+        float playerOrientation = player.getOrientation();
+        float angleIncrement = player.getControlAngle() * CONTROL_BOUNCE_SHIFT_MULTIPLIER;
 
         if (EpicalMath.angleBetweenDirections(playerOrientation, this.getSpeed().getDirection()) > 0) {
             this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
@@ -62,47 +62,13 @@ public class Ball extends Circle {
                 this.getSpeed().setDirection(playerOrientation);
             }
         }
-
-        if (EpicalMath.angleBetweenDirections(playerOrientation, collisionDirection) > 0) {
-            shiftedCollisionDirection = collisionDirection + angleIncrement;
-
-            if (EpicalMath.angleBetweenDirections(playerOrientation, shiftedCollisionDirection) < 0) {
-                shiftedCollisionDirection = playerOrientation;
-            }
-        } else {
-            shiftedCollisionDirection = collisionDirection - angleIncrement;
-
-            if (EpicalMath.angleBetweenDirections(playerOrientation, shiftedCollisionDirection) > 0) {
-                shiftedCollisionDirection = playerOrientation;
-            }
-        }
-
-        this.getPosition().addVector(shiftedCollisionDirection, centersDistance);
     }
 
-    public void shiftWithControlCone(OutfieldPlayer outfieldPlayer) {
-        float centersDistance = EpicalMath.calculateDistance(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), this.getPosition().getX(), this.getPosition().getY());
-        float playerToBallDirection = EpicalMath.convertToDirectionFromOrigo(this.getPosition().getX() - outfieldPlayer.getPosition().getX(), this.getPosition().getY() - outfieldPlayer.getPosition().getY());
-        float shiftedPlayerToBallDirection;
-        float playerTargetSpeedDirection = outfieldPlayer.getTargetSpeed().getDirection();
+    public void shiftWithControlCone(float timeFactor, OutfieldPlayer outfieldPlayer) {
+        float angleIncrement = outfieldPlayer.getControlAngle() * CONTROL_CONE_SHIFT_MULTIPLIER * timeFactor;
+        float playerToBallDirection = EpicalMath.convertToDirection(outfieldPlayer.getPosition(), this.getPosition());
         float playerOrientation = outfieldPlayer.getOrientation();
-        float angleIncrement = outfieldPlayer.getControlAngle() * CONTROL_CONE_SHIFT_MULTIPLIER;
-        float playerSpeed = outfieldPlayer.getSpeed().getMagnitude() * outfieldPlayer.getFullMagnitudeSpeed();
-        float newBallSpeedMagnitude;
-
-        if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
-            this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
-
-            if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) < 0) {
-                this.getSpeed().setDirection(playerTargetSpeedDirection);
-            }
-        } else {
-            this.getSpeed().setDirection(this.getSpeed().getDirection() - angleIncrement);
-
-            if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
-                this.getSpeed().setDirection(playerTargetSpeedDirection);
-            }
-        }
+        float shiftedPlayerToBallDirection;
 
         if (EpicalMath.angleBetweenDirections(playerOrientation, playerToBallDirection) > 0) {
             shiftedPlayerToBallDirection = playerToBallDirection + angleIncrement;
@@ -118,11 +84,31 @@ public class Ball extends Circle {
             }
         }
 
+        float radiusSum = EpicalMath.calculateDistance(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), this.getPosition().getX(), this.getPosition().getY());
         this.getPosition().setPosition(outfieldPlayer.getPosition());
-        this.getPosition().addVector(shiftedPlayerToBallDirection, centersDistance);
+        this.getPosition().addVector(shiftedPlayerToBallDirection, radiusSum);
+
+        float playerTargetSpeedDirection = outfieldPlayer.getSpeed().getDirection();
+
+        if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
+            this.getSpeed().setDirection(this.getSpeed().getDirection() + angleIncrement);
+
+            if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) < 0) {
+                this.getSpeed().setDirection(playerTargetSpeedDirection);
+            }
+        } else {
+            this.getSpeed().setDirection(this.getSpeed().getDirection() - angleIncrement);
+
+            if (EpicalMath.angleBetweenDirections(playerTargetSpeedDirection, this.getSpeed().getDirection()) > 0) {
+                this.getSpeed().setDirection(playerTargetSpeedDirection);
+            }
+        }
+
+        float playerSpeed = outfieldPlayer.getSpeed().getMagnitude() * outfieldPlayer.getFullMagnitudeSpeed();
+        float newBallSpeedMagnitude;
 
         if (playerSpeed < this.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
-            newBallSpeedMagnitude = this.getSpeed().getMagnitude() - outfieldPlayer.getControlBallSpeed();
+            newBallSpeedMagnitude = this.getSpeed().getMagnitude() - outfieldPlayer.getControlBallSpeed() * timeFactor;
 
             if (newBallSpeedMagnitude * BALL_REFERENCE_SPEED < playerSpeed) {
                 newBallSpeedMagnitude = playerSpeed / BALL_REFERENCE_SPEED;
@@ -146,7 +132,6 @@ public class Ball extends Circle {
             shotPowerFactor = FULL;
         }
 
-        //float intendedDirection = EpicalMath.convertToDirectionFromOrigo(aimTarget.getX() - this.getPosition().getX(), aimTarget.getY() - this.getPosition().getY());
         float intendedDirection = EpicalMath.convertToDirection(this.getPosition(), aimTarget);
         float realDirection = intendedDirection + (float)random.nextGaussian() * (outfieldPlayer.getAccuracyGaussianFactor() + failedGaussianFactor);
         EpicalMath.sanitizeDirection(realDirection);
