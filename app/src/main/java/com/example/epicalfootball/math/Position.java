@@ -1,5 +1,9 @@
 package com.example.epicalfootball.math;
 
+import com.example.epicalfootball.items.Ball;
+
+import static com.example.epicalfootball.Constants.BALL_REFERENCE_SPEED;
+
 public class Position {
     private float x;
     private float y;
@@ -14,18 +18,23 @@ public class Position {
         this.y = y;
     }
 
-    public Position addVector(float direction, float magnitude) {
-        this.x += Math.cos(direction) * magnitude;
-        this.y += Math.sin(direction) * magnitude;
+    public Position addPositionVector(float direction, float distance) {
+        this.x += Math.cos(direction) * distance;
+        this.y += Math.sin(direction) * distance;
         return this;
     }
 
-    public Position addVector(Vector vector) {
-        addVector(vector.getDirection(), vector.getMagnitude());
+    public Position addPositionVector(Vector vector) {
+        addPositionVector(vector.getDirection(), vector.getMagnitude());
         return this;
     }
 
-    public void setPosition(Position otherPosition) {
+    public void moveBySpeed(Ball ball, float seconds) {
+        this.x += Math.cos(ball.getSpeed().getDirection()) * ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED * seconds;
+        this.y += Math.sin(ball.getSpeed().getDirection()) * ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED * seconds;
+    }
+
+    public void clonePosition(Position otherPosition) {
         this.x = otherPosition.getX();
         this.y = otherPosition.getY();
     }

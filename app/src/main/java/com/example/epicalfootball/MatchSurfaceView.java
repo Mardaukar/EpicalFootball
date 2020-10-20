@@ -189,7 +189,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             } else {
                 paint.setColor(Color.BLUE);
 
-                if (matchState.isDecelerateOn()) {
+                if (outfieldPlayer.isDecelerateOn()) {
                     paint.setAlpha(DECELERATE_ON_ALPHA);
                 } else {
                     paint.setAlpha(DECELERATE_OFF_ALPHA);

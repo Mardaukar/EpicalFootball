@@ -40,7 +40,6 @@ public class MatchState {
     private boolean controlOn = false;
     private float controlX;
     private float controlY;
-    private boolean decelerateOn = false;
     private boolean shootButtonDown = false;
     private boolean readyToShoot = false;
     private float shotPowerMeter = 0;
@@ -75,7 +74,7 @@ public class MatchState {
         goalkeeper.updateSpeed(timeFactor);
         goalkeeper.updatePosition(timeFactor);
         goalkeeper.updateOrientation(timeFactor);
-        outfieldPlayer.updateSpeed(timeFactor, decelerateOn, ball);
+        outfieldPlayer.updateSpeed(timeFactor, ball);
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);
 
@@ -198,15 +197,23 @@ public class MatchState {
 
     public void handleGoalkeeperAI(AIAction aiAction) {
         if (aiAction.getAction().equals(MOVE_ACTION)) {
-            Log.d("GK", "move");
-            float goalkeeperToPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
-            goalkeeper.setTargetSpeed(new TargetSpeedVector(goalkeeperToPositionDirection, FULL));
+            float goalkeeperToTargetPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
+            float goalkeeperTargetPositionDistance = EpicalMath.calculateDistance(goalkeeper.getPosition(), aiAction.getTargetPosition());
+
+            if (goalkeeperTargetPositionDistance < GK_ACCEPTED_POSITION_OFFSET) {
+                goalkeeper.getTargetSpeed().nullTargetSpeed();
+                goalkeeper.setDecelerateOn(true);
+            } else {
+                goalkeeper.getTargetSpeed().setDirection(goalkeeperToTargetPositionDirection);
+                goalkeeper.getTargetSpeed().setMagnitude(FULL);
+                goalkeeper.setDecelerateOn(false);
+            }
         } else if (aiAction.getAction().equals(INTERCEPT_ACTION)) {
-            Log.d("GK", "intercept");
-            float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());
-            goalkeeper.setTargetSpeed(new TargetSpeedVector(goalkeeperToBallDirection, FULL));
+            //Log.d("GK", "intercept");
+            //float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());
+            //goalkeeper.setTargetSpeed(new TargetSpeedVector(goalkeeperToBallDirection, FULL));
         } else if (aiAction.getAction().equals(SAVE_ACTION)) {
-            Log.d("GK", "save");
+            //Log.d("GK", "save");
         }
     }
 
@@ -314,12 +321,12 @@ public class MatchState {
         controlOn = true;
         controlX = x;
         controlY = y;
-        decelerateOn = false;
+        outfieldPlayer.setDecelerateOn(false);
     }
 
     public void setControlOffWithDecelerate(boolean decelerate) {
         controlOn = false;
-        decelerateOn = decelerate;
+        outfieldPlayer.setDecelerateOn(decelerate);
     }
 
     public void setControl(float touchX, float touchY, float sideLength) {
@@ -456,14 +463,6 @@ public class MatchState {
 
     public void setControlY(float controlY) {
         this.controlY = controlY;
-    }
-
-    public boolean isDecelerateOn() {
-        return decelerateOn;
-    }
-
-    public void setDecelerateOn(boolean decelerateOn) {
-        this.decelerateOn = decelerateOn;
     }
 
     public boolean isShootButtonDown() {

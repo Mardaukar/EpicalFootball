@@ -85,8 +85,8 @@ public class Ball extends Circle {
         }
 
         float radiusSum = EpicalMath.calculateDistance(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), this.getPosition().getX(), this.getPosition().getY());
-        this.getPosition().setPosition(outfieldPlayer.getPosition());
-        this.getPosition().addVector(shiftedPlayerToBallDirection, radiusSum);
+        this.getPosition().clonePosition(outfieldPlayer.getPosition());
+        this.getPosition().addPositionVector(shiftedPlayerToBallDirection, radiusSum);
 
         float playerTargetSpeedDirection = outfieldPlayer.getSpeed().getDirection();
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.TargetSpeedVector;
+import com.example.epicalfootball.math.Position;
 import com.example.epicalfootball.math.Vector;
 
 import static com.example.epicalfootball.Constants.*;
@@ -12,10 +13,20 @@ public abstract class Player extends Circle {
     float orientation;
     TargetSpeedVector targetSpeed;
     Vector speed;
+    boolean decelerateOn = false;
 
     float acceleration;
     float accelerationTurn;
     float fullMagnitudeSpeed;
+
+    public void updatePosition(float timeFactor) {
+        float x = this.position.getX();
+        float y = this.position.getY();
+        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
+        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
+        this.position.setX(x);
+        this.position.setY(y);
+    }
 
     public float getSpeedMagnitudeToOrientation() {
         float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.orientation);
@@ -73,6 +84,14 @@ public abstract class Player extends Circle {
 
     public void setSpeed(Vector speed) {
         this.speed = speed;
+    }
+
+    public boolean isDecelerateOn() {
+        return decelerateOn;
+    }
+
+    public void setDecelerateOn(boolean decelerateOn) {
+        this.decelerateOn = decelerateOn;
     }
 
     public float getAcceleration() {

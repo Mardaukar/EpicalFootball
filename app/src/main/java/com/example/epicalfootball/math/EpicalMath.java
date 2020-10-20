@@ -114,7 +114,7 @@ public class EpicalMath {
 
     public static Position convertToPositionFromOrigo(float direction, float distance) {
         Position position = new Position();
-        position.addVector(direction, distance);
+        position.addPositionVector(direction, distance);
         return position;
     }
 }

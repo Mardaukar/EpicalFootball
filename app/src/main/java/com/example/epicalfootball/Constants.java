@@ -108,24 +108,32 @@ public class Constants {
     public static int FAILED_SHOT_BASE_ALPHA = 50;
     public static int FAILED_SHOT_INCREMENTAL_ALPHA = 100;
 
+    //PLAYER
+    public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
+    public static float PLAYER_BASE_DECELERATION = 0.3f;
+
     //GOALKEEPER
+    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
+    public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
     public static String MOVE_ACTION = "move";
     public static String SAVE_ACTION = "save";
     public static String INTERCEPT_ACTION = "intercept";
-    public static int GK_AI_DECISION_TIMER = 1000;
-    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1;
-    public static int GK_REFLEX_TIME = 400;
-    public static float GK_AI_INTERCEPT_RADIUS = 12;
+    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1; //ball speed magnitude perceived as an incoming shot
+    public static float GK_POSITIONING_ANTICIPATION_TIME = 1;
+    public static float GK_ACCEPTED_POSITION_OFFSET = 0.4f;
 
-    //PLAYER
+    //GOALKEEPER ATTRIBUTES
+    public static int GK_REACH = 5;
+    public static int GK_ACCELERATION = 5;
+    public static int GK_SPEED = 5;
+    public static int GK_REFLEXES = 5;
+    public static int GK_GOALKEEPING_INTELLIGENCE = 5;
+
+    //OUTFIELD PLAYER
     public static Position OUTFIELD_PLAYER_STARTING_POSITION = new Position(5, 30);
     public static float OUTFIELD_PLAYER_STARTING_ORIENTATION = UP;
-    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 2);
-    public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
-    public static float PLAYER_ACCELERATION_SPEED_CURVE_FACTOR = 6/8f; //Creates a speed curve on acceleration, 0 is linear, 1 long curve
     public static float CONTROL_CONE_SHIFT_MULTIPLIER = 3; //How much control cone shifts ball, of player's control angle
     public static float CONTROL_BOUNCE_SHIFT_MULTIPLIER = 0.5f; //How much bounce shifts ball direction in control, of player's control angle
-    public static float PLAYER_BASE_DECELERATION = 0.3f;
     public static float DRIBBLING_KICK_FORWARD = 0.2f;
     public static float DRIBBLING_KICK_ANGLE = (float)Math.PI / 8;
 
@@ -138,6 +146,16 @@ public class Constants {
     public static float MAX_ACCELERATION_TURN = 6;
     public static float MIN_SPEED_VALUE = 6;
     public static float MAX_SPEED_VALUE = 12;
+
+    //GOALKEEPER VALUE LIMITS
+    public static float MIN_REFLEXES_VALUE = 200;
+    public static float MAX_REFLEXES_VALUE = 400;
+    public static float MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME = 1500;
+    public static float MAX_GOALKEEPING_INTELLIGENCE_DECISION_TIME = 500;
+    public static float MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS = 8;
+    public static float MAX_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS = 16;
+
+    //OUTFIELD PLAYER VALUE LIMITS
     public static float MIN_BALL_CONTROL_ANGLE = HALF_CIRCLE / 4;
     public static float MAX_BALL_CONTROL_ANGLE = HALF_CIRCLE / 2.2f;
     public static float MIN_BALL_CONTROL_RADIUS = 0.1f;
@@ -170,6 +188,13 @@ public class Constants {
     public static float ACCELERATION_VALUE_INCREMENT = (MAX_ACCELERATION_VALUE - MIN_ACCELERATION_VALUE) / 10;
     public static float ACCELERATION_TURN_INCREMENT = (MAX_ACCELERATION_TURN - MIN_ACCELERATION_TURN) / 10;
     public static float SPEED_VALUE_INCREMENT = (MAX_SPEED_VALUE - MIN_SPEED_VALUE) / 10;
+
+    //GOALKEEPER VALUE INCREMENTS
+    public static float REFLEXES_VALUE_INCREMENT = (MAX_REFLEXES_VALUE - MIN_REFLEXES_VALUE) / 10;
+    public static float GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT = (MAX_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS - MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS) / 10;
+    public static float GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT = (MAX_GOALKEEPING_INTELLIGENCE_DECISION_TIME - MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME) / 10;
+
+    //OUTFIELD PLAYER VALUE INCREMENTS
     public static float BALL_CONTROL_ANGLE_INCREMENT = (MAX_BALL_CONTROL_ANGLE - MIN_BALL_CONTROL_ANGLE) / 10;
     public static float BALL_CONTROL_RADIUS_INCREMENT = (MAX_BALL_CONTROL_RADIUS - MIN_BALL_CONTROL_RADIUS) / 10;
     public static float BALL_CONTROL_BALL_SPEED_INCREMENT = (MAX_BALL_CONTROL_BALL_SPEED - MIN_BALL_CONTROL_BALL_SPEED) / 10;

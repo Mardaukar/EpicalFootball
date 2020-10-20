@@ -55,22 +55,14 @@ public class OutfieldPlayer extends Player {
         this.longShotsAccuracy = MIN_LONG_SHOTS_ACCURACY + LONG_SHOTS_ACCURACY_INCREMENT * playerAttributes.get("longShots");
     }
 
-    public void updatePosition(float timeFactor) {
-        float x = this.position.getX();
-        float y = this.position.getY();
-        x = (float)(x + (Math.cos(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
-        y = (float)(y + (Math.sin(this.speed.getDirection())) * this.speed.getMagnitude() * this.fullMagnitudeSpeed * timeFactor);
-        this.position = new Position(x, y);
-    }
-
-    public void updateSpeed(float timeFactor, boolean decelerateOn, Ball ball) {
+    public void updateSpeed(float timeFactor, Ball ball) {
         float oldSpeedMagnitude = speed.getMagnitude();
         float deceleratedSpeedMagnitude = 0;
 
         if (oldSpeedMagnitude > 0) {
             float deceleration;
 
-            if (decelerateOn) {
+            if (this.decelerateOn) {
                 deceleration = PLAYER_BASE_DECELERATION + this.acceleration;
             } else {
                 deceleration = PLAYER_BASE_DECELERATION;

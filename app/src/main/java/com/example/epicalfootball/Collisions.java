@@ -36,8 +36,8 @@ public class Collisions {
             float goalPostToPlayerDirection = EpicalMath.convertToDirection(goalPost.getPosition(), player.getPosition());
             float playerToGoalPostDirection = EpicalMath.convertToDirection(player.getPosition(), goalPost.getPosition());
 
-            player.getPosition().setPosition(goalPost.getPosition());
-            player.getPosition().addVector(goalPostToPlayerDirection, radiusSum);
+            player.getPosition().clonePosition(goalPost.getPosition());
+            player.getPosition().addPositionVector(goalPostToPlayerDirection, radiusSum);
             player.removeSpeedComponent(playerToGoalPostDirection);
         }
     }
@@ -51,7 +51,7 @@ public class Collisions {
 
             float radiusSum = player1.getRadius() + player2.getRadius();
             player1.setPosition(player2.getPosition());
-            player1.getPosition().addVector(player2ToPlayer1Direction, radiusSum);
+            player1.getPosition().addPositionVector(player2ToPlayer1Direction, radiusSum);
         }
     }
 
@@ -100,8 +100,8 @@ public class Collisions {
                 ball.getSpeed().setMagnitude(speedMultiplier * ball.getSpeed().getMagnitude());
             }
 
-            ball.getPosition().setPosition(goalPost.getPosition());
-            ball.getPosition().addVector(goalPostToBallDirection, radiusSum);
+            ball.getPosition().clonePosition(goalPost.getPosition());
+            ball.getPosition().addPositionVector(goalPostToBallDirection, radiusSum);
         }
     }
 
@@ -168,8 +168,8 @@ public class Collisions {
                 if (bounce) {
                     ball.shiftTowardsPlayerDirectionOnBounce(player);
                 } else {
-                    ball.getPosition().setPosition(player.getPosition());
-                    ball.getPosition().addVector(playerToBallDirection, radiusSum);
+                    ball.getPosition().clonePosition(player.getPosition());
+                    ball.getPosition().addPositionVector(playerToBallDirection, radiusSum);
 
                     if (player.getTargetSpeed().getMagnitude() == 1) {
                         if (player.getSpeed().getMagnitude() * player.getFullMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED) {
@@ -196,8 +196,8 @@ public class Collisions {
                     player.getSpeed().setMagnitude(player.getDribbling());
                 }
             } else {
-                ball.getPosition().setPosition(player.getPosition());
-                ball.getPosition().addVector(playerToBallDirection, radiusSum);
+                ball.getPosition().clonePosition(player.getPosition());
+                ball.getPosition().addPositionVector(playerToBallDirection, radiusSum);
             }
 
         }
