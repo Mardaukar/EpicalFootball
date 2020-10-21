@@ -13,6 +13,8 @@ public class Goalkeeper extends Player {
     private float goalkeepingIntelligenceDecisionTime;
     private float goalkeepingIntelligenceInterceptingRadius;
     private float goalkeepingIntelligencePositioningAnticipation;
+    private float goalkeepingIntelligencePositioningDirectionJudgementError;
+    private float goalkeepingIntelligencePositioningRadiusJudgementError;
 
     public Goalkeeper() {
         this.position = GOALKEEPER_STARTING_POSITION;
@@ -28,6 +30,8 @@ public class Goalkeeper extends Player {
         this.goalkeepingIntelligenceDecisionTime = MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME + GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligenceInterceptingRadius = MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS + GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligencePositioningAnticipation = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION + GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
+        this.goalkeepingIntelligencePositioningDirectionJudgementError = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_DIRECTION_JUDGEMENT_ERROR + GOALKEEPING_INTELLIGENCE_POSITIONING_DIRECTION_JUDGEMENT_ERROR_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
+        this.goalkeepingIntelligencePositioningRadiusJudgementError = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_RADIUS_JUDGEMENT_ERROR + GOALKEEPING_INTELLIGENCE_POSITIONING_RADIUS_JUDGEMENT_ERROR_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
     }
 
     public void updateSpeed(float timeFactor) {
@@ -178,5 +182,21 @@ public class Goalkeeper extends Player {
 
     public void setGoalkeepingIntelligencePositioningAnticipation(float goalkeepingIntelligencePositioningAnticipation) {
         this.goalkeepingIntelligencePositioningAnticipation = goalkeepingIntelligencePositioningAnticipation;
+    }
+
+    public float getGoalkeepingIntelligencePositioningDirectionJudgementError() {
+        return goalkeepingIntelligencePositioningDirectionJudgementError;
+    }
+
+    public void setGoalkeepingIntelligencePositioningDirectionJudgementError(float goalkeepingIntelligencePositioningDirectionJudgementError) {
+        this.goalkeepingIntelligencePositioningDirectionJudgementError = goalkeepingIntelligencePositioningDirectionJudgementError;
+    }
+
+    public float getGoalkeepingIntelligencePositioningRadiusJudgementError() {
+        return goalkeepingIntelligencePositioningRadiusJudgementError;
+    }
+
+    public void setGoalkeepingIntelligencePositioningRadiusJudgementError(float goalkeepingIntelligencePositioningRadiusJudgementError) {
+        this.goalkeepingIntelligencePositioningRadiusJudgementError = goalkeepingIntelligencePositioningRadiusJudgementError;
     }
 }

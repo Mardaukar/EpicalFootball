@@ -7,6 +7,8 @@ import com.example.epicalfootball.items.Goalkeeper;
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
 
+import java.util.Random;
+
 import static com.example.epicalfootball.Constants.*;
 
 public class AIState {
@@ -15,12 +17,20 @@ public class AIState {
     private final AIAction goalkeeperAIAction;
     private float aiDecisionCounter;
     private boolean shotPerceived;
+    private float previousAnticipatedBallDirection;
+    private float previousJudgedBallDirection;
+    private float previousJudgedPositionRadius;
+
+    private Random random = new Random();
 
     public AIState(MatchState matchState) {
         this.matchState = matchState;
         this.goalkeeper = matchState.getGoalkeeper();
         this.goalkeeperAIAction = new AIAction();
         this.shotPerceived = false;
+        this.previousAnticipatedBallDirection = DOWN;
+        this.previousJudgedBallDirection = DOWN;
+        this.previousJudgedPositionRadius = 0;
     }
 
     public void update(float elapsed) {
@@ -46,17 +56,39 @@ public class AIState {
                 Position maxRightBasePosition = new Position(GOAL_WIDTH * HALF + POST_RADIUS, goalkeeper.getRadius() + POST_RADIUS);
                 float maxLeftBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxLeftBasePosition);
                 float maxRightBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxRightBasePosition);
-                float basePositionRadius = EpicalMath.calculateDistanceFromOrigo(maxRightBasePosition);
 
                 Position anticipatedBallPosition = new Position();
                 anticipatedBallPosition.clonePosition(ball.getPosition());
                 anticipatedBallPosition.moveBySpeed(ball, goalkeeper.getGoalkeepingIntelligencePositioningAnticipation());
 
                 float anticipatedBallDirection = EpicalMath.convertToDirectionFromOrigo(anticipatedBallPosition);
+                float basePositionRadius = EpicalMath.calculateDistanceFromOrigo(maxRightBasePosition);
+                float judgedBallDirection = anticipatedBallDirection + (random.nextFloat() - HALF) * goalkeeper.getGoalkeepingIntelligencePositioningDirectionJudgementError();
+                float judgedPositionRadius;
 
-                if (anticipatedBallDirection > maxRightBasePositionDirection && anticipatedBallDirection < maxLeftBasePositionDirection) {
-                    goalkeeperAIAction.setTargetPosition(EpicalMath.convertToPositionFromOrigo(anticipatedBallDirection, basePositionRadius));
-                } else if (Math.abs(anticipatedBallDirection) > QUARTER_CIRCLE) {
+                if (anticipatedBallDirection + GK_AI_BALL_DIRECTION_PERCEIVED_SAME < this.previousAnticipatedBallDirection) {
+                    if (judgedBallDirection > this.previousJudgedBallDirection) {
+                        judgedBallDirection = this.previousJudgedBallDirection;
+                    }
+
+                    judgedPositionRadius = basePositionRadius + (random.nextFloat() - HALF) * goalkeeper.getGoalkeepingIntelligencePositioningRadiusJudgementError();
+                } else if (anticipatedBallDirection - GK_AI_BALL_DIRECTION_PERCEIVED_SAME > this.previousAnticipatedBallDirection) {
+                    if (judgedBallDirection < this.previousJudgedBallDirection) {
+                        judgedBallDirection = this.previousJudgedBallDirection;
+                    }
+
+                    judgedPositionRadius = basePositionRadius + (random.nextFloat() - HALF) * goalkeeper.getGoalkeepingIntelligencePositioningRadiusJudgementError();
+                } else {
+                    if (EpicalMath.absoluteAngleBetweenDirections(judgedBallDirection, anticipatedBallDirection) > EpicalMath.absoluteAngleBetweenDirections(this.previousJudgedBallDirection, anticipatedBallDirection)) {
+                        judgedBallDirection = this.previousJudgedBallDirection;
+                    }
+
+                    judgedPositionRadius = basePositionRadius + (previousJudgedPositionRadius - basePositionRadius) * HALF;
+                }
+
+                if (judgedBallDirection > maxRightBasePositionDirection && judgedBallDirection < maxLeftBasePositionDirection) {
+                    goalkeeperAIAction.setTargetPosition(EpicalMath.convertToPositionFromOrigo(judgedBallDirection, judgedPositionRadius));
+                } else if (Math.abs(judgedBallDirection) > QUARTER_CIRCLE) {
                     goalkeeperAIAction.setTargetPosition(maxLeftBasePosition);
                 } else {
                     goalkeeperAIAction.setTargetPosition(maxRightBasePosition);
@@ -64,6 +96,9 @@ public class AIState {
 
                 goalkeeperAIAction.setAction(MOVE_ACTION);
                 aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
+                previousAnticipatedBallDirection = anticipatedBallDirection;
+                previousJudgedBallDirection = judgedBallDirection;
+                previousJudgedPositionRadius = judgedPositionRadius;
             }
         } else {
             aiDecisionCounter -= elapsed;
