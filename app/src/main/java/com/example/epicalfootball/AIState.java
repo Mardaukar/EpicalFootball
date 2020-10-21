@@ -24,8 +24,6 @@ public class AIState {
     }
 
     public void update(float elapsed) {
-        //Log.d("AIState", "" + goalkeeperAIAction.getTargetPosition().getX() + " " + goalkeeperAIAction.getTargetPosition().getY());
-
         Ball ball = matchState.getBall();
 
         if (ball.getSpeed().getMagnitude() >= GK_AI_BALL_SPEED_PERCEIVED_SHOT && !this.shotPerceived) {
@@ -52,7 +50,7 @@ public class AIState {
 
                 Position anticipatedBallPosition = new Position();
                 anticipatedBallPosition.clonePosition(ball.getPosition());
-                anticipatedBallPosition.moveBySpeed(ball, GK_POSITIONING_ANTICIPATION_TIME);
+                anticipatedBallPosition.moveBySpeed(ball, goalkeeper.getGoalkeepingIntelligencePositioningAnticipation());
 
                 float anticipatedBallDirection = EpicalMath.convertToDirectionFromOrigo(anticipatedBallPosition);
 

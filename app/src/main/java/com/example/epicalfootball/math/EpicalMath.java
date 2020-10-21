@@ -87,6 +87,10 @@ public class EpicalMath {
         return calculateDistanceFromOrigo(position.getX(), position.getY());
     }
 
+    public static int radiansToDegrees(float radians) {
+        return (int)(radians / FULL_CIRCLE * 360);
+    }
+
     public static float sanitizeDirection(float direction) {
         if (direction < -HALF_CIRCLE) {
             direction += FULL_CIRCLE;
@@ -100,6 +104,16 @@ public class EpicalMath {
     public static float reversedDirection(float direction) {
         float reversedDirection = direction + HALF_CIRCLE;
         return sanitizeDirection(reversedDirection);
+    }
+
+    public static float mirroredDirection(float referenceDirection, float direction) {
+        float angle = angleBetweenDirections(referenceDirection, direction);
+        return sanitizeDirection(referenceDirection + angle);
+    }
+
+    public static float directionBetweenDirections(float direction1, float direction2) {
+        float angle = angleBetweenDirections(direction1, direction2);
+        return direction2 + angle / 2;
     }
 
     public static float absoluteAngleBetweenDirections(float direction1, float direction2) {

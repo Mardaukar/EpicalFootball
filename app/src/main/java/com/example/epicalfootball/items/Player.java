@@ -28,6 +28,32 @@ public abstract class Player extends Circle {
         this.position.setY(y);
     }
 
+    public void setTargetSpeedDirectionByTargetPosition(Position targetPosition) {
+        float playerToTargetPositionDirection = EpicalMath.convertToDirection(this.getPosition(), targetPosition);
+
+        if (this.getSpeed().getMagnitude() > 0) {
+            float currentSpeedDirection = this.getSpeed().getDirection();
+            float newTargetSpeedDirection;
+
+            if (EpicalMath.absoluteAngleBetweenDirections(playerToTargetPositionDirection, currentSpeedDirection) > QUARTER_CIRCLE) {
+                newTargetSpeedDirection = EpicalMath.reversedDirection(currentSpeedDirection);
+            } else {
+                newTargetSpeedDirection = EpicalMath.mirroredDirection(playerToTargetPositionDirection, currentSpeedDirection);
+            }
+
+            newTargetSpeedDirection = EpicalMath.directionBetweenDirections(playerToTargetPositionDirection, newTargetSpeedDirection);
+            this.targetSpeed.setDirection(newTargetSpeedDirection);
+        } else {
+            this.targetSpeed.setDirection(playerToTargetPositionDirection);
+        }
+    }
+
+    public float calculateStoppingDistance() {
+        float stoppingAcceleration = (PLAYER_BASE_DECELERATION + this.acceleration) * fullMagnitudeSpeed;
+        float currentSpeed = this.speed.getMagnitude() * fullMagnitudeSpeed;
+        return currentSpeed * currentSpeed / stoppingAcceleration / 2;
+    }
+
     public float getSpeedMagnitudeToOrientation() {
         float angle = EpicalMath.absoluteAngleBetweenDirections(this.getSpeed().getDirection(), this.orientation);
 

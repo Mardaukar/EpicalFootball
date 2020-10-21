@@ -12,6 +12,7 @@ public class Goalkeeper extends Player {
     private float reflexes;
     private float goalkeepingIntelligenceDecisionTime;
     private float goalkeepingIntelligenceInterceptingRadius;
+    private float goalkeepingIntelligencePositioningAnticipation;
 
     public Goalkeeper() {
         this.position = GOALKEEPER_STARTING_POSITION;
@@ -26,6 +27,7 @@ public class Goalkeeper extends Player {
         this.reflexes = MIN_REFLEXES_VALUE + REFLEXES_VALUE_INCREMENT * GK_REFLEXES;
         this.goalkeepingIntelligenceDecisionTime = MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME + GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligenceInterceptingRadius = MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS + GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
+        this.goalkeepingIntelligencePositioningAnticipation = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION + GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
     }
 
     public void updateSpeed(float timeFactor) {
@@ -168,5 +170,13 @@ public class Goalkeeper extends Player {
 
     public void setGoalkeepingIntelligenceInterceptingRadius(float goalkeepingIntelligenceInterceptingRadius) {
         this.goalkeepingIntelligenceInterceptingRadius = goalkeepingIntelligenceInterceptingRadius;
+    }
+
+    public float getGoalkeepingIntelligencePositioningAnticipation() {
+        return goalkeepingIntelligencePositioningAnticipation;
+    }
+
+    public void setGoalkeepingIntelligencePositioningAnticipation(float goalkeepingIntelligencePositioningAnticipation) {
+        this.goalkeepingIntelligencePositioningAnticipation = goalkeepingIntelligencePositioningAnticipation;
     }
 }

@@ -199,12 +199,19 @@ public class MatchState {
         if (aiAction.getAction().equals(MOVE_ACTION)) {
             float goalkeeperToTargetPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
             float goalkeeperTargetPositionDistance = EpicalMath.calculateDistance(goalkeeper.getPosition(), aiAction.getTargetPosition());
+            float goalkeeperStoppingDistance = goalkeeper.calculateStoppingDistance();
 
+            //if (false) {
             if (goalkeeperTargetPositionDistance < GK_ACCEPTED_POSITION_OFFSET) {
                 goalkeeper.getTargetSpeed().nullTargetSpeed();
                 goalkeeper.setDecelerateOn(true);
+            //} else if (false) {
+            } else if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_SLOWDOWN_DIRECTION_ANGLE && goalkeeperTargetPositionDistance <= goalkeeperStoppingDistance) {
+                goalkeeper.getTargetSpeed().nullTargetSpeed();
+                goalkeeper.setDecelerateOn(true);
             } else {
-                goalkeeper.getTargetSpeed().setDirection(goalkeeperToTargetPositionDirection);
+                goalkeeper.setTargetSpeedDirectionByTargetPosition(aiAction.getTargetPosition());
+                //Log.d("Directions","" + EpicalMath.radiansToDegrees(goalkeeperToTargetPositionDirection) + " " + EpicalMath.radiansToDegrees(goalkeeper.getSpeed().getDirection()) + " " + EpicalMath.radiansToDegrees(goalkeeper.getTargetSpeed().getDirection()));
                 goalkeeper.getTargetSpeed().setMagnitude(FULL);
                 goalkeeper.setDecelerateOn(false);
             }
