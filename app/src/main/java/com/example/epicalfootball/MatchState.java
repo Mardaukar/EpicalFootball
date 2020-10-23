@@ -1,7 +1,6 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.example.epicalfootball.activities.MatchActivity;
 import com.example.epicalfootball.items.Ball;
@@ -10,7 +9,6 @@ import com.example.epicalfootball.items.Goalkeeper;
 import com.example.epicalfootball.items.OutfieldPlayer;
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
-import com.example.epicalfootball.math.Vector;
 
 import java.util.Random;
 

@@ -114,7 +114,7 @@ public class Ball extends Circle {
             shotPowerFactor = FAILED_SHOT_POWER_FACTOR;
         } else {
             failedGaussianFactor = FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR * HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL));
-            shotPowerFactor = FULL;
+            shotPowerFactor = FAILED_SHOT_POWER_FACTOR + (FULL - FAILED_SHOT_POWER_FACTOR) * (FULL - HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
         }
 
         float intendedDirection = EpicalMath.convertToDirection(this.getPosition(), aimTarget);

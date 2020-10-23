@@ -79,7 +79,7 @@ public class Constants {
     public static float FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR = 0.1f;
     public static float FAILED_SHOT_POWER_FACTOR = 0.5f;
     public static int SHOT_POWER_METER_LOWER_LIMIT = 20;
-    public static float AIMING_TIME = 1.5f;
+    public static float AIMING_TIME = 1.2f;
     public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1500;
     public static float PLAYER_KICK_RECOVERY_TIME = 300;
     public static float AIM_RECOVERY_TIME = 300;
@@ -190,14 +190,14 @@ public class Constants {
     public static float MAX_DRIBBLING_TARGET = 1.1f;
     public static float MAX_SHOT_POWER_VALUE = 5f;
     public static float MIN_SHOT_POWER_VALUE = 2.5f;
-    public static float MIN_MID_SHOT_POWER = 25;
-    public static float MAX_MID_SHOT_POWER = 75;
     public static float MIN_ACCURACY_DISTANCE = 6;
     public static float MAX_ACCURACY_DISTANCE = 12;
     public static float MIN_ACCURACY_TARGET_DOT = 0.1f;
     public static float MAX_ACCURACY_TARGET_DOT = 0.02f;
     public static float MIN_ACCURACY_GAUSSIAN_FACTOR = 0.05f;
     public static float MAX_ACCURACY_GAUSSIAN_FACTOR = 0;
+    public static float MIN_MID_SHOT_POWER = 30;
+    public static float MAX_MID_SHOT_POWER = 60;
     public static float MIN_TARGET_GOAL_SPEED = 1;
     public static float MAX_TARGET_GOAL_SPEED = 0.5f;
     public static float MIN_LONG_SHOTS_ACCURACY = 1;
