@@ -75,7 +75,7 @@ public class MatchState {
 
         goalkeeper.updateSpeed(timeFactor);
         goalkeeper.updatePosition(timeFactor);
-        goalkeeper.updateOrientation(timeFactor);
+        goalkeeper.updateOrientation(timeFactor, ball);
         outfieldPlayer.updateSpeed(timeFactor, ball);
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);

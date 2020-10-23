@@ -132,19 +132,8 @@ public class OutfieldPlayer extends Player {
     }
 
     public void updateOrientation(float timeFactor) {
-        if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) > 0) {
-            this.orientation += timeFactor * this.accelerationTurn;
-
-            if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) < 0) {
-                this.orientation = this.targetSpeed.getDirection();
-            }
-        } else {
-            this.orientation -= timeFactor * this.accelerationTurn;
-
-            if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) > 0) {
-                this.orientation = this.targetSpeed.getDirection();
-            }
-        }
+        float angleShift = timeFactor * this.accelerationTurn;
+        this.setOrientation(EpicalMath.shiftTowardsDirection(this.getOrientation(), this.targetSpeed.getDirection(), angleShift));
     }
 
     public void updateKickRecoveryTimer(float elapsed) {

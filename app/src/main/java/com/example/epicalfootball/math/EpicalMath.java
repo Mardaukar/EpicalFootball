@@ -65,8 +65,6 @@ public class EpicalMath {
 
     public static float shiftTowardsDirection(float originalDirection, float targetDirection, float angleShift) {
         float correctedDirection = sanitizeDirection(originalDirection - targetDirection);
-        Log.d("original direction", "" + originalDirection);
-        Log.d("target direction", "" + targetDirection);
 
         if (correctedDirection < 0) {
             correctedDirection += angleShift;
@@ -81,7 +79,7 @@ public class EpicalMath {
                 correctedDirection = 0;
             }
         }
-        Log.d("shifted direction", "" + sanitizeDirection(correctedDirection + targetDirection));
+
         return sanitizeDirection(correctedDirection + targetDirection);
     }
 

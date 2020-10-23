@@ -139,19 +139,27 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             paint.setColor(getResources().getColor(R.color.goalkeeperColor));
             canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * goalkeeper.getRadius(), paint);
 
+            //DRAW GOALKEEPER HANDLING SECTOR
+            paint.setColor(getResources().getColor(R.color.skinColor));
+            float goalkeeperOrientationRadians = goalkeeper.getOrientation();
+            float goalkeeperOrientationDegrees = goalkeeperOrientationRadians / HALF_CIRCLE * 180;
+            float handlingSectorRadians = goalkeeper.getBallHandlingAngle();
+            float handlingSectorDegrees = handlingSectorRadians / HALF_CIRCLE * 180;
+            canvas.drawArc(drawPositionX - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionX + pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY + pixelPerMeter * outfieldPlayer.getRadius(), goalkeeperOrientationDegrees - handlingSectorDegrees, 2 * handlingSectorDegrees, true, paint);
+
             //DRAW OUTFIELD PLAYER
             drawPositionX = outfieldPlayerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;
             drawPositionY = outfieldPlayerPosition.getY() * pixelPerMeter + touchlineFromTop;
             paint.setColor(getResources().getColor(R.color.outfieldPlayerColor));
             canvas.drawCircle(drawPositionX, drawPositionY, pixelPerMeter * outfieldPlayer.getRadius(), paint);
 
-            //DRAW CONTROL SECTOR
+            //DRAW OUTFIELD PLAYER CONTROL SECTOR
             paint.setColor(getResources().getColor(R.color.skinColor));
-            float directionRadians = outfieldPlayer.getOrientation();
-            float directionDegrees = directionRadians / HALF_CIRCLE * 180;
-            float controlConeRadians = outfieldPlayer.getControlAngle();
-            float controlConeDegrees = controlConeRadians / HALF_CIRCLE * 180;
-            canvas.drawArc(drawPositionX - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionX + pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY + pixelPerMeter * outfieldPlayer.getRadius(), directionDegrees - controlConeDegrees, 2 * controlConeDegrees, true, paint);
+            float playerOrientationRadians = outfieldPlayer.getOrientation();
+            float playerOrientationDegrees = playerOrientationRadians / HALF_CIRCLE * 180;
+            float controlSectorRadians = outfieldPlayer.getControlAngle();
+            float controlSectorDegrees = controlSectorRadians / HALF_CIRCLE * 180;
+            canvas.drawArc(drawPositionX - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionX + pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY + pixelPerMeter * outfieldPlayer.getRadius(), playerOrientationDegrees - controlSectorDegrees, 2 * controlSectorDegrees, true, paint);
 
             //DRAW GOAL
             paint.setColor(Color.WHITE);

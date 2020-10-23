@@ -10,6 +10,7 @@ import static com.example.epicalfootball.activities.MenuActivity.playerAttribute
 
 public class Goalkeeper extends Player {
     private float reflexes;
+    private float ballHandlingAngle;
     private float ballHandling;
     private float goalkeepingIntelligenceDecisionTime;
     private float goalkeepingIntelligenceInterceptingRadius;
@@ -28,6 +29,7 @@ public class Goalkeeper extends Player {
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * GK_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED);
         this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * GK_ACCELERATION;
         this.reflexes = MIN_REFLEXES_VALUE + REFLEXES_VALUE_INCREMENT * GK_REFLEXES;
+        this.ballHandlingAngle = MIN_BALL_HANDLING_ANGLE + BALL_HANDLING_ANGLE_INCREMENT * GK_BALL_HANDLING;
         this.ballHandling = MIN_BALL_HANDLING_VALUE + BALL_HANDLING_VALUE_INCREMENT * GK_BALL_HANDLING;
         this.goalkeepingIntelligenceDecisionTime = MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME + GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligenceInterceptingRadius = MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS + GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
@@ -106,20 +108,10 @@ public class Goalkeeper extends Player {
         }
     }
 
-    public void updateOrientation(float timeFactor) {
-        if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) > 0) {
-            this.orientation += timeFactor * this.accelerationTurn;
-
-            if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) < 0) {
-                this.orientation = this.targetSpeed.getDirection();
-            }
-        } else {
-            this.orientation -= timeFactor * this.accelerationTurn;
-
-            if (EpicalMath.angleBetweenDirections(this.targetSpeed.getDirection(), this.orientation) > 0) {
-                this.orientation = this.targetSpeed.getDirection();
-            }
-        }
+    public void updateOrientation(float timeFactor, Ball ball) {
+        float goalkeeperToBallDirection = EpicalMath.convertToDirection(this.getPosition(), ball.getPosition());
+        float angleShift = timeFactor * this.accelerationTurn;
+        this.setOrientation(EpicalMath.shiftTowardsDirection(this.getOrientation(), goalkeeperToBallDirection, angleShift));
     }
 
     public float getRadius() {
@@ -160,6 +152,14 @@ public class Goalkeeper extends Player {
 
     public void setReflexes(float reflexes) {
         this.reflexes = reflexes;
+    }
+
+    public float getBallHandlingAngle() {
+        return ballHandlingAngle;
+    }
+
+    public void setBallHandlingAngle(float ballHandlingAngle) {
+        this.ballHandlingAngle = ballHandlingAngle;
     }
 
     public float getBallHandling() {
