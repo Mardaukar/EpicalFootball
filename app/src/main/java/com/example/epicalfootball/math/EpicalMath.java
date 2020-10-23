@@ -1,6 +1,7 @@
 package com.example.epicalfootball.math;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.example.epicalfootball.items.Circle;
 
@@ -60,6 +61,28 @@ public class EpicalMath {
         float x = position2.getX() - position1.getX();
         float y = position2.getY() - position1.getY();
         return convertToDirectionFromOrigo(x, y);
+    }
+
+    public static float shiftTowardsDirection(float originalDirection, float targetDirection, float angleShift) {
+        float correctedDirection = sanitizeDirection(originalDirection - targetDirection);
+        Log.d("original direction", "" + originalDirection);
+        Log.d("target direction", "" + targetDirection);
+
+        if (correctedDirection < 0) {
+            correctedDirection += angleShift;
+
+            if (correctedDirection > 0) {
+                correctedDirection = 0;
+            }
+        } else {
+            correctedDirection -= angleShift;
+
+            if (correctedDirection < 0) {
+                correctedDirection = 0;
+            }
+        }
+        Log.d("shifted direction", "" + sanitizeDirection(correctedDirection + targetDirection));
+        return sanitizeDirection(correctedDirection + targetDirection);
     }
 
     public static boolean checkIntersect(RectF rect, Circle circle) {

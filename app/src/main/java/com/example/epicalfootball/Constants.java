@@ -61,6 +61,8 @@ public class Constants {
     public static float GOAL_POST_COLLISION_SPEED_MULTIPLIER = 0.25f;
     public static float BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER = 0.8f;
     public static float BALL_PLAYER_COLLISION_SPEED_MULTIPLIER = 0.625f;
+    public static float BALL_COLLISION_REFERENCE_MAX_SPEED = 5;
+    public static float BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR = 0.5f;
     public static long BALL_FEED_TIMER = 500;
 
     //SHOOTING
@@ -115,6 +117,7 @@ public class Constants {
     //GOALKEEPER
     public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 1);
     public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
+    public static String HOLD_ACTION = "hold";
     public static String MOVE_ACTION = "move";
     public static String SAVE_ACTION = "save";
     public static String INTERCEPT_ACTION = "intercept";
@@ -122,12 +125,18 @@ public class Constants {
     public static float GK_AI_BALL_DIRECTION_PERCEIVED_SAME = (float)Math.PI / 50;
     public static float GK_ACCEPTED_POSITION_OFFSET = 0.3f;
     public static float GK_SLOWDOWN_DIRECTION_ANGLE = (float)Math.PI / 8;
+    public static float SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER = 3;
+    public static float SAVING_BALL_SPEED_SHOVE_LIMIT = 2;
+    public static float SAVING_SHOVE_MAX_ANGLE_SHIFT = QUARTER_CIRCLE / 2;
+    public static Position SAVING_SHOVE_RIGHT_TARGET_POSITION = new Position(5, 0);
+    public static Position SAVING_SHOVE_LEFT_TARGET_POSITION = new Position(-5, 0);
 
     //GOALKEEPER ATTRIBUTES
     public static int GK_REACH = 5;
     public static int GK_ACCELERATION = 5;
     public static int GK_SPEED = 5;
     public static int GK_REFLEXES = 5;
+    public static int GK_BALL_HANDLING = 5;
     public static int GK_GOALKEEPING_INTELLIGENCE = 5;
 
     //OUTFIELD PLAYER
@@ -151,6 +160,8 @@ public class Constants {
     //GOALKEEPER VALUE LIMITS
     public static float MIN_REFLEXES_VALUE = 200;
     public static float MAX_REFLEXES_VALUE = 400;
+    public static float MIN_BALL_HANDLING_VALUE = 1;
+    public static float MAX_BALL_HANDLING_VALUE = 3;
     public static float MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME = 1500;
     public static float MAX_GOALKEEPING_INTELLIGENCE_DECISION_TIME = 500;
     public static float MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION = 0;
@@ -175,8 +186,8 @@ public class Constants {
     public static float MAX_DRIBBLING_LIMIT = 1;
     public static float MIN_DRIBBLING_TARGET = 0.9f;
     public static float MAX_DRIBBLING_TARGET = 1.1f;
-    public static float MAX_SHOT_POWER_VALUE = 6f;
-    public static float MIN_SHOT_POWER_VALUE = 2f;
+    public static float MAX_SHOT_POWER_VALUE = 5f;
+    public static float MIN_SHOT_POWER_VALUE = 2.5f;
     public static float MIN_MID_SHOT_POWER = 25;
     public static float MAX_MID_SHOT_POWER = 75;
     public static float MIN_ACCURACY_DISTANCE = 6;
@@ -198,6 +209,7 @@ public class Constants {
 
     //GOALKEEPER VALUE INCREMENTS
     public static float REFLEXES_VALUE_INCREMENT = (MAX_REFLEXES_VALUE - MIN_REFLEXES_VALUE) / 10;
+    public static float BALL_HANDLING_VALUE_INCREMENT = (MAX_BALL_HANDLING_VALUE - MIN_BALL_HANDLING_VALUE) / 10;
     public static float GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT = (MAX_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS - MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS) / 10;
     public static float GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT = (MAX_GOALKEEPING_INTELLIGENCE_DECISION_TIME - MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME) / 10;
     public static float GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION_INCREMENT = (MAX_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION - MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION) / 10;

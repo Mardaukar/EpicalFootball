@@ -10,6 +10,7 @@ import static com.example.epicalfootball.activities.MenuActivity.playerAttribute
 
 public class Goalkeeper extends Player {
     private float reflexes;
+    private float ballHandling;
     private float goalkeepingIntelligenceDecisionTime;
     private float goalkeepingIntelligenceInterceptingRadius;
     private float goalkeepingIntelligencePositioningAnticipation;
@@ -27,6 +28,7 @@ public class Goalkeeper extends Player {
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * GK_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED);
         this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * GK_ACCELERATION;
         this.reflexes = MIN_REFLEXES_VALUE + REFLEXES_VALUE_INCREMENT * GK_REFLEXES;
+        this.ballHandling = MIN_BALL_HANDLING_VALUE + BALL_HANDLING_VALUE_INCREMENT * GK_BALL_HANDLING;
         this.goalkeepingIntelligenceDecisionTime = MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME + GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligenceInterceptingRadius = MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS + GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligencePositioningAnticipation = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION + GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
@@ -158,6 +160,14 @@ public class Goalkeeper extends Player {
 
     public void setReflexes(float reflexes) {
         this.reflexes = reflexes;
+    }
+
+    public float getBallHandling() {
+        return ballHandling;
+    }
+
+    public void setBallHandling(float ballHandling) {
+        this.ballHandling = ballHandling;
     }
 
     public float getGoalkeepingIntelligenceDecisionTime() {

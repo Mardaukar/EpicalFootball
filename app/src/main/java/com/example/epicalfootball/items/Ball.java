@@ -1,17 +1,17 @@
 package com.example.epicalfootball.items;
 
+import android.util.Log;
+
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
 import com.example.epicalfootball.math.Vector;
 
-import java.util.Random;
-
 import static com.example.epicalfootball.Constants.*;
+import static com.example.epicalfootball.MatchState.random;
 
 public class Ball extends Circle {
     private final float fullMagnitudeSpeed;
     private Vector speed;
-    private Random random = new Random();
 
     public Ball() {
         this.radius = BALL_RADIUS;
@@ -62,6 +62,12 @@ public class Ball extends Circle {
                 this.getSpeed().setDirection(playerOrientation);
             }
         }
+    }
+
+    public void setGoalkeeperHoldingPosition(Goalkeeper goalkeeper) {
+        float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), this.getPosition());
+        this.getPosition().clonePosition(goalkeeper.getPosition());
+        this.getPosition().addPositionVector(goalkeeperToBallDirection, goalkeeper.getRadius());
     }
 
     public void shiftWithControlCone(float timeFactor, OutfieldPlayer outfieldPlayer) {
@@ -116,6 +122,22 @@ public class Ball extends Circle {
 
             this.getSpeed().setMagnitude(newBallSpeedMagnitude);
         }
+    }
+
+    public void shiftDirectionWithShove(float shiftFactor, boolean shoveToRight) {
+        Log.d("shiftFactor", "" + shiftFactor);
+        float ballToShoveTargetDirection;
+        float angleShift = shiftFactor * SAVING_SHOVE_MAX_ANGLE_SHIFT;
+        Log.d("angleShift", "" + angleShift);
+
+        if (shoveToRight) {
+            ballToShoveTargetDirection = EpicalMath.convertToDirection(this.getPosition(), SAVING_SHOVE_RIGHT_TARGET_POSITION);
+        } else {
+            ballToShoveTargetDirection = EpicalMath.convertToDirection(this.getPosition(), SAVING_SHOVE_LEFT_TARGET_POSITION);
+        }
+
+        float shiftedBallSpeedDirection = EpicalMath.shiftTowardsDirection(this.getSpeed().getDirection(), ballToShoveTargetDirection, angleShift);
+        this.getSpeed().setDirection(shiftedBallSpeedDirection);
     }
 
     public void shoot(OutfieldPlayer outfieldPlayer, float shotPowerMeter, Position aimTarget) {

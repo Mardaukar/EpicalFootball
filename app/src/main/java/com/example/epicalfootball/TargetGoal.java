@@ -3,9 +3,8 @@ package com.example.epicalfootball;
 import com.example.epicalfootball.items.OutfieldPlayer;
 import com.example.epicalfootball.math.Position;
 
-import java.util.Random;
-
 import static com.example.epicalfootball.Constants.*;
+import static com.example.epicalfootball.MatchState.random;
 
 public class TargetGoal {
     private float positionX;
@@ -14,7 +13,6 @@ public class TargetGoal {
     private float speed;
     private float verticalSpeed;
     private float horizontalSpeed;
-    Random random = new Random();
 
     public TargetGoal(float distance, boolean longShot, OutfieldPlayer outfieldPlayer) {
         if (!longShot) {

@@ -17,6 +17,7 @@ import java.util.Random;
 import static com.example.epicalfootball.Constants.*;
 
 public class MatchState {
+    public static final Random random = new Random();
 
     private AIRunner aiRunner;
     private AIState aiState;
@@ -29,9 +30,9 @@ public class MatchState {
     private OutfieldPlayer outfieldPlayer;
     private Ball ball;
     private boolean canScore;
+    private boolean goalkeeperHoldingBall;
     private long newBallTimer;
     private long ballFeedTimer;
-    private final Random random = new Random();
     private final RectF leftBoundary = new RectF(-FIELD_WIDTH * HALF - BOUNDARY_WIDTH, -TOUCHLINE_FROM_TOP, -FIELD_WIDTH * HALF, FIELD_HEIGHT);
     private final RectF rightBoundary = new RectF(FIELD_WIDTH * HALF, -TOUCHLINE_FROM_TOP, FIELD_WIDTH * HALF + BOUNDARY_WIDTH, FIELD_HEIGHT);
     private final RectF topBoundary = new RectF(-FIELD_WIDTH, -TOUCHLINE_FROM_TOP - BOUNDARY_WIDTH, FIELD_WIDTH, -TOUCHLINE_FROM_TOP);
@@ -56,6 +57,7 @@ public class MatchState {
         this.goalsScored = 0;
         this.goalFrame = new GoalFrame();
         this.canScore = false;
+        this.goalkeeperHoldingBall = false;
         this.ballFeedTimer = BALL_FEED_TIMER;
         this.newBallTimer = 0;
         this.ball = feedNewBall();
@@ -83,20 +85,28 @@ public class MatchState {
         this.goalFrame.handleGoalCollision(goalkeeper);
         this.goalFrame.handleGoalCollision(outfieldPlayer);
 
-        for (int x = 0; x < BALL_UPDATES_PER_CYCLE; x++) {
-            float ballTimeFactor = timeFactor / BALL_UPDATES_PER_CYCLE;
-            ball.updateSpeed(ballTimeFactor);
-            ball.updatePosition(ballTimeFactor);
+        float ballTimeFactor = timeFactor / BALL_UPDATES_PER_CYCLE;
 
-            //GoalkeeperBallCollision
-
-            if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
-                handleShootBall();
+        for (int cycle = 0; cycle < BALL_UPDATES_PER_CYCLE; cycle++) {
+            if (this.goalkeeperHoldingBall) {
+                this.ball.setGoalkeeperHoldingPosition(goalkeeper);
             } else {
-                Collisions.handlePlayerControlConeBallCollision(ballTimeFactor, outfieldPlayer, ball);
-            }
+                ball.updateSpeed(ballTimeFactor);
+                ball.updatePosition(ballTimeFactor);
 
-            this.goalFrame.handleGoalCollision(ball);
+                if (Collisions.handleGoalkeeperBallCollision(goalkeeper, ball)) {
+                    this.goalkeeperHoldingBall = true;
+                    ball.getSpeed().setMagnitude(0);
+                } else {
+                    if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
+                        handleShootBall();
+                    } else {
+                        Collisions.handlePlayerControlConeBallCollision(ballTimeFactor, outfieldPlayer, ball);
+                    }
+
+                    this.goalFrame.handleGoalCollision(ball);
+                }
+            }
         }
 
         updateBallFeedTimer(elapsed);
@@ -196,7 +206,10 @@ public class MatchState {
     }
 
     public void handleGoalkeeperAI(AIAction aiAction) {
-        if (aiAction.getAction().equals(MOVE_ACTION)) {
+        if (aiAction.getAction().equals(HOLD_ACTION)) {
+            goalkeeper.getTargetSpeed().nullTargetSpeed();
+            goalkeeper.setDecelerateOn(true);
+        } else if (aiAction.getAction().equals(MOVE_ACTION)) {
             float goalkeeperToTargetPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
             float goalkeeperTargetPositionDistance = EpicalMath.calculateDistance(goalkeeper.getPosition(), aiAction.getTargetPosition());
             float goalkeeperStoppingDistance = goalkeeper.calculateStoppingDistance();
@@ -245,6 +258,7 @@ public class MatchState {
                 if (this.ballsLeft > 1) {
                     ballFeedTimer = BALL_FEED_TIMER;
                     substractBall();
+                    this.goalkeeperHoldingBall = false;
                     this.ball = feedNewBall();
                 } else {
                     if (aiRunner != null) {
@@ -289,7 +303,7 @@ public class MatchState {
             } else if (ballOutOfBounds()) {
                 canScore = false;
                 newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
-            } else if (ball.getSpeed().getMagnitude() == 0 && EpicalMath.checkIntersect(goalkeeper, ball)) {
+            } else if (this.goalkeeperHoldingBall) {
                 canScore = false;
                 newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
             }
@@ -410,6 +424,14 @@ public class MatchState {
 
     public void setCanScore(boolean canScore) {
         this.canScore = canScore;
+    }
+
+    public boolean isGoalkeeperHoldingBall() {
+        return goalkeeperHoldingBall;
+    }
+
+    public void setGoalkeeperHoldingBall(boolean goalkeeperHoldingBall) {
+        this.goalkeeperHoldingBall = goalkeeperHoldingBall;
     }
 
     public long getNewBallTimer() {
