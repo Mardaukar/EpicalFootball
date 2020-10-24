@@ -50,6 +50,11 @@ public class AIState {
                 }
             }
 
+             if (!shotPerceived && EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= goalkeeper.getGoalkeepingIntelligenceInterceptingRadius()) {
+                 goalkeeperAIAction.setAction(INTERCEPT_ACTION);
+                 aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
+             }
+
             if (aiDecisionCounter <= 0) {
                 if (shotPerceived) {
                     float ballDirection = ball.getSpeed().getDirection();
@@ -82,10 +87,6 @@ public class AIState {
                     goalkeeperAIAction.setTargetPosition(goalkeeper.getPosition().clonePosition().addPositionVector(savingTargetDirection, savingTargetDistance));
                     goalkeeperAIAction.setAction(SAVE_ACTION);
                     aiDecisionCounter = goalkeeper.getReflexes() + 2000;
-                } else if (EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= goalkeeper.getGoalkeepingIntelligenceInterceptingRadius()) {
-                    goalkeeperAIAction.setTargetPosition(matchState.getGoalkeeper().getPosition()); //Used if intercepting stops
-                    goalkeeperAIAction.setAction(INTERCEPT_ACTION);
-                    aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
                 } else {
                     float maxLeftBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxLeftBasePosition);
                     float maxRightBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxRightBasePosition);

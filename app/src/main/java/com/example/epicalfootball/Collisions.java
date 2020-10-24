@@ -110,8 +110,17 @@ public class Collisions {
 
     public static boolean handleGoalkeeperBallCollision(Goalkeeper goalkeeper, Ball ball) {
         if (EpicalMath.checkIntersect(goalkeeper, ball)) {
+            if (ball.getSpeed().getMagnitude() == 0) {
+                return true;
+            }
+
             float ballToGoalkeeperDirection = EpicalMath.convertToDirection(ball.getPosition(), goalkeeper.getPosition());
             float collisionAngle = EpicalMath.absoluteAngleBetweenDirections(ballToGoalkeeperDirection, ball.getSpeed().getDirection());
+
+            if (collisionAngle >= QUARTER_CIRCLE && goalkeeper.getSpeed().getMagnitude() * goalkeeper.getFullMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * ball.getFullMagnitudeSpeed()) {
+                return true;
+            }
+
             if (collisionAngle < QUARTER_CIRCLE) {
                 float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());
                 float slowedBallSpeed = ball.getSpeed().getMagnitude() - (float) (FULL - Math.sin(collisionAngle) * HALF) * (goalkeeper.getBallHandling() + random.nextFloat() * SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER);

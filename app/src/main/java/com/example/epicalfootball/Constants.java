@@ -137,7 +137,7 @@ public class Constants {
     public static int GK_SPEED = 5;
     public static int GK_REFLEXES = 5;
     public static int GK_BALL_HANDLING = 5;
-    public static int GK_GOALKEEPING_INTELLIGENCE = 10;
+    public static int GK_GOALKEEPING_INTELLIGENCE = 5;
 
     //OUTFIELD PLAYER
     public static Position OUTFIELD_PLAYER_STARTING_POSITION = new Position(0, 30);
