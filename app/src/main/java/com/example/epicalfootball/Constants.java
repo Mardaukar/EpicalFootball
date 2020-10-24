@@ -64,6 +64,7 @@ public class Constants {
     public static float BALL_COLLISION_REFERENCE_MAX_SPEED = 5;
     public static float BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR = 0.5f;
     public static long BALL_FEED_TIMER = 500;
+    public static float GOAL_POST_PLAYER_SHIFT_ANGLE = 0.1f;
 
     //SHOOTING
     public static float LONG_SHOTS_LIMIT = 20;
@@ -132,10 +133,10 @@ public class Constants {
     public static Position SAVING_SHOVE_LEFT_TARGET_POSITION = new Position(-5, 0);
 
     //GOALKEEPER ATTRIBUTES
-    public static int GK_REACH = 5;
-    public static int GK_ACCELERATION = 5;
+    public static int GK_REACH = 0;
+    public static int GK_AGILITY = 5;
     public static int GK_SPEED = 5;
-    public static int GK_REFLEXES = 5;
+    public static int GK_REFLEXES = 0;
     public static int GK_BALL_HANDLING = 5;
     public static int GK_GOALKEEPING_INTELLIGENCE = 5;
 

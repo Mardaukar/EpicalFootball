@@ -68,6 +68,16 @@ public class EpicalMath {
         return convertToDirectionFromOrigo(x, y);
     }
 
+    public static boolean directionLeftFromDirection(float direction, float referenceDirection) {
+        float correctedDirection = sanitizeDirection(direction - referenceDirection);
+
+        if (correctedDirection < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static float shiftTowardsDirection(float originalDirection, float targetDirection, float angleShift) {
         float correctedDirection = sanitizeDirection(originalDirection - targetDirection);
 

@@ -1,12 +1,10 @@
 package com.example.epicalfootball.items;
 
 import com.example.epicalfootball.math.EpicalMath;
-import com.example.epicalfootball.math.Position;
 import com.example.epicalfootball.TargetSpeedVector;
 import com.example.epicalfootball.math.Vector;
 
 import static com.example.epicalfootball.Constants.*;
-import static com.example.epicalfootball.activities.MenuActivity.playerAttributes;
 
 public class Goalkeeper extends Player {
     private float reflexes;
@@ -27,8 +25,8 @@ public class Goalkeeper extends Player {
 
         this.radius = MIN_GOALKEEPING_REACH_VALUE + GOALKEEPING_REACH_VALUE_INCREMENT * GK_REACH;
         this.fullMagnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED;
-        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * GK_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED);
-        this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * GK_ACCELERATION;
+        this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * GK_AGILITY) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED);
+        this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * GK_AGILITY;
         this.reflexes = MIN_REFLEXES_VALUE + REFLEXES_VALUE_INCREMENT * GK_REFLEXES;
         this.ballHandlingAngle = MIN_BALL_HANDLING_ANGLE + BALL_HANDLING_ANGLE_INCREMENT * GK_BALL_HANDLING;
         this.ballHandling = MIN_BALL_HANDLING_VALUE + BALL_HANDLING_VALUE_INCREMENT * GK_BALL_HANDLING;

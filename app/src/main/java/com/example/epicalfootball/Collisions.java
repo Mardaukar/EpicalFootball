@@ -38,9 +38,26 @@ public class Collisions {
             float radiusSum = goalPost.getRadius() + player.getRadius();
             float goalPostToPlayerDirection = EpicalMath.convertToDirection(goalPost.getPosition(), player.getPosition());
             float playerToGoalPostDirection = EpicalMath.convertToDirection(player.getPosition(), goalPost.getPosition());
+            float shiftedGoalPostToPlayerDirection = goalPostToPlayerDirection;
+
+            if (Math.abs(player.getTargetSpeed().getDirection() - playerToGoalPostDirection) < QUARTER_CIRCLE) {
+                if (player.getPosition().getY() <= goalPost.getPosition().getY()) {
+                    if (player.getPosition().getX() <= goalPost.getPosition().getX()) {
+                        shiftedGoalPostToPlayerDirection -= GOAL_POST_PLAYER_SHIFT_ANGLE;
+                    } else {
+                        shiftedGoalPostToPlayerDirection += GOAL_POST_PLAYER_SHIFT_ANGLE;
+                    }
+                } else {
+                    if (EpicalMath.directionLeftFromDirection(player.getTargetSpeed().getDirection(), playerToGoalPostDirection)) {
+                        shiftedGoalPostToPlayerDirection += GOAL_POST_PLAYER_SHIFT_ANGLE;
+                    } else {
+                        shiftedGoalPostToPlayerDirection -= GOAL_POST_PLAYER_SHIFT_ANGLE;
+                    }
+                }
+            }
 
             player.getPosition().copyFromPosition(goalPost.getPosition());
-            player.getPosition().addPositionVector(goalPostToPlayerDirection, radiusSum);
+            player.getPosition().addPositionVector(shiftedGoalPostToPlayerDirection, radiusSum);
             player.removeSpeedComponent(playerToGoalPostDirection);
         }
     }
