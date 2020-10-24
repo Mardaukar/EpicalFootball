@@ -39,7 +39,7 @@ public class Collisions {
             float goalPostToPlayerDirection = EpicalMath.convertToDirection(goalPost.getPosition(), player.getPosition());
             float playerToGoalPostDirection = EpicalMath.convertToDirection(player.getPosition(), goalPost.getPosition());
 
-            player.getPosition().clonePosition(goalPost.getPosition());
+            player.getPosition().copyFromPosition(goalPost.getPosition());
             player.getPosition().addPositionVector(goalPostToPlayerDirection, radiusSum);
             player.removeSpeedComponent(playerToGoalPostDirection);
         }
@@ -103,7 +103,7 @@ public class Collisions {
                 ball.getSpeed().setMagnitude(speedMultiplier * ball.getSpeed().getMagnitude() * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
             }
 
-            ball.getPosition().clonePosition(goalPost.getPosition());
+            ball.getPosition().copyFromPosition(goalPost.getPosition());
             ball.getPosition().addPositionVector(goalPostToBallDirection, radiusSum);
         }
     }
@@ -196,7 +196,7 @@ public class Collisions {
                 if (bounce) {
                     ball.shiftTowardsPlayerDirectionOnBounce(player);
                 } else {
-                    ball.getPosition().clonePosition(player.getPosition());
+                    ball.getPosition().copyFromPosition(player.getPosition());
                     ball.getPosition().addPositionVector(playerToBallDirection, radiusSum);
 
                     if (player.getTargetSpeed().getMagnitude() == 1) {
@@ -224,7 +224,7 @@ public class Collisions {
                     player.getSpeed().setMagnitude(player.getDribbling());
                 }
             } else {
-                ball.getPosition().clonePosition(player.getPosition());
+                ball.getPosition().copyFromPosition(player.getPosition());
                 ball.getPosition().addPositionVector(playerToBallDirection, radiusSum);
             }
 

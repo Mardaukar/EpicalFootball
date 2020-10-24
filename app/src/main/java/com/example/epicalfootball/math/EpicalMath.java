@@ -9,6 +9,11 @@ import static com.example.epicalfootball.Constants.*;
 
 public class EpicalMath {
 
+    public static void logDegrees(String name, float radians) {
+        int degrees = (int)(radians / Math.PI * 180);
+        Log.d(name, "" + degrees);
+    }
+
     public static float calculateMagnitude(float x, float y, float relationDivisor) {
         float newMagnitude = (float)Math.sqrt(x * x + y * y) / relationDivisor;
 

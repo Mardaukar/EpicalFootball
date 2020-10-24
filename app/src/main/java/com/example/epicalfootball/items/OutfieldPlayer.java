@@ -1,7 +1,6 @@
 package com.example.epicalfootball.items;
 
 import com.example.epicalfootball.math.EpicalMath;
-import com.example.epicalfootball.math.Position;
 import com.example.epicalfootball.TargetSpeedVector;
 import com.example.epicalfootball.math.Vector;
 
@@ -29,12 +28,12 @@ public class OutfieldPlayer extends Player {
     private float kickRecoveryTimer = 0;
 
     public OutfieldPlayer() {
-        this.position = OUTFIELD_PLAYER_STARTING_POSITION;
+        this.position = OUTFIELD_PLAYER_STARTING_POSITION.clonePosition();
         this.orientation = OUTFIELD_PLAYER_STARTING_ORIENTATION;
         this.targetSpeed = new TargetSpeedVector();
         this.speed = new Vector();
 
-        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * playerAttributes.get("reach");
+        this.radius = MIN_OUTFIELD_PLAYER_REACH_VALUE + OUTFIELD_PLAYER_REACH_VALUE_INCREMENT * playerAttributes.get("reach");
         this.fullMagnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed");
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * playerAttributes.get("acceleration")) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * playerAttributes.get("speed"));
         this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * playerAttributes.get("acceleration");

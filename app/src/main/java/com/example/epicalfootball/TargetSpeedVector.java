@@ -8,7 +8,7 @@ import static com.example.epicalfootball.Constants.*;
 public class TargetSpeedVector extends Vector {
 
     public TargetSpeedVector() {
-        this.direction = 0;
+        this.direction = UP;
         this.magnitude = 0;
     }
 

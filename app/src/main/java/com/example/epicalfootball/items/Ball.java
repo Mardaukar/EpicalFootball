@@ -55,7 +55,7 @@ public class Ball extends Circle {
 
     public void setGoalkeeperHoldingPosition(Goalkeeper goalkeeper) {
         float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), this.getPosition());
-        this.getPosition().clonePosition(goalkeeper.getPosition());
+        this.getPosition().copyFromPosition(goalkeeper.getPosition());
         this.getPosition().addPositionVector(goalkeeperToBallDirection, goalkeeper.getRadius());
     }
 
@@ -66,7 +66,7 @@ public class Ball extends Circle {
         float playerOrientation = outfieldPlayer.getOrientation();
         float shiftedPlayerToBallDirection = EpicalMath.shiftTowardsDirection(playerToBallDirection, playerOrientation, angleShift);
         float radiusSum = EpicalMath.calculateDistance(outfieldPlayer.getPosition().getX(), outfieldPlayer.getPosition().getY(), this.getPosition().getX(), this.getPosition().getY());
-        this.getPosition().clonePosition(outfieldPlayer.getPosition());
+        this.getPosition().copyFromPosition(outfieldPlayer.getPosition());
         this.getPosition().addPositionVector(shiftedPlayerToBallDirection, radiusSum);
 
         float playerSpeedDirection = outfieldPlayer.getSpeed().getDirection();

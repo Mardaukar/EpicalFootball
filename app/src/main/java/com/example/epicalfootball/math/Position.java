@@ -34,9 +34,13 @@ public class Position {
         this.y += Math.sin(ball.getSpeed().getDirection()) * ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED * seconds;
     }
 
-    public void clonePosition(Position otherPosition) {
+    public void copyFromPosition(Position otherPosition) {
         this.x = otherPosition.getX();
         this.y = otherPosition.getY();
+    }
+
+    public Position clonePosition() {
+        return new Position(this.x, this.y);
     }
 
     public float getX() {

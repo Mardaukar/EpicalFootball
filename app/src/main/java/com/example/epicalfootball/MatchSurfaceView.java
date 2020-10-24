@@ -145,7 +145,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             float goalkeeperOrientationDegrees = goalkeeperOrientationRadians / HALF_CIRCLE * 180;
             float handlingSectorRadians = goalkeeper.getBallHandlingAngle();
             float handlingSectorDegrees = handlingSectorRadians / HALF_CIRCLE * 180;
-            canvas.drawArc(drawPositionX - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY - pixelPerMeter * outfieldPlayer.getRadius(), drawPositionX + pixelPerMeter * outfieldPlayer.getRadius(), drawPositionY + pixelPerMeter * outfieldPlayer.getRadius(), goalkeeperOrientationDegrees - handlingSectorDegrees, 2 * handlingSectorDegrees, true, paint);
+            canvas.drawArc(drawPositionX - pixelPerMeter * goalkeeper.getRadius(), drawPositionY - pixelPerMeter * goalkeeper.getRadius(), drawPositionX + pixelPerMeter * goalkeeper.getRadius(), drawPositionY + pixelPerMeter * goalkeeper.getRadius(), goalkeeperOrientationDegrees - handlingSectorDegrees, 2 * handlingSectorDegrees, true, paint);
 
             //DRAW OUTFIELD PLAYER
             drawPositionX = outfieldPlayerPosition.getX() * pixelPerMeter + surfaceWidth * HALF;

@@ -14,17 +14,18 @@ public class Goalkeeper extends Player {
     private float ballHandling;
     private float goalkeepingIntelligenceDecisionTime;
     private float goalkeepingIntelligenceInterceptingRadius;
+    private float goalkeepingIntelligenceInterceptingPrecaution;
     private float goalkeepingIntelligencePositioningAnticipation;
     private float goalkeepingIntelligencePositioningDirectionJudgementError;
     private float goalkeepingIntelligencePositioningRadiusJudgementError;
 
     public Goalkeeper() {
-        this.position = GOALKEEPER_STARTING_POSITION;
+        this.position = GOALKEEPER_STARTING_POSITION.clonePosition();
         this.orientation = GOALKEEPER_STARTING_ORIENTATION;
         this.targetSpeed = new TargetSpeedVector();
         this.speed = new Vector();
 
-        this.radius = MIN_REACH_VALUE + REACH_VALUE_INCREMENT * GK_REACH;
+        this.radius = MIN_GOALKEEPING_REACH_VALUE + GOALKEEPING_REACH_VALUE_INCREMENT * GK_REACH;
         this.fullMagnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED;
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * GK_ACCELERATION) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * GK_SPEED);
         this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * GK_ACCELERATION;
@@ -33,6 +34,7 @@ public class Goalkeeper extends Player {
         this.ballHandling = MIN_BALL_HANDLING_VALUE + BALL_HANDLING_VALUE_INCREMENT * GK_BALL_HANDLING;
         this.goalkeepingIntelligenceDecisionTime = MIN_GOALKEEPING_INTELLIGENCE_DECISION_TIME + GOALKEEPING_INTELLIGENCE_DECISION_TIME_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligenceInterceptingRadius = MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS + GOALKEEPING_INTELLIGENCE_INTERCEPTING_RADIUS_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
+        this.goalkeepingIntelligenceInterceptingPrecaution = MIN_GOALKEEPING_INTELLIGENCE_INTERCEPTING_PRECAUTION + GOALKEEPING_INTELLIGENCE_INTERCEPTING_PRECAUTION_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligencePositioningAnticipation = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION + GOALKEEPING_INTELLIGENCE_POSITIONING_ANTICIPATION_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligencePositioningDirectionJudgementError = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_DIRECTION_JUDGEMENT_ERROR + GOALKEEPING_INTELLIGENCE_POSITIONING_DIRECTION_JUDGEMENT_ERROR_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
         this.goalkeepingIntelligencePositioningRadiusJudgementError = MIN_GOALKEEPING_INTELLIGENCE_POSITIONING_RADIUS_JUDGEMENT_ERROR + GOALKEEPING_INTELLIGENCE_POSITIONING_RADIUS_JUDGEMENT_ERROR_INCREMENT * GK_GOALKEEPING_INTELLIGENCE;
@@ -184,6 +186,14 @@ public class Goalkeeper extends Player {
 
     public void setGoalkeepingIntelligenceInterceptingRadius(float goalkeepingIntelligenceInterceptingRadius) {
         this.goalkeepingIntelligenceInterceptingRadius = goalkeepingIntelligenceInterceptingRadius;
+    }
+
+    public float getGoalkeepingIntelligenceInterceptingPrecaution() {
+        return goalkeepingIntelligenceInterceptingPrecaution;
+    }
+
+    public void setGoalkeepingIntelligenceInterceptingPrecaution(float goalkeepingIntelligenceInterceptingPrecaution) {
+        this.goalkeepingIntelligenceInterceptingPrecaution = goalkeepingIntelligenceInterceptingPrecaution;
     }
 
     public float getGoalkeepingIntelligencePositioningAnticipation() {
