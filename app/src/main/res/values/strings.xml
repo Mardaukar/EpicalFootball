@@ -18,4 +18,11 @@
     <string name="dribbling">Dribbling</string>
     <string name="ball_control">Ball Control</string>
     <string name="go_to_menu_text">TO MENU</string>
+    <string name="goalkeeper_button_text">Goalkeeper</string>
+    <string name="player_button_text">Player</string>
+    <string name="agility">Agility</string>
+    <string name="reflexes">Reflexes</string>
+    <string name="ball_handling">Ball Handling</string>
+    <string name="reaction_saves">Reaction Saves</string>
+    <string name="intelligence">Intelligence</string>
 </resources>

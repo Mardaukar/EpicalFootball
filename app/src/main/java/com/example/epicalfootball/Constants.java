@@ -4,6 +4,28 @@ import com.example.epicalfootball.math.Position;
 
 public class Constants {
 
+    //TEXTS
+    public static String FROM_RESULT_INTENT_TEXT = "fromResult";
+
+    public static String PLAYER_REACH_KEY = "playerReach";
+    public static String PLAYER_ACCELERATION_KEY = "playerAcceleration";
+    public static String PLAYER_SPEED_KEY = "playerSpeed";
+    public static String PLAYER_BALL_CONTROL_KEY = "playerBallControl";
+    public static String PLAYER_DRIBBLING_KEY = "playerDribbling";
+    public static String PLAYER_SHOT_POWER_KEY = "playerShotPower";
+    public static String PLAYER_ACCURACY_KEY = "playerAccuracy";
+    public static String PLAYER_FINISHING_KEY = "playerFinishing";
+    public static String PLAYER_LONG_SHOTS_KEY = "playerLongShots";
+
+    public static String GOALKEEPER_REACH_KEY = "goalkeeperReach";
+    public static String GOALKEEPER_AGILITY_KEY = "goalkeeperAgility";
+    public static String GOALKEEPER_SPEED_KEY = "goalkeeperSpeed";
+    public static String GOALKEEPER_REFLEXES_KEY = "goalkeeperReflexes";
+    public static String GOALKEEPER_BALL_HANDLING_KEY = "goalkeeperBallHandling";
+    public static String GOALKEEPER_REACTION_SAVES_KEY = "goalkeeperReactionSaves";
+    public static String GOALKEEPER_GOALKEEPING_INTELLIGENCE_KEY = "goalkeeperGoalkeepingIntelligence";
+
+
     //MATHEMATICAL
     public static float FULL_MAGNITUDE = 1f;
     public static float FULL = 1f;
@@ -133,10 +155,10 @@ public class Constants {
     public static Position SAVING_SHOVE_LEFT_TARGET_POSITION = new Position(-5, 0);
 
     //GOALKEEPER ATTRIBUTES
-    public static int GK_REACH = 0;
+    public static int GK_REACH = 5;
     public static int GK_AGILITY = 5;
     public static int GK_SPEED = 5;
-    public static int GK_REFLEXES = 0;
+    public static int GK_REFLEXES = 5;
     public static int GK_BALL_HANDLING = 5;
     public static int GK_GOALKEEPING_INTELLIGENCE = 5;
 

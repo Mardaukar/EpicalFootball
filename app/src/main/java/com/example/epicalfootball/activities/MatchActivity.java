@@ -28,7 +28,7 @@ public class MatchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toFullScreen();
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.match);
 
         matchState = new MatchState(this);
         matchSurfaceView = new MatchSurfaceView(this, matchState);

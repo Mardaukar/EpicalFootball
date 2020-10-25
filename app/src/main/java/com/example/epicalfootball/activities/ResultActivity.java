@@ -13,7 +13,7 @@ public class ResultActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toFullScreen();
-        setContentView(R.layout.activity_result);
+        setContentView(R.layout.result);
 
         int goalsScored = getIntent().getIntExtra("goals_scored", 0);
         TextView resultView = findViewById(R.id.result_textView);

@@ -44,6 +44,23 @@
             </TableRow>
 
             <TableRow>
+                <Button
+                    android:id="@+id/player_attributes_button"
+                    android:clickable="false"
+                    android:layout_weight="1"
+                    android:text="@string/player_button_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/goalkeeper_attributes_button"
+                    android:layout_weight="1"
+                    android:onClick="switchToGoalkeeperAttributes"
+                    android:text="@string/goalkeeper_button_text"
+                    android:textSize="25sp" />
+            </TableRow>
+
+            <TableRow>
                 <TextView
                     android:layout_weight="2"
                     android:padding="3dip"
@@ -52,7 +69,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/reach_attribute_textView"
+                    android:id="@+id/player_reach_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -61,17 +78,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_reach_button"
+                    android:id="@+id/minus_player_reach_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseReach"
+                    android:onClick="decreasePlayerReach"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_reach_button"
+                    android:id="@+id/plus_player_reach_button"
                     android:layout_weight="1"
-                    android:onClick="increaseReach"
+                    android:onClick="increasePlayerReach"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -86,7 +103,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/acceleration_attribute_textView"
+                    android:id="@+id/player_acceleration_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -95,17 +112,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_acceleration_button"
+                    android:id="@+id/minus_player_acceleration_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseAcceleration"
+                    android:onClick="decreasePlayerAcceleration"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_acceleration_button"
+                    android:id="@+id/plus_player_acceleration_button"
                     android:layout_weight="1"
-                    android:onClick="increaseAcceleration"
+                    android:onClick="increasePlayerAcceleration"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -120,7 +137,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/speed_attribute_textView"
+                    android:id="@+id/player_speed_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -129,17 +146,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_speed_button"
+                    android:id="@+id/minus_player_speed_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseSpeed"
+                    android:onClick="decreasePlayerSpeed"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_speed_button"
+                    android:id="@+id/plus_player_speed_button"
                     android:layout_weight="1"
-                    android:onClick="increaseSpeed"
+                    android:onClick="increasePlayerSpeed"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -154,7 +171,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/ball_control_attribute_textView"
+                    android:id="@+id/player_ball_control_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -163,17 +180,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_ball_control_button"
+                    android:id="@+id/minus_player_ball_control_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseBallControl"
+                    android:onClick="decreasePlayerBallControl"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_ball_control_button"
+                    android:id="@+id/plus_player_ball_control_button"
                     android:layout_weight="1"
-                    android:onClick="increaseBallControl"
+                    android:onClick="increasePlayerBallControl"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -188,7 +205,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/dribbling_attribute_textView"
+                    android:id="@+id/player_dribbling_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -197,17 +214,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_dribbling_button"
+                    android:id="@+id/minus_player_dribbling_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseDribbling"
+                    android:onClick="decreasePlayerDribbling"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_dribbling_button"
+                    android:id="@+id/plus_player_dribbling_button"
                     android:layout_weight="1"
-                    android:onClick="increaseDribbling"
+                    android:onClick="increasePlayerDribbling"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -222,7 +239,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/shot_power_attribute_textView"
+                    android:id="@+id/player_shot_power_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -231,17 +248,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_shot_power_button"
+                    android:id="@+id/minus_player_shot_power_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseShotPower"
+                    android:onClick="decreasePlayerShotPower"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_shot_power_button"
+                    android:id="@+id/plus_player_shot_power_button"
                     android:layout_weight="1"
-                    android:onClick="increaseShotPower"
+                    android:onClick="increasePlayerShotPower"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -256,7 +273,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/accuracy_attribute_textView"
+                    android:id="@+id/player_accuracy_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -265,17 +282,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_accuracy_button"
+                    android:id="@+id/minus_player_accuracy_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseAccuracy"
+                    android:onClick="decreasePlayerAccuracy"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_accuracy_button"
+                    android:id="@+id/plus_player_accuracy_button"
                     android:layout_weight="1"
-                    android:onClick="increaseAccuracy"
+                    android:onClick="increasePlayerAccuracy"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -290,7 +307,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/finishing_attribute_textView"
+                    android:id="@+id/player_finishing_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -299,17 +316,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_finishing_button"
+                    android:id="@+id/minus_player_finishing_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseFinishing"
+                    android:onClick="decreasePlayerFinishing"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_finishing_button"
+                    android:id="@+id/plus_player_finishing_button"
                     android:layout_weight="1"
-                    android:onClick="increaseFinishing"
+                    android:onClick="increasePlayerFinishing"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -324,7 +341,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/long_shots_attribute_textView"
+                    android:id="@+id/player_long_shots_attribute_textView"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="3dip"
@@ -333,17 +350,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_long_shots_button"
+                    android:id="@+id/minus_player_long_shots_button"
                     android:layout_weight="1"
-                    android:onClick="decreaseLongShots"
+                    android:onClick="decreasePlayerLongShots"
                     android:text="@string/minus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_long_shots_button"
+                    android:id="@+id/plus_player_long_shots_button"
                     android:layout_weight="1"
-                    android:onClick="increaseLongShots"
+                    android:onClick="increasePlayerLongShots"
                     android:text="@string/plus_text"
                     android:textSize="25sp"
                     android:textStyle="bold" />

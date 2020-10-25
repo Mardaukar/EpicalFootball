@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#B079D835"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title_textView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_text"
+            android:textAlignment="gravity"
+            android:textColor="#040404"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8">
+
+            <TableRow>
+                <TextView
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp" />
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:id="@+id/player_attributes_button"
+                    android:layout_weight="1"
+                    android:onClick="switchToPlayerAttributes"
+                    android:text="@string/player_button_text"
+                    android:textSize="25sp" />
+
+                <Button
+                    android:id="@+id/goalkeeper_attributes_button"
+                    android:clickable="false"
+                    android:layout_weight="1"
+                    android:text="@string/goalkeeper_button_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/reach"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_reach_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_reach_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperReach"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_reach_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperReach"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/agility"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_agility_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_agility_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperAgility"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_agility_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperAgility"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/speed"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_speed_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_speed_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperSpeed"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_speed_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperSpeed"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/reflexes"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_reflexes_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_reflexes_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperReflexes"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_reflexes_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperReflexes"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/reaction_saves"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_reaction_saves_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_reaction_saves_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperReactionSaves"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_reaction_saves_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperReactionSaves"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/ball_handling"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_ball_handling_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_ball_handling_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperBallHandling"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_ball_handling_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperBallHandling"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="@string/intelligence"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/goalkeeper_goalkeeping_intelligence_attribute_textView"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/minus_goalkeeper_goalkeeping_intelligence_button"
+                    android:layout_weight="1"
+                    android:onClick="decreaseGoalkeeperGoalkeepingIntelligence"
+                    android:text="@string/minus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plus_goalkeeper_goalkeeping_intelligence_button"
+                    android:layout_weight="1"
+                    android:onClick="increaseGoalkeeperGoalkeepingIntelligence"
+                    android:text="@string/plus_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:padding="3dip"
+                    android:text=""
+                    android:textSize="25sp" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/start_game_button"
+            android:onClick="startGame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#DF471A97"
+            android:text="@string/start_game_text"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
