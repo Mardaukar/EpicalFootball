@@ -16,9 +16,9 @@ public class TargetGoal {
 
     public TargetGoal(float distance, boolean longShot, OutfieldPlayer outfieldPlayer) {
         if (!longShot) {
-            this.size = outfieldPlayer.getAccuracyDistance() / distance;
+            this.size = outfieldPlayer.getFinishingAccuracyDistance() / distance;
         } else {
-            this.size = outfieldPlayer.getAccuracyDistance() / (LONG_SHOTS_LIMIT + (distance - LONG_SHOTS_LIMIT) * outfieldPlayer.getLongShotsAccuracy());
+            this.size = outfieldPlayer.getFinishingAccuracyDistance() / (LONG_SHOTS_LIMIT + (distance - LONG_SHOTS_LIMIT) * outfieldPlayer.getLongShotsAccuracy());
         }
 
         if (this.size > MAX_TARGET_GOAL_MOVE_SIZE) {

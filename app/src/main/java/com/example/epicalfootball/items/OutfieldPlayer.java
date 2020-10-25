@@ -15,7 +15,7 @@ public class OutfieldPlayer extends Player {
     private float dribbling;
     private float dribblingTarget;
     private float shotPower;
-    private float accuracyDistance;
+    private float finishingAccuracyDistance;
     public float accuracyTargetDot;
     private float accuracyGaussianFactor;
     private float finishingMidShotPower;
@@ -44,9 +44,9 @@ public class OutfieldPlayer extends Player {
         this.dribbling = MIN_DRIBBLING_LIMIT + DRIBBLING_LIMIT_INCREMENT * playerAttributes.get("dribbling");
         this.dribblingTarget = MIN_DRIBBLING_TARGET + DRIBBLING_TARGET_INCREMENT * playerAttributes.get("dribbling");
         this.shotPower = MIN_SHOT_POWER_VALUE + SHOT_POWER_VALUE_INCREMENT * playerAttributes.get("shotPower");
-        this.accuracyDistance = MIN_ACCURACY_DISTANCE + ACCURACY_DISTANCE_INCREMENT * playerAttributes.get("accuracy");
         this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get("accuracy");
         this.accuracyGaussianFactor = MIN_ACCURACY_GAUSSIAN_FACTOR + ACCURACY_GAUSSIAN_FACTOR_INCREMENT * playerAttributes.get("accuracy");
+        this.finishingAccuracyDistance = MIN_FINISHING_ACCURACY_DISTANCE + FINISHING_ACCURACY_DISTANCE_INCREMENT * playerAttributes.get("finishing");
         this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("finishing");
         this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * playerAttributes.get("finishing");
         this.longShotsTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get("longShots");
@@ -201,12 +201,12 @@ public class OutfieldPlayer extends Player {
         this.shotPower = shotPower;
     }
 
-    public float getAccuracyDistance() {
-        return accuracyDistance;
+    public float getFinishingAccuracyDistance() {
+        return finishingAccuracyDistance;
     }
 
-    public void setAccuracyDistance(float accuracyDistance) {
-        this.accuracyDistance = accuracyDistance;
+    public void setFinishingAccuracyDistance(float finishingAccuracyDistance) {
+        this.finishingAccuracyDistance = finishingAccuracyDistance;
     }
 
     public float getAccuracyTargetDot() {
