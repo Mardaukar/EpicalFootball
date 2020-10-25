@@ -127,43 +127,50 @@ public class Collisions {
 
     public static boolean handleGoalkeeperBallCollision(Goalkeeper goalkeeper, Ball ball) {
         if (EpicalMath.checkIntersect(goalkeeper, ball)) {
-            if (ball.getSpeed().getMagnitude() == 0) {
-                return true;
-            }
-
+            boolean ballInsideBox = !(ball.getPosition().getX() < -BOX_WIDTH * HALF) && !(ball.getPosition().getX() > BOX_WIDTH * HALF) && !(ball.getPosition().getY() > BOX_HEIGHT) && !(ball.getPosition().getY() < TOUCHLINE);
             float ballToGoalkeeperDirection = EpicalMath.convertToDirection(ball.getPosition(), goalkeeper.getPosition());
-            float collisionAngle = EpicalMath.absoluteAngleBetweenDirections(ballToGoalkeeperDirection, ball.getSpeed().getDirection());
+            float ballSpeedDirectionToCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(ballToGoalkeeperDirection, ball.getSpeed().getDirection());
+            float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());
+            float goalkeeperOrientationToCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(goalkeeperToBallDirection, goalkeeper.getOrientation());
+            float ballSpeedAfterBounce = ball.getSpeed().getMagnitude() * (FULL - (float) Math.cos(ballSpeedDirectionToCollisionAngle) * (FULL - BALL_PLAYER_COLLISION_SPEED_MULTIPLIER)) * BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR);
 
-            if (collisionAngle >= QUARTER_CIRCLE && goalkeeper.getSpeed().getMagnitude() * goalkeeper.getFullMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * ball.getFullMagnitudeSpeed()) {
-                return true;
-            }
-
-            if (collisionAngle < QUARTER_CIRCLE) {
-                float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());
-                float slowedBallSpeed = ball.getSpeed().getMagnitude() - (float) (FULL - Math.sin(collisionAngle) * HALF) * (goalkeeper.getBallHandling() + random.nextFloat() * SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER);
-                Log.d("without","" + ball.getSpeed().getMagnitude() * (FULL - (float) Math.cos(collisionAngle) * (FULL - BALL_PLAYER_COLLISION_SPEED_MULTIPLIER)) * BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER);
-                Log.d("with","" + ball.getSpeed().getMagnitude() * (FULL - (float) Math.cos(collisionAngle) * (FULL - BALL_PLAYER_COLLISION_SPEED_MULTIPLIER)) * BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
-
-                float ballSpeedAfterBounce = ball.getSpeed().getMagnitude() * (FULL - (float) Math.cos(collisionAngle) * (FULL - BALL_PLAYER_COLLISION_SPEED_MULTIPLIER)) * BALL_PLAYER_COLLISION_SPEED_BASE_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR);
-
-                Log.d("slowedBallSpeed", "" + slowedBallSpeed);
-
-                if (slowedBallSpeed <= 0) {
+            if (ballInsideBox) {
+                if (ball.getSpeed().getMagnitude() == 0) {
                     return true;
-                } else if (slowedBallSpeed <= SAVING_BALL_SPEED_SHOVE_LIMIT) {
-                    ball.getSpeed().bounceDirection(goalkeeperToBallDirection);
-                    float shiftFactor = (SAVING_BALL_SPEED_SHOVE_LIMIT - slowedBallSpeed) / SAVING_BALL_SPEED_SHOVE_LIMIT;
+                }
 
-                    if (goalkeeper.getPosition().getX() <= ball.getPosition().getX() && Math.abs(ball.getSpeed().getDirection()) <= QUARTER_CIRCLE ) {
-                        ball.shiftDirectionWithShove(shiftFactor, true);
-                    } else if (goalkeeper.getPosition().getX() >= ball.getPosition().getX() && Math.abs(ball.getSpeed().getDirection()) >= QUARTER_CIRCLE) {
-                        ball.shiftDirectionWithShove(shiftFactor, false);
+                if (ballSpeedDirectionToCollisionAngle >= QUARTER_CIRCLE && goalkeeper.getSpeed().getMagnitude() * goalkeeper.getFullMagnitudeSpeed() >= ball.getSpeed().getMagnitude() * ball.getFullMagnitudeSpeed()) {
+                    return true;
+                }
+
+                if (ballSpeedDirectionToCollisionAngle < QUARTER_CIRCLE) {
+                    float slowedBallSpeed = ball.getSpeed().getMagnitude() - (float) (FULL - Math.sin(ballSpeedDirectionToCollisionAngle) * HALF) * (goalkeeper.getBallHandling() + random.nextFloat() * SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER);
+
+                    if (slowedBallSpeed <= 0) {
+                        return true;
+                    } else if (slowedBallSpeed <= SAVING_BALL_SPEED_SHOVE_LIMIT) {
+                        ball.getSpeed().bounceDirection(goalkeeperToBallDirection);
+                        float shiftFactor = (SAVING_BALL_SPEED_SHOVE_LIMIT - slowedBallSpeed) / SAVING_BALL_SPEED_SHOVE_LIMIT;
+
+                        if (goalkeeper.getPosition().getX() <= ball.getPosition().getX() && Math.abs(ball.getSpeed().getDirection()) <= QUARTER_CIRCLE) {
+                            ball.shiftDirectionWithShove(shiftFactor, true);
+                        } else if (goalkeeper.getPosition().getX() >= ball.getPosition().getX() && Math.abs(ball.getSpeed().getDirection()) >= QUARTER_CIRCLE) {
+                            ball.shiftDirectionWithShove(shiftFactor, false);
+                        }
+
+                        ball.getSpeed().setMagnitude(Math.min(slowedBallSpeed, ballSpeedAfterBounce));
+                    } else {
+                        ball.getSpeed().bounceDirection(goalkeeperToBallDirection);
+                        ball.getSpeed().setMagnitude(ballSpeedAfterBounce);
                     }
-
-                    ball.getSpeed().setMagnitude(Math.min(slowedBallSpeed, ballSpeedAfterBounce));
-                } else {
+                }
+            } else {
+                if (ballSpeedDirectionToCollisionAngle < QUARTER_CIRCLE || goalkeeperOrientationToCollisionAngle > QUARTER_CIRCLE ) {
                     ball.getSpeed().bounceDirection(goalkeeperToBallDirection);
                     ball.getSpeed().setMagnitude(ballSpeedAfterBounce);
+                } else {
+                    ball.getSpeed().setDirection(goalkeeper.getOrientation());
+                    ball.getSpeed().setMagnitude(1);
                 }
             }
         }

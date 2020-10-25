@@ -87,24 +87,22 @@ public class MatchState {
         float ballTimeFactor = timeFactor / BALL_UPDATES_PER_CYCLE;
 
         for (int cycle = 0; cycle < BALL_UPDATES_PER_CYCLE; cycle++) {
+            ball.updateSpeed(ballTimeFactor);
+            ball.updatePosition(ballTimeFactor);
+            this.goalkeeperHoldingBall = Collisions.handleGoalkeeperBallCollision(goalkeeper, ball);
+
             if (this.goalkeeperHoldingBall) {
                 this.ball.setGoalkeeperHoldingPosition(goalkeeper);
+                ball.getSpeed().setDirection(goalkeeper.getOrientation());
+                ball.getSpeed().setMagnitude(0);
             } else {
-                ball.updateSpeed(ballTimeFactor);
-                ball.updatePosition(ballTimeFactor);
-
-                if (Collisions.handleGoalkeeperBallCollision(goalkeeper, ball)) {
-                    this.goalkeeperHoldingBall = true;
-                    ball.getSpeed().setMagnitude(0);
+                if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
+                    handleShootBall();
                 } else {
-                    if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
-                        handleShootBall();
-                    } else {
-                        Collisions.handlePlayerControlConeBallCollision(ballTimeFactor, outfieldPlayer, ball);
-                    }
-
-                    this.goalFrame.handleGoalCollision(ball);
+                    Collisions.handlePlayerControlConeBallCollision(ballTimeFactor, outfieldPlayer, ball);
                 }
+
+                this.goalFrame.handleGoalCollision(ball);
             }
         }
 
@@ -155,6 +153,12 @@ public class MatchState {
                     this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) / outfieldPlayer.getLongShotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
                 }
             }
+
+            if (controlOn) {
+                this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
+            } else {
+                this.aimTarget = new Position(0,0);
+            }
         } else {
             if (this.shotPowerMeter < SHOT_POWER_METER_LOWER_LIMIT) {
                 this.readyToShoot = false;
@@ -173,12 +177,6 @@ public class MatchState {
                     this.readyToShoot = true;
                     this.shootingTimer = SHOOT_READY_TIME_IN_MILLISECONDS;
                     outfieldPlayer.setAimRecoveryTimer(AIM_RECOVERY_TIME);
-
-                    if (controlOn) {
-                        this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
-                    } else {
-                        this.aimTarget = new Position(0,0);
-                    }
                 }
             }
 

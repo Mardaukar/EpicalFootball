@@ -167,9 +167,9 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             canvas.drawCircle(rightPost.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, rightPost.getPosition().getY() * pixelPerMeter + touchlineFromTop, rightPost.getRadius() * pixelPerMeter, paint);
             canvas.drawCircle(leftSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, leftSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop, leftSupport.getRadius() * pixelPerMeter, paint);
             canvas.drawCircle(rightSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, rightSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop, rightSupport.getRadius() * pixelPerMeter, paint);
-            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF, leftNet.top * pixelPerMeter + touchlineFromTop, leftNet.right * pixelPerMeter + surfaceWidth * HALF, leftNet.bottom * pixelPerMeter + touchlineFromTop, paint);
-            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF, rightNet.top * pixelPerMeter + touchlineFromTop, rightNet.right * pixelPerMeter + surfaceWidth * HALF, rightNet.bottom * pixelPerMeter + touchlineFromTop, paint);
-            canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF, rearNet.top * pixelPerMeter + touchlineFromTop, rearNet.right * pixelPerMeter + surfaceWidth * HALF, rearNet.bottom * pixelPerMeter + touchlineFromTop, paint);
+            canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF, leftSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop, leftNet.right * pixelPerMeter + surfaceWidth * HALF, leftPost.getPosition().getY() * pixelPerMeter + touchlineFromTop, paint);
+            canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF, rightSupport.getPosition().getY() * pixelPerMeter + touchlineFromTop, rightNet.right * pixelPerMeter + surfaceWidth * HALF, rightPost.getPosition().getY() * pixelPerMeter + touchlineFromTop, paint);
+            canvas.drawRect(leftSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, rearNet.top * pixelPerMeter + touchlineFromTop, rightSupport.getPosition().getX() * pixelPerMeter + surfaceWidth * HALF, rearNet.bottom * pixelPerMeter + touchlineFromTop, paint);
 
             //CLEAR CONTROL SURFACE
             canvas.drawRect(0, surfaceWidth * FIELD_IMAGE_HEIGHT_WIDTH_RATIO, surfaceWidth, surfaceHeight, clearPaint);

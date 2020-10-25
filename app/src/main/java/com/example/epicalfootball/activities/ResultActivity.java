@@ -20,6 +20,11 @@ public class ResultActivity extends Activity {
         resultView.setText("You scored " + goalsScored + " goals!");
     }
 
+    protected void onResume() {
+        super.onResume();
+        toFullScreen();
+    }
+
     public void toFullScreen() {
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE

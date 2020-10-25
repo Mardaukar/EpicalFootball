@@ -90,6 +90,11 @@ public class MatchActivity extends Activity {
         });
     }
 
+    protected void onResume() {
+        super.onResume();
+        toFullScreen();
+    }
+
     public void toFullScreen() {
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.epicalfootball.items.Ball;
 import com.example.epicalfootball.items.Goalkeeper;
+import com.example.epicalfootball.items.OutfieldPlayer;
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
 
@@ -13,6 +14,7 @@ import static com.example.epicalfootball.MatchState.random;
 public class AIState {
     private final MatchState matchState;
     private final Goalkeeper goalkeeper;
+    private final OutfieldPlayer outfieldPlayer;
     private final AIAction goalkeeperAIAction;
     private float aiDecisionCounter;
     private boolean shotPerceived;
@@ -23,6 +25,7 @@ public class AIState {
     public AIState(MatchState matchState) {
         this.matchState = matchState;
         this.goalkeeper = matchState.getGoalkeeper();
+        this.outfieldPlayer = matchState.getOutfieldPlayer();
         this.goalkeeperAIAction = new AIAction();
         this.shotPerceived = false;
         this.previousAnticipatedBallDirection = DOWN;
@@ -34,6 +37,7 @@ public class AIState {
 
         if (matchState.isGoalkeeperHoldingBall() || !matchState.isCanScore()) {
             goalkeeperAIAction.setAction(HOLD_ACTION);
+            aiDecisionCounter = 0;
         } else {
             Ball ball = matchState.getBall();
             Position maxLeftBasePosition = new Position(-(GOAL_WIDTH * HALF + POST_RADIUS), goalkeeper.getRadius() + POST_RADIUS);
@@ -50,7 +54,12 @@ public class AIState {
                 }
             }
 
-             if (!shotPerceived && EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= goalkeeper.getGoalkeepingIntelligenceInterceptingRadius()) {
+             float interceptionDistanceFactor = FULL;
+             if (ball.getPosition().getX() < -BOX_WIDTH * HALF || ball.getPosition().getX() > BOX_WIDTH * HALF || ball.getPosition().getY() > BOX_HEIGHT || ball.getPosition().getY() < TOUCHLINE) {
+                 interceptionDistanceFactor *= GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR;
+             }
+
+             if (!shotPerceived && (EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= goalkeeper.getGoalkeepingIntelligenceInterceptingRadius() || EpicalMath.calculateDistance(goalkeeper.getPosition(), ball.getPosition()) < GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR * interceptionDistanceFactor * EpicalMath.calculateDistance(outfieldPlayer.getPosition(), ball.getPosition()))) {
                  goalkeeperAIAction.setAction(INTERCEPT_ACTION);
                  aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
              }
