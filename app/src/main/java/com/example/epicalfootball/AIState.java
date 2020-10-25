@@ -34,17 +34,18 @@ public class AIState {
     }
 
     public void update(float elapsed) {
-
-        if (matchState.isGoalkeeperHoldingBall() || !matchState.isCanScore()) {
+        if (matchState.isGoalkeeperHoldingBall()) {
             goalkeeperAIAction.setAction(HOLD_ACTION);
             aiDecisionCounter = 0;
+        } else if (!matchState.isCanScore()) {
+            goalkeeperAIAction.setAction(MOVE_ACTION);
+            goalkeeperAIAction.getTargetPosition().copyFromPosition(GOALKEEPER_STARTING_POSITION);
         } else {
             Ball ball = matchState.getBall();
             Position maxLeftBasePosition = new Position(-(GOAL_WIDTH * HALF + POST_RADIUS), goalkeeper.getRadius() + POST_RADIUS);
             Position maxRightBasePosition = new Position(GOAL_WIDTH * HALF + POST_RADIUS, goalkeeper.getRadius() + POST_RADIUS);
 
              if (ball.getSpeed().getMagnitude() >= GK_AI_BALL_SPEED_PERCEIVED_SHOT && ball.getSpeed().getDirection() < 0 && !this.shotPerceived) {
-                 Log.d("shot", "perceived");
                 this.shotPerceived = true;
                 this.aiDecisionCounter = goalkeeper.getReflexes();
             } else if (ball.getSpeed().getMagnitude() < GK_AI_BALL_SPEED_PERCEIVED_SHOT || ball.getSpeed().getDirection() >= 0) {
@@ -54,14 +55,26 @@ public class AIState {
                 }
             }
 
-             float interceptionDistanceFactor = FULL;
-             if (ball.getPosition().getX() < -BOX_WIDTH * HALF || ball.getPosition().getX() > BOX_WIDTH * HALF || ball.getPosition().getY() > BOX_HEIGHT || ball.getPosition().getY() < TOUCHLINE) {
-                 interceptionDistanceFactor *= GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR;
-             }
+             if (!shotPerceived) {
+                 if (goalkeeper.getAfterKickTimer() > 0) {
+                     goalkeeperAIAction.setAction(MOVE_ACTION);
+                     goalkeeperAIAction.getTargetPosition().copyFromPosition(GOALKEEPER_STARTING_POSITION);
+                 } else {
+                     boolean ballInsideBox = !(ball.getPosition().getX() < -BOX_WIDTH * HALF) && !(ball.getPosition().getX() > BOX_WIDTH * HALF) && !(ball.getPosition().getY() > BOX_HEIGHT) && !(ball.getPosition().getY() < TOUCHLINE);
+                     float interceptionDistanceFactor = FULL;
 
-             if (!shotPerceived && (EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= goalkeeper.getGoalkeepingIntelligenceInterceptingRadius() || EpicalMath.calculateDistance(goalkeeper.getPosition(), ball.getPosition()) < GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR * interceptionDistanceFactor * EpicalMath.calculateDistance(outfieldPlayer.getPosition(), ball.getPosition()))) {
-                 goalkeeperAIAction.setAction(INTERCEPT_ACTION);
-                 aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
+                     if (!ballInsideBox) {
+                         interceptionDistanceFactor = GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR;
+                     }
+
+                     if (EpicalMath.calculateDistance(goalkeeper.getPosition(), ball.getPosition()) < GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR * interceptionDistanceFactor * EpicalMath.calculateDistance(outfieldPlayer.getPosition(), ball.getPosition())) {
+                         goalkeeperAIAction.setAction(RUN_TO_BALL_ACTION);
+                         aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
+                     } else if (EpicalMath.calculateDistanceFromOrigo(ball.getPosition()) <= goalkeeper.getGoalkeepingIntelligenceInterceptingRadius()) {
+                         goalkeeperAIAction.setAction(INTERCEPT_ACTION);
+                         aiDecisionCounter = goalkeeper.getGoalkeepingIntelligenceDecisionTime();
+                     }
+                 }
              }
 
             if (aiDecisionCounter <= 0) {

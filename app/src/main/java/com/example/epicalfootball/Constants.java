@@ -148,17 +148,20 @@ public class Constants {
     public static float DRIBBLING_KICK_ANGLE = (float)Math.PI / 8;
 
     //GOALKEEPER
-    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 0);
+    public static int GOALKEEPER_AFTER_KICK_TIME = 1500;
+    public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 4);
     public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
     public static String HOLD_ACTION = "hold";
     public static String MOVE_ACTION = "move";
     public static String SAVE_ACTION = "save";
     public static String INTERCEPT_ACTION = "intercept";
+    public static String RUN_TO_BALL_ACTION = "run_to_ball";
     public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1; //ball speed magnitude perceived as an incoming shot
     public static float GK_AI_BALL_DIRECTION_PERCEIVED_SAME = (float)Math.PI / 50;
-    public static float GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR = 0.5f;
-    public static float GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR = 0.5f;
-    public static float GK_ACCEPTED_POSITION_OFFSET = 0.3f;
+    public static float GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR = 0.9f;
+    public static float GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR = 0.9f;
+    public static float GK_AI_KICK_MAGNITUDE = 1;
+    public static float GK_ACCEPTED_POSITION_OFFSET = 0.2f;
     public static float GK_SLOWDOWN_DIRECTION_ANGLE = (float)Math.PI / 8;
     public static float SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER = 3;
     public static float SAVING_BALL_SPEED_SHOVE_LIMIT = 2;

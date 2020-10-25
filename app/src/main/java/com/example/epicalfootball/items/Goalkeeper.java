@@ -8,6 +8,8 @@ import static com.example.epicalfootball.activities.MenuActivity.goalkeeperAttri
 import static com.example.epicalfootball.Constants.*;
 
 public class Goalkeeper extends Player {
+    private int afterKickTimer;
+
     private float reflexes;
     private float ballHandlingAngle;
     private float ballHandling;
@@ -19,6 +21,8 @@ public class Goalkeeper extends Player {
     private float goalkeepingIntelligencePositioningRadiusJudgementError;
 
     public Goalkeeper() {
+        afterKickTimer = 0;
+
         this.position = GOALKEEPER_STARTING_POSITION.clonePosition();
         this.orientation = GOALKEEPER_STARTING_ORIENTATION;
         this.targetSpeed = new TargetSpeedVector();
@@ -113,6 +117,14 @@ public class Goalkeeper extends Player {
         float goalkeeperToBallDirection = EpicalMath.convertToDirection(this.getPosition(), ball.getPosition());
         float angleShift = timeFactor * this.accelerationTurn;
         this.setOrientation(EpicalMath.shiftTowardsDirection(this.getOrientation(), goalkeeperToBallDirection, angleShift));
+    }
+
+    public int getAfterKickTimer() {
+        return afterKickTimer;
+    }
+
+    public void setAfterKickTimer(int afterKickTimer) {
+        this.afterKickTimer = afterKickTimer;
     }
 
     public float getRadius() {

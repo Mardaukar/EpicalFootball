@@ -170,7 +170,9 @@ public class Collisions {
                     ball.getSpeed().setMagnitude(ballSpeedAfterBounce);
                 } else {
                     ball.getSpeed().setDirection(goalkeeper.getOrientation());
-                    ball.getSpeed().setMagnitude(1);
+                    ball.getSpeed().setMagnitude(GK_AI_KICK_MAGNITUDE);
+                    goalkeeper.getSpeed().setMagnitude(goalkeeper.getSpeed().getMagnitude() * HALF);
+                    goalkeeper.setAfterKickTimer(GOALKEEPER_AFTER_KICK_TIME);
                 }
             }
         }

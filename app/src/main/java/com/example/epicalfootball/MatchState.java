@@ -108,6 +108,7 @@ public class MatchState {
 
         updateBallFeedTimer(elapsed);
         updateNewBallTimer(elapsed);
+        updateGoalkeeperAfterKickTimer((int)elapsed);
         outfieldPlayer.updateKickRecoveryTimer(elapsed);
         this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
 
@@ -213,27 +214,26 @@ public class MatchState {
             float goalkeeperTargetPositionDistance = EpicalMath.calculateDistance(goalkeeper.getPosition(), aiAction.getTargetPosition());
             float goalkeeperStoppingDistance = goalkeeper.calculateStoppingDistance();
 
-            //if (false) {
             if (goalkeeperTargetPositionDistance < GK_ACCEPTED_POSITION_OFFSET) {
                 goalkeeper.getTargetSpeed().nullTargetSpeed();
                 goalkeeper.setDecelerateOn(true);
-            //} else if (false) {
             } else if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_SLOWDOWN_DIRECTION_ANGLE && goalkeeperTargetPositionDistance <= goalkeeperStoppingDistance) {
                 goalkeeper.getTargetSpeed().nullTargetSpeed();
                 goalkeeper.setDecelerateOn(true);
             } else {
                 goalkeeper.setTargetSpeedDirectionByTargetPosition(aiAction.getTargetPosition());
-                //Log.d("Directions","" + EpicalMath.radiansToDegrees(goalkeeperToTargetPositionDirection) + " " + EpicalMath.radiansToDegrees(goalkeeper.getSpeed().getDirection()) + " " + EpicalMath.radiansToDegrees(goalkeeper.getTargetSpeed().getDirection()));
                 goalkeeper.getTargetSpeed().setMagnitude(FULL);
                 goalkeeper.setDecelerateOn(false);
             }
         } else if (aiAction.getAction().equals(INTERCEPT_ACTION)) {
-            Log.d("GK", "intercept");
             goalkeeper.setTargetSpeedDirectionByTargetPosition(aiState.getInterceptingTargetPosition());
             goalkeeper.getTargetSpeed().setMagnitude(FULL);
             goalkeeper.setDecelerateOn(false);
+        } else if (aiAction.getAction().equals(RUN_TO_BALL_ACTION)) {
+            goalkeeper.setTargetSpeedDirectionByTargetPosition(ball.getPosition());
+            goalkeeper.getTargetSpeed().setMagnitude(FULL);
+            goalkeeper.setDecelerateOn(false);
         } else if (aiAction.getAction().equals(SAVE_ACTION)) {
-            Log.d("GK", "save");
             goalkeeper.setTargetSpeedDirectionByTargetPosition(aiAction.getTargetPosition());
             goalkeeper.getTargetSpeed().setMagnitude(FULL);
             goalkeeper.setDecelerateOn(false);
@@ -246,6 +246,17 @@ public class MatchState {
 
             if (ballFeedTimer <= 0) {
                 ballFeedTimer = 0;
+                canScore = true;
+            }
+        }
+    }
+
+    public void updateGoalkeeperAfterKickTimer(int elapsed) {
+        if (goalkeeper.getAfterKickTimer() > 0) {
+            goalkeeper.setAfterKickTimer(goalkeeper.getAfterKickTimer() - elapsed);
+
+            if (goalkeeper.getAfterKickTimer() <= 0) {
+                goalkeeper.setAfterKickTimer(0);
                 canScore = true;
             }
         }
@@ -306,7 +317,7 @@ public class MatchState {
             } else if (ballOutOfBounds()) {
                 canScore = false;
                 newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
-            } else if (this.goalkeeperHoldingBall) {
+            } else if (this.goalkeeperHoldingBall && this.goalkeeper.getSpeed().getMagnitude() == 0) {
                 canScore = false;
                 newBallTimer = NEW_BALL_WAIT_TIME_IN_MILLISECONDS;
             }
