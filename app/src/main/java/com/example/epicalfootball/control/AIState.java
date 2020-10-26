@@ -1,7 +1,7 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.control;
 
-import android.util.Log;
-
+import com.example.epicalfootball.MatchState;
+import com.example.epicalfootball.control.AIAction;
 import com.example.epicalfootball.items.Ball;
 import com.example.epicalfootball.items.Goalkeeper;
 import com.example.epicalfootball.items.OutfieldPlayer;

@@ -1,9 +1,7 @@
 package com.example.epicalfootball.items;
 
-import android.util.Log;
-
 import com.example.epicalfootball.math.EpicalMath;
-import com.example.epicalfootball.TargetSpeedVector;
+import com.example.epicalfootball.control.TargetSpeedVector;
 import com.example.epicalfootball.math.Position;
 import com.example.epicalfootball.math.Vector;
 

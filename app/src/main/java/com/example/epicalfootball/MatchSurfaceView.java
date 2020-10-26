@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -17,6 +18,7 @@ import com.example.epicalfootball.items.Circle;
 import com.example.epicalfootball.items.GoalFrame;
 import com.example.epicalfootball.items.Goalkeeper;
 import com.example.epicalfootball.items.OutfieldPlayer;
+import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
 
 import static com.example.epicalfootball.Constants.*;
@@ -126,6 +128,26 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             canvas.drawRect(leftNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, leftNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, leftNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
             canvas.drawRect(rightNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, rightNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rightNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
             canvas.drawRect(rearNet.left * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rearNet.top * pixelPerMeter + touchlineFromTop + shadowOffset, rearNet.right * pixelPerMeter + surfaceWidth * HALF + shadowOffset, rearNet.bottom * pixelPerMeter + touchlineFromTop + shadowOffset, paint);
+
+            if (matchState.isShootButtonDown() && matchState.getAimTarget() != null) {
+                //DRAW AIMING ARROW
+                float outfieldPlayerToBallDirection = EpicalMath.convertToDirection(outfieldPlayerPosition, ballPosition);
+                Position arrowStartPosition = outfieldPlayerPosition.clonePosition().addPositionVector(outfieldPlayerToBallDirection, outfieldPlayer.getRadius());
+                Position aimPosition = matchState.getAimTarget();
+                float arrowStartPositionToAimPositionDirection = EpicalMath.convertToDirection(arrowStartPosition, aimPosition);
+                Position surfaceArrowShadowStartPosition = new Position(arrowStartPosition.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, arrowStartPosition.getY() * pixelPerMeter + touchlineFromTop + shadowOffset);
+                Position surfaceArrowStartPosition = new Position(arrowStartPosition.getX() * pixelPerMeter + surfaceWidth * HALF, arrowStartPosition.getY() * pixelPerMeter + touchlineFromTop);
+                int aimingArrowLength = outfieldPlayer.getAccuracyAimingArrowLength();
+
+                //DRAW AIMING ARROW SHADOW
+                drawArrow(surfaceArrowShadowStartPosition, arrowStartPositionToAimPositionDirection, aimingArrowLength, canvas);
+
+                //DRAW AIMING ARROW BASE
+                paint.setColor(Color.YELLOW);
+                drawArrow(surfaceArrowStartPosition, arrowStartPositionToAimPositionDirection, aimingArrowLength, canvas);
+
+
+            }
 
             //DRAW BALL
             paint.setColor(Color.WHITE);
@@ -237,5 +259,31 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    public void drawArrow(Position arrowStartPosition, float arrowDirection, int arrowLength, Canvas canvas) {
+        Position arrowPathPosition = arrowStartPosition.clonePosition();
+
+        Path arrowPath = new Path();
+        arrowPath.moveTo(arrowPathPosition.getX(), arrowPathPosition.getY());
+
+        arrowPathPosition.addPositionVector(EpicalMath.sanitizeDirection(arrowDirection - QUARTER_CIRCLE), AIM_ARROW_WIDTH * HALF);
+        arrowPathPosition.addPositionVector(arrowDirection, arrowLength * AIM_ARROW_SHAFT_LENGTH_FROM_LENGTH);
+        arrowPath.lineTo(arrowPathPosition.getX(), arrowPathPosition.getY());
+
+        arrowPathPosition.addPositionVector(EpicalMath.sanitizeDirection(arrowDirection - QUARTER_CIRCLE), AIM_ARROW_WIDTH * HALF);
+        arrowPath.lineTo(arrowPathPosition.getX(), arrowPathPosition.getY());
+
+        Position arrowTipPosition = arrowStartPosition.clonePosition().addPositionVector(arrowDirection, arrowLength);
+        arrowPath.lineTo(arrowTipPosition.getX(), arrowTipPosition.getY());
+
+        arrowPathPosition.addPositionVector(EpicalMath.sanitizeDirection(arrowDirection + QUARTER_CIRCLE), AIM_ARROW_WIDTH * DOUBLE);
+        arrowPath.lineTo(arrowPathPosition.getX(), arrowPathPosition.getY());
+
+        arrowPathPosition.addPositionVector(EpicalMath.sanitizeDirection(arrowDirection - QUARTER_CIRCLE), AIM_ARROW_WIDTH * HALF);
+        arrowPath.lineTo(arrowPathPosition.getX(), arrowPathPosition.getY());
+
+        arrowPath.close();
+        canvas.drawPath(arrowPath, paint);
     }
 }

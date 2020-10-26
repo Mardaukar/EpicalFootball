@@ -1,11 +1,13 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.control;
+
+import com.example.epicalfootball.control.AIState;
 
 import static com.example.epicalfootball.Constants.*;
 
 public class AIRunner extends Thread {
 
     private volatile boolean running = true;
-    private AIState AIState;
+    private com.example.epicalfootball.control.AIState AIState;
 
     public AIRunner(AIState aiState) {
         this.AIState = aiState;

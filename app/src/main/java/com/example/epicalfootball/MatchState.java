@@ -1,9 +1,12 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.example.epicalfootball.activities.MatchActivity;
+import com.example.epicalfootball.control.AIAction;
+import com.example.epicalfootball.control.AIRunner;
+import com.example.epicalfootball.control.AIState;
+import com.example.epicalfootball.control.TargetGoal;
 import com.example.epicalfootball.items.Ball;
 import com.example.epicalfootball.items.GoalFrame;
 import com.example.epicalfootball.items.Goalkeeper;

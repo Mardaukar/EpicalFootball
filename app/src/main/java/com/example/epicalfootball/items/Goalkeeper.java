@@ -1,7 +1,7 @@
 package com.example.epicalfootball.items;
 
 import com.example.epicalfootball.math.EpicalMath;
-import com.example.epicalfootball.TargetSpeedVector;
+import com.example.epicalfootball.control.TargetSpeedVector;
 import com.example.epicalfootball.math.Vector;
 
 import static com.example.epicalfootball.activities.MenuActivity.goalkeeperAttributes;

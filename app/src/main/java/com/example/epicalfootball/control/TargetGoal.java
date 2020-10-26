@@ -1,4 +1,4 @@
-package com.example.epicalfootball;
+package com.example.epicalfootball.control;
 
 import com.example.epicalfootball.items.OutfieldPlayer;
 import com.example.epicalfootball.math.Position;

@@ -1,7 +1,7 @@
 package com.example.epicalfootball.items;
 
 import com.example.epicalfootball.math.EpicalMath;
-import com.example.epicalfootball.TargetSpeedVector;
+import com.example.epicalfootball.control.TargetSpeedVector;
 import com.example.epicalfootball.math.Vector;
 
 import static com.example.epicalfootball.Constants.*;
@@ -15,9 +15,10 @@ public class OutfieldPlayer extends Player {
     private float dribbling;
     private float dribblingTarget;
     private float shotPower;
-    private float finishingAccuracyDistance;
     public float accuracyTargetDot;
     private float accuracyGaussianFactor;
+    private int accuracyAimingArrowLength;
+    private float finishingAccuracyDistance;
     private float finishingMidShotPower;
     private float finishingTargetGoalSpeed;
     private float longShotsAccuracy;
@@ -46,6 +47,7 @@ public class OutfieldPlayer extends Player {
         this.shotPower = MIN_SHOT_POWER_VALUE + SHOT_POWER_VALUE_INCREMENT * playerAttributes.get(PLAYER_SHOT_POWER_KEY);
         this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
         this.accuracyGaussianFactor = MIN_ACCURACY_GAUSSIAN_FACTOR + ACCURACY_GAUSSIAN_FACTOR_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
+        this.accuracyAimingArrowLength = MIN_AIMING_ARROW_LENGTH + AIMING_ARROW_LENGTH_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
         this.finishingAccuracyDistance = MIN_FINISHING_ACCURACY_DISTANCE + FINISHING_ACCURACY_DISTANCE_INCREMENT * playerAttributes.get(PLAYER_FINISHING_KEY);
         this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get(PLAYER_FINISHING_KEY);
         this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * playerAttributes.get(PLAYER_FINISHING_KEY);
@@ -201,14 +203,6 @@ public class OutfieldPlayer extends Player {
         this.shotPower = shotPower;
     }
 
-    public float getFinishingAccuracyDistance() {
-        return finishingAccuracyDistance;
-    }
-
-    public void setFinishingAccuracyDistance(float finishingAccuracyDistance) {
-        this.finishingAccuracyDistance = finishingAccuracyDistance;
-    }
-
     public float getAccuracyTargetDot() {
         return accuracyTargetDot;
     }
@@ -225,6 +219,22 @@ public class OutfieldPlayer extends Player {
         this.accuracyGaussianFactor = accuracyGaussianFactor;
     }
 
+    public int getAccuracyAimingArrowLength() {
+        return accuracyAimingArrowLength;
+    }
+
+    public void setAccuracyAimingArrowLength(int accuracyAimingArrowLength) {
+        this.accuracyAimingArrowLength = accuracyAimingArrowLength;
+    }
+
+    public float getFinishingAccuracyDistance() {
+        return finishingAccuracyDistance;
+    }
+
+    public void setFinishingAccuracyDistance(float finishingAccuracyDistance) {
+        this.finishingAccuracyDistance = finishingAccuracyDistance;
+    }
+
     public float getFinishingMidShotPower() {
         return finishingMidShotPower;
     }
@@ -239,6 +249,14 @@ public class OutfieldPlayer extends Player {
 
     public void setFinishingTargetGoalSpeed(float finishingTargetGoalSpeed) {
         this.finishingTargetGoalSpeed = finishingTargetGoalSpeed;
+    }
+
+    public int getFinishingAimingArrowLength() {
+        return accuracyAimingArrowLength;
+    }
+
+    public void setFinishingAimingArrowLength(int finishingAimingArrowLength) {
+        this.accuracyAimingArrowLength = finishingAimingArrowLength;
     }
 
     public float getLongShotsAccuracy() {
