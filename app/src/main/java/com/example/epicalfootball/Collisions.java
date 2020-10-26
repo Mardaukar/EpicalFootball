@@ -127,7 +127,7 @@ public class Collisions {
 
     public static boolean handleGoalkeeperBallCollision(Goalkeeper goalkeeper, Ball ball) {
         if (EpicalMath.checkIntersect(goalkeeper, ball)) {
-            boolean ballInsideBox = !(ball.getPosition().getX() < -BOX_WIDTH * HALF) && !(ball.getPosition().getX() > BOX_WIDTH * HALF) && !(ball.getPosition().getY() > BOX_HEIGHT) && !(ball.getPosition().getY() < TOUCHLINE);
+            boolean ballInsideBox = !(ball.getPosition().getX() < -BOX_WIDTH * HALF) && !(ball.getPosition().getX() > BOX_WIDTH * HALF) && !(ball.getPosition().getY() > BOX_HEIGHT) && !(ball.getPosition().getY() < TOUCHLINE - BALL_RADIUS);
             float ballToGoalkeeperDirection = EpicalMath.convertToDirection(ball.getPosition(), goalkeeper.getPosition());
             float ballSpeedDirectionToCollisionAngle = EpicalMath.absoluteAngleBetweenDirections(ballToGoalkeeperDirection, ball.getSpeed().getDirection());
             float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition());

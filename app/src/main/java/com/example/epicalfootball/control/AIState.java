@@ -60,7 +60,7 @@ public class AIState {
                      goalkeeperAIAction.setAction(MOVE_ACTION);
                      goalkeeperAIAction.getTargetPosition().copyFromPosition(GOALKEEPER_STARTING_POSITION);
                  } else {
-                     boolean ballInsideBox = !(ball.getPosition().getX() < -BOX_WIDTH * HALF) && !(ball.getPosition().getX() > BOX_WIDTH * HALF) && !(ball.getPosition().getY() > BOX_HEIGHT) && !(ball.getPosition().getY() < TOUCHLINE);
+                     boolean ballInsideBox = !(ball.getPosition().getX() < -BOX_WIDTH * HALF) && !(ball.getPosition().getX() > BOX_WIDTH * HALF) && !(ball.getPosition().getY() > BOX_HEIGHT) && !(ball.getPosition().getY() < TOUCHLINE - BALL_RADIUS);
                      float interceptionDistanceFactor = FULL;
 
                      if (!ballInsideBox) {
