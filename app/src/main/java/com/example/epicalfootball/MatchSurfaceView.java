@@ -137,14 +137,20 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 float arrowStartPositionToAimPositionDirection = EpicalMath.convertToDirection(arrowStartPosition, aimPosition);
                 Position surfaceArrowShadowStartPosition = new Position(arrowStartPosition.getX() * pixelPerMeter + surfaceWidth * HALF + shadowOffset, arrowStartPosition.getY() * pixelPerMeter + touchlineFromTop + shadowOffset);
                 Position surfaceArrowStartPosition = new Position(arrowStartPosition.getX() * pixelPerMeter + surfaceWidth * HALF, arrowStartPosition.getY() * pixelPerMeter + touchlineFromTop);
-                int aimingArrowLength = outfieldPlayer.getAccuracyAimingArrowLength();
+                float aimingArrowLength;
+
+                if (-arrowStartPosition.getY() / Math.sin(arrowStartPositionToAimPositionDirection) < outfieldPlayer.getAccuracyAimingArrowLength()) {
+                    aimingArrowLength = -arrowStartPosition.getY() / (float)Math.sin(arrowStartPositionToAimPositionDirection);
+                } else {
+                    aimingArrowLength = outfieldPlayer.getAccuracyAimingArrowLength();
+                }
 
                 //DRAW AIMING ARROW SHADOW
-                drawArrow(surfaceArrowShadowStartPosition, arrowStartPositionToAimPositionDirection, aimingArrowLength, canvas);
+                drawArrow(surfaceArrowShadowStartPosition, arrowStartPositionToAimPositionDirection, aimingArrowLength * pixelPerMeter, canvas);
 
                 //DRAW AIMING ARROW BASE
                 paint.setColor(Color.YELLOW);
-                drawArrow(surfaceArrowStartPosition, arrowStartPositionToAimPositionDirection, aimingArrowLength, canvas);
+                drawArrow(surfaceArrowStartPosition, arrowStartPositionToAimPositionDirection, aimingArrowLength * pixelPerMeter, canvas);
 
 
             }
@@ -261,7 +267,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         }
     }
 
-    public void drawArrow(Position arrowStartPosition, float arrowDirection, int arrowLength, Canvas canvas) {
+    public void drawArrow(Position arrowStartPosition, float arrowDirection, float arrowLength, Canvas canvas) {
         Position arrowPathPosition = arrowStartPosition.clonePosition();
 
         Path arrowPath = new Path();

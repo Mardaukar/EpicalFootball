@@ -17,7 +17,7 @@ public class OutfieldPlayer extends Player {
     private float shotPower;
     public float accuracyTargetDot;
     private float accuracyGaussianFactor;
-    private int accuracyAimingArrowLength;
+    private float accuracyAimingArrowLength;
     private float finishingAccuracyDistance;
     private float finishingMidShotPower;
     private float finishingTargetGoalSpeed;
@@ -219,11 +219,11 @@ public class OutfieldPlayer extends Player {
         this.accuracyGaussianFactor = accuracyGaussianFactor;
     }
 
-    public int getAccuracyAimingArrowLength() {
+    public float getAccuracyAimingArrowLength() {
         return accuracyAimingArrowLength;
     }
 
-    public void setAccuracyAimingArrowLength(int accuracyAimingArrowLength) {
+    public void setAccuracyAimingArrowLength(float accuracyAimingArrowLength) {
         this.accuracyAimingArrowLength = accuracyAimingArrowLength;
     }
 
@@ -251,7 +251,7 @@ public class OutfieldPlayer extends Player {
         this.finishingTargetGoalSpeed = finishingTargetGoalSpeed;
     }
 
-    public int getFinishingAimingArrowLength() {
+    public float getFinishingAimingArrowLength() {
         return accuracyAimingArrowLength;
     }
 
