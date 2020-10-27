@@ -1,6 +1,7 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.example.epicalfootball.activities.MatchActivity;
 import com.example.epicalfootball.control.AIAction;
@@ -77,7 +78,7 @@ public class MatchState {
 
         goalkeeper.updateSpeed(timeFactor);
         goalkeeper.updatePosition(timeFactor);
-        goalkeeper.updateOrientation(timeFactor, ball);
+        goalkeeper.updateOrientation(timeFactor, ball, this.goalkeeperHoldingBall);
         outfieldPlayer.updateSpeed(timeFactor, ball);
         outfieldPlayer.updatePosition(timeFactor);
         outfieldPlayer.updateOrientation(timeFactor);
@@ -113,6 +114,7 @@ public class MatchState {
         updateNewBallTimer(elapsed);
         updateGoalkeeperAfterKickTimer((int)elapsed);
         outfieldPlayer.updateKickRecoveryTimer(elapsed);
+        goalkeeper.updateRecoveryTimer(elapsed);
         this.matchActivity.updatePowerBars((int)this.shotPowerMeter);
 
         checkBallOver();
@@ -208,19 +210,18 @@ public class MatchState {
 
     public void handleGoalkeeperAI() {
         AIAction aiAction =  aiState.getGoalkeeperAIAction();
+        float goalkeeperToTargetPositionDistance = EpicalMath.calculateDistance(goalkeeper.getPosition(), aiAction.getTargetPosition());
+        float goalkeeperStoppingDistance = goalkeeper.calculateStoppingDistance();
+        float goalkeeperToTargetPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
 
-        if (aiAction.getAction().equals(HOLD_ACTION)) {
+        if (aiAction.getAction().equals(HOLD_ACTION) || (!aiAction.getAction().equals(SAVE_ACTION) && goalkeeper.getRecoveryTimer() > 0)) {
             goalkeeper.getTargetSpeed().nullTargetSpeed();
             goalkeeper.setDecelerateOn(true);
         } else if (aiAction.getAction().equals(MOVE_ACTION)) {
-            float goalkeeperToTargetPositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), aiAction.getTargetPosition());
-            float goalkeeperTargetPositionDistance = EpicalMath.calculateDistance(goalkeeper.getPosition(), aiAction.getTargetPosition());
-            float goalkeeperStoppingDistance = goalkeeper.calculateStoppingDistance();
-
-            if (goalkeeperTargetPositionDistance < GK_ACCEPTED_POSITION_OFFSET) {
+            if (goalkeeperToTargetPositionDistance < GK_AI_ACCEPTED_POSITION_OFFSET) {
                 goalkeeper.getTargetSpeed().nullTargetSpeed();
                 goalkeeper.setDecelerateOn(true);
-            } else if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_SLOWDOWN_DIRECTION_ANGLE && goalkeeperTargetPositionDistance <= goalkeeperStoppingDistance) {
+            } else if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_AI_ACCEPTED_SLOWDOWN_DIRECTION_ANGLE && goalkeeperToTargetPositionDistance <= goalkeeperStoppingDistance) {
                 goalkeeper.getTargetSpeed().nullTargetSpeed();
                 goalkeeper.setDecelerateOn(true);
             } else {
@@ -238,8 +239,29 @@ public class MatchState {
             goalkeeper.setDecelerateOn(false);
         } else if (aiAction.getAction().equals(SAVE_ACTION)) {
             goalkeeper.setTargetSpeedDirectionByTargetPosition(aiAction.getTargetPosition());
-            goalkeeper.getTargetSpeed().setMagnitude(FULL);
-            goalkeeper.setDecelerateOn(false);
+            float goalkeeperToTargetPositionTime = goalkeeperToTargetPositionDistance / (goalkeeper.getSpeed().getMagnitude() * goalkeeper.getFullMagnitudeSpeed());
+            float ballToTargetPositionDistance = EpicalMath.calculateDistance(ball.getPosition(), aiAction.getTargetPosition());
+            float ballToTargetPositionTime = ballToTargetPositionDistance / (ball.getSpeed().getMagnitude() * ball.getFullMagnitudeSpeed());
+
+            if (goalkeeperToTargetPositionDistance < GK_AI_ACCEPTED_POSITION_OFFSET) {
+                goalkeeper.getTargetSpeed().nullTargetSpeed();
+                goalkeeper.setDecelerateOn(true);
+            } else if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_AI_ACCEPTED_SLOWDOWN_DIRECTION_ANGLE && goalkeeperToTargetPositionTime < ballToTargetPositionTime && goalkeeperToTargetPositionDistance <= goalkeeperStoppingDistance) {
+                goalkeeper.getTargetSpeed().nullTargetSpeed();
+                goalkeeper.setDecelerateOn(true);
+                goalkeeper.setRecoveryTimer(0);
+            } else {
+                goalkeeper.getTargetSpeed().setMagnitude(FULL);
+                goalkeeper.setDecelerateOn(false);
+
+                if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_AI_ACCEPTED_SLOWDOWN_DIRECTION_ANGLE && goalkeeperToTargetPositionTime > ballToTargetPositionTime) {
+                    Log.d("XXX", "XXX");
+                    goalkeeper.setRecoveryTimer(goalkeeper.getAgilityRecoveryTime());
+                }
+            }
+
+            Log.d("Gk to target", "" + goalkeeperToTargetPositionTime);
+            Log.d("Ball to target", "" + ballToTargetPositionTime);
         }
     }
 

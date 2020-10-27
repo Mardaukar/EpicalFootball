@@ -125,11 +125,11 @@ public class Constants {
     public static int FULL_ALPHA = 255;
     public static int SHADOW_ALPHA = 150;
     public static float SHADOW_OFFSET = 0.0052f;
-    public static int DECELERATE_ON_ALPHA = 100;
-    public static int DECELERATE_OFF_ALPHA = 50;
+    public static int DECELERATE_ON_ALPHA = 150;
+    public static int DECELERATE_OFF_ALPHA = 75;
     public static int CONTROL_DOT_ALPHA = 50;
     public static int TARGET_DOT_ALPHA = 150;
-    public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF673AB7;
+    public static int SHOOT_BUTTON_DOWN_COLOR = 0xFF774AC7;
     public static int SHOOT_BUTTON_UP_COLOR = 0xDF471A97;
     public static float POST_WIDTH_IN_TARGET_PNG = 0.115f;
     public static int FAILED_SHOT_BASE_ALPHA = 50;
@@ -158,13 +158,13 @@ public class Constants {
     public static String SAVE_ACTION = "save";
     public static String INTERCEPT_ACTION = "intercept";
     public static String RUN_TO_BALL_ACTION = "run_to_ball";
-    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1; //ball speed magnitude perceived as an incoming shot
+    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1.5f; //ball speed magnitude perceived as an incoming shot
     public static float GK_AI_BALL_DIRECTION_PERCEIVED_SAME = (float)Math.PI / 50;
-    public static float GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR = 0.9f;
+    public static float GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR = 0.8f;
     public static float GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR = 0.9f;
     public static float GK_AI_KICK_MAGNITUDE = 1;
-    public static float GK_ACCEPTED_POSITION_OFFSET = 0.2f;
-    public static float GK_SLOWDOWN_DIRECTION_ANGLE = (float)Math.PI / 8;
+    public static float GK_AI_ACCEPTED_POSITION_OFFSET = 0.2f;
+    public static float GK_AI_ACCEPTED_SLOWDOWN_DIRECTION_ANGLE = (float)Math.PI / 8;
     public static float SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER = 3;
     public static float SAVING_BALL_SPEED_SHOVE_LIMIT = 2;
     public static float SAVING_SHOVE_MAX_ANGLE_SHIFT = QUARTER_CIRCLE / 2;
@@ -220,6 +220,8 @@ public class Constants {
     //GOALKEEPER VALUE LIMITS
     public static float MIN_GOALKEEPING_REACH_VALUE = 0.85f;
     public static float MAX_GOALKEEPING_REACH_VALUE = 1.05f;
+    public static int MIN_AGILITY_RECOVERY_TIME = 2000;
+    public static int MAX_AGILITY_RECOVERY_TIME = 1000;
     public static float MIN_REFLEXES_VALUE = 200;
     public static float MAX_REFLEXES_VALUE = 100;
     public static float MIN_BALL_HANDLING_ANGLE = HALF_CIRCLE / 4;
@@ -263,6 +265,7 @@ public class Constants {
 
     //GOALKEEPER VALUE INCREMENTS
     public static float GOALKEEPING_REACH_VALUE_INCREMENT = (MAX_GOALKEEPING_REACH_VALUE - MIN_GOALKEEPING_REACH_VALUE) / MAX_ATTRIBUTE;
+    public static int AGILITY_RECOVERY_TIME_INCREMENT = (MAX_AGILITY_RECOVERY_TIME - MIN_AGILITY_RECOVERY_TIME) / MAX_ATTRIBUTE;
     public static float REFLEXES_VALUE_INCREMENT = (MAX_REFLEXES_VALUE - MIN_REFLEXES_VALUE) / MAX_ATTRIBUTE;
     public static float BALL_HANDLING_ANGLE_INCREMENT = (MAX_BALL_HANDLING_ANGLE - MIN_BALL_HANDLING_ANGLE) / MAX_ATTRIBUTE;
     public static float BALL_HANDLING_VALUE_INCREMENT = (MAX_BALL_HANDLING_VALUE - MIN_BALL_HANDLING_VALUE) / MAX_ATTRIBUTE;

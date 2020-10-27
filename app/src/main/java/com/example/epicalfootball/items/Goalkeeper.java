@@ -1,5 +1,7 @@
 package com.example.epicalfootball.items;
 
+import android.util.Log;
+
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.control.TargetSpeedVector;
 import com.example.epicalfootball.math.Vector;
@@ -9,7 +11,9 @@ import static com.example.epicalfootball.Constants.*;
 
 public class Goalkeeper extends Player {
     private int afterKickTimer;
+    private int recoveryTimer;
 
+    private int agilityRecoveryTime;
     private float reflexes;
     private float ballHandlingAngle;
     private float ballHandling;
@@ -22,6 +26,7 @@ public class Goalkeeper extends Player {
 
     public Goalkeeper() {
         afterKickTimer = 0;
+        recoveryTimer = 0;
 
         this.position = GOALKEEPER_STARTING_POSITION.clonePosition();
         this.orientation = GOALKEEPER_STARTING_ORIENTATION;
@@ -31,6 +36,7 @@ public class Goalkeeper extends Player {
         this.radius = MIN_GOALKEEPING_REACH_VALUE + GOALKEEPING_REACH_VALUE_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_REACH_KEY);
         this.acceleration = (MIN_ACCELERATION_VALUE + ACCELERATION_VALUE_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_AGILITY_KEY)) / (MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_SPEED_KEY));
         this.accelerationTurn = MIN_ACCELERATION_TURN + ACCELERATION_TURN_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_AGILITY_KEY);
+        this.agilityRecoveryTime = MIN_AGILITY_RECOVERY_TIME + AGILITY_RECOVERY_TIME_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_AGILITY_KEY);
         this.fullMagnitudeSpeed = MIN_SPEED_VALUE + SPEED_VALUE_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_SPEED_KEY);
         this.reflexes = MIN_REFLEXES_VALUE + REFLEXES_VALUE_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_REFLEXES_KEY);
         this.ballHandlingAngle = MIN_BALL_HANDLING_ANGLE + BALL_HANDLING_ANGLE_INCREMENT * goalkeeperAttributes.get(GOALKEEPER_BALL_HANDLING_KEY);
@@ -113,10 +119,23 @@ public class Goalkeeper extends Player {
         }
     }
 
-    public void updateOrientation(float timeFactor, Ball ball) {
-        float goalkeeperToBallDirection = EpicalMath.convertToDirection(this.getPosition(), ball.getPosition());
-        float angleShift = timeFactor * this.accelerationTurn;
-        this.setOrientation(EpicalMath.shiftTowardsDirection(this.getOrientation(), goalkeeperToBallDirection, angleShift));
+    public void updateOrientation(float timeFactor, Ball ball, boolean goalkeeperHoldingBall) {
+        if (this.recoveryTimer <= 0 || goalkeeperHoldingBall) {
+            float goalkeeperToBallDirection = EpicalMath.convertToDirection(this.getPosition(), ball.getPosition());
+            float angleShift = timeFactor * this.accelerationTurn;
+            this.setOrientation(EpicalMath.shiftTowardsDirection(this.getOrientation(), goalkeeperToBallDirection, angleShift));
+        }
+    }
+
+    public void updateRecoveryTimer(float elapsed) {
+        if (this.recoveryTimer > 0) {
+            Log.d("recovery", "" + this.recoveryTimer);
+            this.recoveryTimer -= elapsed;
+
+            if (this.recoveryTimer < 0 ) {
+                this.recoveryTimer = 0;
+            }
+        }
     }
 
     public int getAfterKickTimer() {
@@ -127,36 +146,20 @@ public class Goalkeeper extends Player {
         this.afterKickTimer = afterKickTimer;
     }
 
-    public float getRadius() {
-        return radius;
+    public int getRecoveryTimer() {
+        return recoveryTimer;
     }
 
-    public void setRadius(float radius) {
-        this.radius = radius;
+    public void setRecoveryTimer(int recoveryTimer) {
+        this.recoveryTimer = recoveryTimer;
     }
 
-    public float getAcceleration() {
-        return acceleration;
+    public int getAgilityRecoveryTime() {
+        return agilityRecoveryTime;
     }
 
-    public void setAcceleration(float acceleration) {
-        this.acceleration = acceleration;
-    }
-
-    public float getAccelerationTurn() {
-        return accelerationTurn;
-    }
-
-    public void setAccelerationTurn(float accelerationTurn) {
-        this.accelerationTurn = accelerationTurn;
-    }
-
-    public float getFullMagnitudeSpeed() {
-        return fullMagnitudeSpeed;
-    }
-
-    public void setFullMagnitudeSpeed(float fullMagnitudeSpeed) {
-        this.fullMagnitudeSpeed = fullMagnitudeSpeed;
+    public void setAgilityRecoveryTime(int agilityRecoveryTime) {
+        this.agilityRecoveryTime = agilityRecoveryTime;
     }
 
     public float getReflexes() {

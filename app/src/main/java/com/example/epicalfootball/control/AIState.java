@@ -108,7 +108,7 @@ public class AIState {
                     float savingTargetDistance = EpicalMath.calculateDistance(ball.getPosition(), goalkeeper.getPosition()) * (float)Math.sin(EpicalMath.absoluteAngleBetweenDirections(ballDirection, ballToGoalkeeperDirection));
                     goalkeeperAIAction.setTargetPosition(goalkeeper.getPosition().clonePosition().addPositionVector(savingTargetDirection, savingTargetDistance));
                     goalkeeperAIAction.setAction(SAVE_ACTION);
-                    aiDecisionCounter = goalkeeper.getReflexes() + 2000;
+                    aiDecisionCounter = goalkeeper.getReflexes();
                 } else {
                     float maxLeftBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxLeftBasePosition);
                     float maxRightBasePositionDirection = EpicalMath.convertToDirectionFromOrigo(maxRightBasePosition);
