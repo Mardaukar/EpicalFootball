@@ -80,14 +80,11 @@ public class AIState {
             if (aiDecisionCounter <= 0) {
                 if (shotPerceived) {
                     float ballDirection = ball.getSpeed().getDirection();
-                    EpicalMath.logDegrees("ball direction", ballDirection);
                     float ballToGoalkeeperDirection = EpicalMath.convertToDirection(ball.getPosition(), goalkeeper.getPosition());
-                    EpicalMath.logDegrees("ballToGoalkeeper", ballToGoalkeeperDirection);
                     float savingTargetDirection;
 
                     if (ballDirection > ballToGoalkeeperDirection) {
                         savingTargetDirection = EpicalMath.sanitizeDirection(ballDirection + QUARTER_CIRCLE);
-                        EpicalMath.logDegrees("saving td", savingTargetDirection);
                         float goalkeeperToRightBasePositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), maxRightBasePosition);
 
                         if (savingTargetDirection > QUARTER_CIRCLE && savingTargetDirection < goalkeeperToRightBasePositionDirection) {
@@ -95,15 +92,12 @@ public class AIState {
                         }
                     } else {
                         savingTargetDirection = EpicalMath.sanitizeDirection(ballDirection - QUARTER_CIRCLE);
-                        EpicalMath.logDegrees("saving td", savingTargetDirection);
                         float goalkeeperToLeftBasePositionDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), maxLeftBasePosition);
 
                         if (savingTargetDirection < QUARTER_CIRCLE && savingTargetDirection > goalkeeperToLeftBasePositionDirection) {
                             savingTargetDirection = goalkeeperToLeftBasePositionDirection;
                         }
                     }
-
-                    EpicalMath.logDegrees("corrected std", savingTargetDirection);
 
                     float savingTargetDistance = EpicalMath.calculateDistance(ball.getPosition(), goalkeeper.getPosition()) * (float)Math.sin(EpicalMath.absoluteAngleBetweenDirections(ballDirection, ballToGoalkeeperDirection));
                     goalkeeperAIAction.setTargetPosition(goalkeeper.getPosition().clonePosition().addPositionVector(savingTargetDirection, savingTargetDistance));

@@ -77,29 +77,35 @@ public class Collisions {
 
     public static void handleBallGoalNetCollision(GoalNet goalNet, Ball ball) {
         if (EpicalMath.checkIntersect(goalNet, ball)) {
-            ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * GOAL_NET_COLLISION_SPEED_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
-
             if (goalNet.height() < goalNet.width()) {
                 if (ball.getPosition().getY() < goalNet.centerY()) {
                     if (ball.getSpeed().getDirection() > RIGHT) {
                         ball.getSpeed().bounceDirection(UP);
+                        ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * GOAL_NET_COLLISION_SPEED_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
                     }
                     ball.getPosition().setY(goalNet.top - ball.getRadius());
                 } else {
                     if (ball.getSpeed().getDirection() < RIGHT) {
                         ball.getSpeed().bounceDirection(DOWN);
+                        ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * GOAL_NET_COLLISION_SPEED_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
                     }
                     ball.getPosition().setY(goalNet.bottom + ball.getRadius());
                 }
             } else {
                 if (ball.getPosition().getX() < goalNet.centerX()) {
+                    Log.d("Ball collision", "Left side");
                     if (Math.abs(ball.getSpeed().getDirection()) < DOWN) {
+                        Log.d("Bounce", "Left");
                         ball.getSpeed().bounceDirection(LEFT);
+                        ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * GOAL_NET_COLLISION_SPEED_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
                     }
                     ball.getPosition().setX(goalNet.left - ball.getRadius());
                 } else {
+                    Log.d("Ball collision", "Right side");
                     if (Math.abs(ball.getSpeed().getDirection()) > DOWN) {
+                        Log.d("Bounce", "Right");
                         ball.getSpeed().bounceDirection(RIGHT);
+                        ball.getSpeed().setMagnitude(ball.getSpeed().getMagnitude() * GOAL_NET_COLLISION_SPEED_MULTIPLIER * (FULL - ball.getSpeed().getMagnitude() / BALL_COLLISION_REFERENCE_MAX_SPEED * BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR));
                     }
                     ball.getPosition().setX(goalNet.right + ball.getRadius());
                 }
@@ -109,6 +115,7 @@ public class Collisions {
 
     public static void handleBallGoalPostCollision(GoalPost goalPost, Ball ball) {
         if (EpicalMath.checkIntersect(goalPost, ball)) {
+            Log.d("Ball", "GoalPost");
             float radiusSum = goalPost.getRadius() + ball.getRadius();
             float goalPostToBallDirection = EpicalMath.convertToDirection(goalPost.getPosition(), ball.getPosition());
             float goalPostToBallBallSpeedAngle = EpicalMath.absoluteAngleBetweenDirections(goalPostToBallDirection, ball.getSpeed().getDirection());

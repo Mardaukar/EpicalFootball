@@ -12,6 +12,7 @@ import static com.example.epicalfootball.Constants.*;
 public class Goalkeeper extends Player {
     private int afterKickTimer;
     private int recoveryTimer;
+    private float ballHoldingDirection;
 
     private int agilityRecoveryTime;
     private float reflexes;
@@ -120,7 +121,7 @@ public class Goalkeeper extends Player {
     }
 
     public void updateOrientation(float timeFactor, Ball ball, boolean goalkeeperHoldingBall) {
-        if (this.recoveryTimer <= 0 || goalkeeperHoldingBall) {
+        if (this.recoveryTimer <= 0 || this.speed.getMagnitude() == 0) {
             float goalkeeperToBallDirection = EpicalMath.convertToDirection(this.getPosition(), ball.getPosition());
             float angleShift = timeFactor * this.accelerationTurn;
             this.setOrientation(EpicalMath.shiftTowardsDirection(this.getOrientation(), goalkeeperToBallDirection, angleShift));
@@ -129,7 +130,6 @@ public class Goalkeeper extends Player {
 
     public void updateRecoveryTimer(float elapsed) {
         if (this.recoveryTimer > 0) {
-            Log.d("recovery", "" + this.recoveryTimer);
             this.recoveryTimer -= elapsed;
 
             if (this.recoveryTimer < 0 ) {
@@ -152,6 +152,14 @@ public class Goalkeeper extends Player {
 
     public void setRecoveryTimer(int recoveryTimer) {
         this.recoveryTimer = recoveryTimer;
+    }
+
+    public float getBallHoldingDirection() {
+        return ballHoldingDirection;
+    }
+
+    public void setBallHoldingDirection(float ballHoldingDirection) {
+        this.ballHoldingDirection = ballHoldingDirection;
     }
 
     public int getAgilityRecoveryTime() {

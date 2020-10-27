@@ -54,9 +54,8 @@ public class Ball extends Circle {
     }
 
     public void setGoalkeeperHoldingPosition(Goalkeeper goalkeeper) {
-        float goalkeeperToBallDirection = EpicalMath.convertToDirection(goalkeeper.getPosition(), this.getPosition());
         this.getPosition().copyFromPosition(goalkeeper.getPosition());
-        this.getPosition().addPositionVector(goalkeeperToBallDirection, goalkeeper.getRadius());
+        this.getPosition().addPositionVector(goalkeeper.getBallHoldingDirection(), goalkeeper.getRadius());
     }
 
     public void shiftWithControlCone(float timeFactor, OutfieldPlayer outfieldPlayer) {
@@ -88,10 +87,8 @@ public class Ball extends Circle {
     }
 
     public void shiftDirectionWithShove(float shiftFactor, boolean shoveToRight) {
-        Log.d("shiftFactor", "" + shiftFactor);
         float ballToShoveTargetDirection;
         float angleShift = shiftFactor * SAVING_SHOVE_MAX_ANGLE_SHIFT;
-        Log.d("angleShift", "" + angleShift);
 
         if (shoveToRight) {
             ballToShoveTargetDirection = EpicalMath.convertToDirection(this.getPosition(), SAVING_SHOVE_RIGHT_TARGET_POSITION);

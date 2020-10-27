@@ -7,7 +7,6 @@ import com.example.epicalfootball.Collisions;
 import static com.example.epicalfootball.Constants.*;
 
 public class GoalFrame {
-    private RectF goalArea;
     private GoalNet rearNet;
     private GoalNet leftNet;
     private GoalNet rightNet;
@@ -17,7 +16,6 @@ public class GoalFrame {
     private GoalPost rightSupport;
 
     public GoalFrame() {
-        this.goalArea = new RectF(-GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF, -BALL_RADIUS);
         this.rearNet = new GoalNet(-GOAL_WIDTH * HALF, -GOAL_DEPTH - DOUBLE * POST_RADIUS, GOAL_WIDTH * HALF, -GOAL_DEPTH);
         this.leftNet = new GoalNet(-GOAL_WIDTH * HALF - DOUBLE * POST_RADIUS, -GOAL_DEPTH, -GOAL_WIDTH * HALF, -POST_RADIUS);
         this.rightNet = new GoalNet(GOAL_WIDTH * HALF, -GOAL_DEPTH, GOAL_WIDTH * HALF + DOUBLE * POST_RADIUS, -POST_RADIUS);
@@ -45,10 +43,6 @@ public class GoalFrame {
         Collisions.handleGoalPostPlayerCollision(rightPost, player);
         Collisions.handleGoalPostPlayerCollision(leftSupport, player);
         Collisions.handleGoalPostPlayerCollision(rightSupport, player);
-    }
-
-    public RectF getGoalArea() {
-        return goalArea;
     }
 
     public RectF getRearNet() {

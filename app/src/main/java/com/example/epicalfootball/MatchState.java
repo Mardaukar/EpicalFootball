@@ -95,11 +95,7 @@ public class MatchState {
             ball.updatePosition(ballTimeFactor);
             this.goalkeeperHoldingBall = Collisions.handleGoalkeeperBallCollision(goalkeeper, ball);
 
-            if (this.goalkeeperHoldingBall) {
-                this.ball.setGoalkeeperHoldingPosition(goalkeeper);
-                ball.getSpeed().setDirection(goalkeeper.getOrientation());
-                ball.getSpeed().setMagnitude(0);
-            } else {
+            if (!goalkeeperHoldingBall) {
                 if (Collisions.handlePlayerBallCollision(outfieldPlayer, ball, readyToShoot, aimTarget)) {
                     handleShootBall();
                 } else {
@@ -107,6 +103,11 @@ public class MatchState {
                 }
 
                 this.goalFrame.handleGoalCollision(ball);
+            } else {
+                this.goalkeeper.setBallHoldingDirection(EpicalMath.convertToDirection(goalkeeper.getPosition(), ball.getPosition()));
+                this.ball.setGoalkeeperHoldingPosition(goalkeeper);
+                ball.getSpeed().setDirection(goalkeeper.getOrientation());
+                ball.getSpeed().setMagnitude(0);
             }
         }
 
@@ -255,13 +256,9 @@ public class MatchState {
                 goalkeeper.setDecelerateOn(false);
 
                 if (EpicalMath.absoluteAngleBetweenDirections(goalkeeperToTargetPositionDirection, goalkeeper.getSpeed().getDirection()) < GK_AI_ACCEPTED_SLOWDOWN_DIRECTION_ANGLE && goalkeeperToTargetPositionTime > ballToTargetPositionTime) {
-                    Log.d("XXX", "XXX");
                     goalkeeper.setRecoveryTimer(goalkeeper.getAgilityRecoveryTime());
                 }
             }
-
-            Log.d("Gk to target", "" + goalkeeperToTargetPositionTime);
-            Log.d("Ball to target", "" + ballToTargetPositionTime);
         }
     }
 
@@ -367,7 +364,8 @@ public class MatchState {
     }
 
     public boolean ballInGoal() {
-        return EpicalMath.checkIntersect(this.goalFrame.getGoalArea(), ball);
+        return ball.getPosition().getX() > -GOAL_WIDTH * HALF && ball.getPosition().getX() < GOAL_WIDTH * HALF && ball.getPosition().getY() < -BALL_RADIUS && ball.getPosition().getY() > -GOAL_DEPTH;
+        //return ball.getPosition().getX() > -GOAL_WIDTH * HALF && ball.getPosition().getX() < GOAL_WIDTH * HALF && ball.getPosition().getY() < TOUCHLINE - BALL_RADIUS;
     }
 
     public void handleBoundaryCollision(OutfieldPlayer outfieldPlayer) {

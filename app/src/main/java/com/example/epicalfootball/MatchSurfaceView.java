@@ -253,9 +253,7 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
                 if (matchState.getShotPowerMeter() >= SHOT_POWER_METER_HIGHER_LIMIT) {
                     paint.setAlpha(FULL_ALPHA);
-                    Log.d("Over limit ","" + matchState.getShotPowerMeter());
                 } else {
-                    Log.d("Under limit ","" + matchState.getShotPowerMeter());
                     paint.setAlpha((int)(FAILED_SHOT_BASE_ALPHA + FAILED_SHOT_INCREMENTAL_ALPHA * (matchState.getShotPowerMeter() - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
                 }
 

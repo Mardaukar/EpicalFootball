@@ -43,7 +43,7 @@ public class Constants {
     public static float BALL_RADIUS = 0.35f;
     public static float BALL_REFERENCE_SPEED = 10; //Ball speed at magnitude 1
     public static float BALL_BASE_DECELERATION = 0.2f;
-    public static int BALL_UPDATES_PER_CYCLE = 5;
+    public static int BALL_UPDATES_PER_CYCLE = 10;
 
     //FIELD IMAGE (superminifield)
     /*
@@ -79,7 +79,7 @@ public class Constants {
 
     //MATCH PLAY
     public static int BALLS_AT_START = 10;
-    public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 1000;
+    public static long NEW_BALL_WAIT_TIME_IN_MILLISECONDS = 2000;
     public static int GAME_UPDATE_TIME = 30;
     public static float GOAL_NET_COLLISION_SPEED_MULTIPLIER = 0.15f;
     public static float GOAL_POST_COLLISION_SPEED_MULTIPLIER = 0.25f;
