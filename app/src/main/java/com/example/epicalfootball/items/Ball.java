@@ -1,7 +1,5 @@
 package com.example.epicalfootball.items;
 
-import android.util.Log;
-
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.math.Position;
 import com.example.epicalfootball.math.Vector;
@@ -106,12 +104,12 @@ public class Ball extends Circle {
         if (shotPowerMeter <= SHOT_POWER_METER_OPTIMAL) {
             failedGaussianFactor = 0;
             shotPowerFactor = shotPowerMeter / SHOT_POWER_METER_OPTIMAL;
-        } else if (shotPowerMeter >= SHOT_POWER_METER_HIGHER_LIMIT) {
+        } else if (shotPowerMeter >= SHOT_POWER_METER_TOTAL_FAIL_LIMIT) {
             failedGaussianFactor = FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR;
             shotPowerFactor = FAILED_SHOT_POWER_FACTOR;
         } else {
-            failedGaussianFactor = FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR * HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL));
-            shotPowerFactor = FAILED_SHOT_POWER_FACTOR + (FULL - FAILED_SHOT_POWER_FACTOR) * (FULL - HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
+            failedGaussianFactor = FAILED_SHOT_ACCURACY_GAUSSIAN_FACTOR * HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_TOTAL_FAIL_LIMIT - SHOT_POWER_METER_OPTIMAL));
+            shotPowerFactor = FAILED_SHOT_POWER_FACTOR + (FULL - FAILED_SHOT_POWER_FACTOR) * (FULL - HALF * (FULL + (shotPowerMeter - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_TOTAL_FAIL_LIMIT - SHOT_POWER_METER_OPTIMAL)));
         }
 
         float intendedDirection = EpicalMath.convertToDirection(this.getPosition(), aimTarget);

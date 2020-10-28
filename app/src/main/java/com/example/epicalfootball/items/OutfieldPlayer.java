@@ -15,7 +15,7 @@ public class OutfieldPlayer extends Player {
     private float dribbling;
     private float dribblingTarget;
     private float shotPower;
-    public float accuracyTargetDot;
+    public float accuracyTargetDotRadius;
     private float accuracyGaussianFactor;
     private float accuracyAimingArrowLength;
     private float finishingAccuracyDistance;
@@ -45,9 +45,9 @@ public class OutfieldPlayer extends Player {
         this.dribbling = MIN_DRIBBLING_LIMIT + DRIBBLING_LIMIT_INCREMENT * playerAttributes.get(PLAYER_DRIBBLING_KEY);
         this.dribblingTarget = MIN_DRIBBLING_TARGET + DRIBBLING_TARGET_INCREMENT * playerAttributes.get(PLAYER_DRIBBLING_KEY);
         this.shotPower = MIN_SHOT_POWER_VALUE + SHOT_POWER_VALUE_INCREMENT * playerAttributes.get(PLAYER_SHOT_POWER_KEY);
-        this.accuracyTargetDot = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
+        this.accuracyTargetDotRadius = MIN_ACCURACY_TARGET_DOT + ACCURACY_TARGET_DOT_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
         this.accuracyGaussianFactor = MIN_ACCURACY_GAUSSIAN_FACTOR + ACCURACY_GAUSSIAN_FACTOR_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
-        this.accuracyAimingArrowLength = MIN_AIMING_ARROW_LENGTH + AIMING_ARROW_LENGTH_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
+        this.accuracyAimingArrowLength = MIN_ACCURACY_AIMING_ARROW_LENGTH + ACCURACY_AIMING_ARROW_LENGTH_INCREMENT * playerAttributes.get(PLAYER_ACCURACY_KEY);
         this.finishingAccuracyDistance = MIN_FINISHING_ACCURACY_DISTANCE + FINISHING_ACCURACY_DISTANCE_INCREMENT * playerAttributes.get(PLAYER_FINISHING_KEY);
         this.finishingTargetGoalSpeed = MIN_TARGET_GOAL_SPEED + TARGET_GOAL_SPEED_INCREMENT * playerAttributes.get(PLAYER_FINISHING_KEY);
         this.finishingMidShotPower = MIN_MID_SHOT_POWER + MID_SHOT_POWER_INCREMENT * playerAttributes.get(PLAYER_FINISHING_KEY);
@@ -203,12 +203,12 @@ public class OutfieldPlayer extends Player {
         this.shotPower = shotPower;
     }
 
-    public float getAccuracyTargetDot() {
-        return accuracyTargetDot;
+    public float getAccuracyTargetDotRadius() {
+        return accuracyTargetDotRadius;
     }
 
-    public void setAccuracyTargetDot(float accuracyTargetDot) {
-        this.accuracyTargetDot = accuracyTargetDot;
+    public void setAccuracyTargetDotRadius(float accuracyTargetDotRadius) {
+        this.accuracyTargetDotRadius = accuracyTargetDotRadius;
     }
 
     public float getAccuracyGaussianFactor() {

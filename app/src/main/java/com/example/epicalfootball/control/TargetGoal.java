@@ -83,8 +83,8 @@ public class TargetGoal {
         float targetGoalMiddle = this.positionX - HALF + targetGoalSize * HALF;
         float targetGoalBottom = this.positionY - FULL + targetGoalSize / TARGET_GOAL_WIDTH_TO_HEIGHT;
 
-        float targetX = controlX * AIMING_TARGET_MULTIPLIER;
-        float targetY = controlY * AIMING_TARGET_MULTIPLIER;
+        float targetX = controlX * AIMING_TARGET_OFFSET_MULTIPLIER;
+        float targetY = controlY * AIMING_TARGET_OFFSET_MULTIPLIER;
 
         if (targetY >= targetGoalBottom) {
             targetX *= targetGoalBottom / targetY;

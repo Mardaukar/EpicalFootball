@@ -1,7 +1,6 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.example.epicalfootball.activities.MatchActivity;
 import com.example.epicalfootball.control.AIAction;
@@ -391,7 +390,7 @@ public class MatchState {
         if (shootButtonDown) {
             setControlOn(touchX, touchY);
         } else {
-            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE) {
+            if (EpicalMath.calculateDistance(HALF, HALF, touchX, touchY) < DECELERATE_DOT_OFF_RADIUS_OF_CONTROL_SURFACE) {
                 setControlOffWithDecelerate(true);
             } else if (touchX >= 0 && touchX <= sideLength && touchY >= 0 && touchY <= sideLength) {
                 setControlOn(touchX, touchY);

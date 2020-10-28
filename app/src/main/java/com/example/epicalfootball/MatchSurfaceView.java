@@ -10,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -217,21 +216,26 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
                 if (matchState.isControlOn()) {
                     paint.setColor(Color.WHITE);
-                    paint.setAlpha(TARGET_DOT_ALPHA);
+                    paint.setAlpha(AIMING_DOT_ALPHA);
                     float controlX = matchState.getControlX();
                     float controlY = matchState.getControlY();
-                    canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + 1) * surfaceHeight, outfieldPlayer.getAccuracyTargetDot() * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
+                    canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_OFFSET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_OFFSET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + FULL - AIMING_TARGET_OFFSET) * surfaceHeight, AIMING_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
+                    paint.setAlpha(TARGET_DOT_ALPHA);
+                    canvas.drawCircle(((controlX - HALF) * AIMING_TARGET_OFFSET_MULTIPLIER * CONTROL_AREA_FROM_WIDTH + HALF) * surfaceWidth, ((controlY - FULL) * AIMING_TARGET_OFFSET_MULTIPLIER * CONTROL_AREA_FROM_HEIGHT + FULL - AIMING_TARGET_OFFSET) * surfaceHeight, outfieldPlayer.getAccuracyTargetDotRadius() * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
                 }
             } else {
                 paint.setColor(Color.BLUE);
+                float decelerateDotRadius;
 
                 if (outfieldPlayer.isDecelerateOn()) {
                     paint.setAlpha(DECELERATE_ON_ALPHA);
+                    decelerateDotRadius = DECELERATE_DOT_ON_RADIUS_OF_CONTROL_SURFACE;
                 } else {
                     paint.setAlpha(DECELERATE_OFF_ALPHA);
+                    decelerateDotRadius = DECELERATE_DOT_OFF_RADIUS_OF_CONTROL_SURFACE;
                 }
 
-                canvas.drawCircle(surfaceWidth * HALF, surfaceHeight * CONTROL_AREA_CENTER_FROM_TOP, DECELERATE_DOT_RADIUS_OF_CONTROL_SURFACE * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
+                canvas.drawCircle(surfaceWidth * HALF, surfaceHeight * CONTROL_AREA_CENTER_FROM_TOP, decelerateDotRadius * CONTROL_AREA_FROM_WIDTH * surfaceWidth, paint);
 
                 if (matchState.isControlOn()) {
                     paint.setColor(Color.MAGENTA);
@@ -251,10 +255,10 @@ public class MatchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             if (matchState.getShotPowerMeter() > SHOT_POWER_METER_OPTIMAL) {
                 paint.setColor(Color.RED);
 
-                if (matchState.getShotPowerMeter() >= SHOT_POWER_METER_HIGHER_LIMIT) {
+                if (matchState.getShotPowerMeter() >= SHOT_POWER_METER_TOTAL_FAIL_LIMIT) {
                     paint.setAlpha(FULL_ALPHA);
                 } else {
-                    paint.setAlpha((int)(FAILED_SHOT_BASE_ALPHA + FAILED_SHOT_INCREMENTAL_ALPHA * (matchState.getShotPowerMeter() - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_HIGHER_LIMIT - SHOT_POWER_METER_OPTIMAL)));
+                    paint.setAlpha((int)(FAILED_SHOT_BASE_ALPHA + FAILED_SHOT_INCREMENTAL_ALPHA * (matchState.getShotPowerMeter() - SHOT_POWER_METER_OPTIMAL) / (SHOT_POWER_METER_TOTAL_FAIL_LIMIT - SHOT_POWER_METER_OPTIMAL)));
                 }
 
                 canvas.drawRect(0, CONTROL_AREA_TOP_FROM_TOP * surfaceHeight, surfaceWidth * CONTROL_AREA_LEFT_FROM_LEFT, surfaceHeight, paint);
