@@ -4,7 +4,7 @@ import com.example.epicalfootball.math.Position;
 
 public class Constants {
 
-    //TEXTS
+    //STRINGS
     public static String FROM_RESULT_INTENT_TEXT = "fromResult";
 
     public static String PLAYER_REACH_KEY = "playerReach";
@@ -24,6 +24,12 @@ public class Constants {
     public static String GOALKEEPER_BALL_HANDLING_KEY = "goalkeeperBallHandling";
     public static String GOALKEEPER_REACTION_SAVES_KEY = "goalkeeperReactionSaves";
     public static String GOALKEEPER_GOALKEEPING_INTELLIGENCE_KEY = "goalkeeperGoalkeepingIntelligence";
+
+    public static String HOLD_ACTION = "hold";
+    public static String MOVE_ACTION = "move";
+    public static String SAVE_ACTION = "save";
+    public static String INTERCEPT_ACTION = "intercept";
+    public static String RUN_TO_BALL_ACTION = "run_to_ball";
 
     //MATHEMATICAL
     public static float FULL_MAGNITUDE = 1f;
@@ -158,11 +164,6 @@ public class Constants {
     public static int GOALKEEPER_AFTER_KICK_TIME = 1500;
     public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 4);
     public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
-    public static String HOLD_ACTION = "hold";
-    public static String MOVE_ACTION = "move";
-    public static String SAVE_ACTION = "save";
-    public static String INTERCEPT_ACTION = "intercept";
-    public static String RUN_TO_BALL_ACTION = "run_to_ball";
     public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1.5f; //ball speed magnitude perceived as an incoming shot
     public static float GK_AI_BALL_DIRECTION_PERCEIVED_SAME = (float)Math.PI / 50;
     public static float GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR = 0.8f;
@@ -175,6 +176,7 @@ public class Constants {
     public static float SAVING_SHOVE_MAX_ANGLE_SHIFT = QUARTER_CIRCLE / 2;
     public static Position SAVING_SHOVE_RIGHT_TARGET_POSITION = new Position(5, 0);
     public static Position SAVING_SHOVE_LEFT_TARGET_POSITION = new Position(-5, 0);
+    public static float MOVE_DOWN_FROM_NET_FACTOR = 0.1f;
 
     //ATTRIBUTES
     public static int MIN_ATTRIBUTE = 0;

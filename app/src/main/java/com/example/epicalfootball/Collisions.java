@@ -13,7 +13,7 @@ public class Collisions {
 
     public static void handlePlayerLineSegmentCollision(RectF line, Player player) {
         if (EpicalMath.checkIntersect(line, player)) {
-            if (line.height() < line.width()) {
+            if (line.height() < line.width()) { //Horizontal
                 if (player.getPosition().getY() < line.centerY()) {
                     player.getPosition().setY(line.top - player.getRadius());
                     player.removeSpeedComponent(DOWN);
@@ -21,13 +21,17 @@ public class Collisions {
                     player.getPosition().setY(line.bottom + player.getRadius());
                     player.removeSpeedComponent(UP);
                 }
-            } else {
+            } else { //Vertical
                 if (player.getPosition().getX() < line.centerX()) {
                     player.getPosition().setX(line.left - player.getRadius());
                     player.removeSpeedComponent(RIGHT);
                 } else {
                     player.getPosition().setX(line.right + player.getRadius());
                     player.removeSpeedComponent(LEFT);
+                }
+
+                if (player.getClass().equals(Goalkeeper.class)) {
+                    player.getPosition().addPositionVector(DOWN, MOVE_DOWN_FROM_NET_FACTOR);
                 }
             }
         }
