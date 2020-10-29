@@ -47,6 +47,7 @@ public class MatchState {
     private boolean readyToShoot = false;
     private float shotPowerMeter = 0;
     private float shootingTimer = 0;
+    private float timeAimed = 0;
     private TargetGoal targetGoal;
     private Position aimTarget;
     private boolean longShot;
@@ -130,11 +131,7 @@ public class MatchState {
             if (this.targetGoal == null) {
                 float distance = EpicalMath.calculateDistanceFromOrigo(this.ball.getPosition().getX(), this.ball.getPosition().getY());
 
-                if (distance < LONG_SHOTS_LIMIT) {
-                    longShot = false;
-                } else {
-                    longShot = true;
-                }
+                longShot = !(distance < LONG_SHOTS_LIMIT);
 
                 this.targetGoal = new TargetGoal(distance, longShot, this.getOutfieldPlayer());
             }
@@ -146,19 +143,25 @@ public class MatchState {
                 this.shotPowerMeter = 0;
             }
 
-            if (!longShot) {
-                if (this.shotPowerMeter < outfieldPlayer.getFinishingMidShotPower()) {
-                    this.shotPowerMeter += outfieldPlayer.getFinishingMidShotPower() / (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getFinishingMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
-                } else {
-                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getFinishingMidShotPower()) / outfieldPlayer.getFinishingMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
-                }
+            if (this.timeAimed > AIMING_FAIL_TIME) {
+                this.shotPowerMeter = 0;
             } else {
-                if (this.shotPowerMeter < outfieldPlayer.getLongShotsMidShotPower()) {
-                    this.shotPowerMeter += outfieldPlayer.getLongShotsMidShotPower() / (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                if (!longShot) {
+                    if (this.shotPowerMeter < outfieldPlayer.getFinishingMidShotPower()) {
+                        this.shotPowerMeter += outfieldPlayer.getFinishingMidShotPower() / (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getFinishingMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    } else {
+                        this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getFinishingMidShotPower()) / outfieldPlayer.getFinishingMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    }
                 } else {
-                    this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) / outfieldPlayer.getLongShotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    if (this.shotPowerMeter < outfieldPlayer.getLongShotsMidShotPower()) {
+                        this.shotPowerMeter += outfieldPlayer.getLongShotsMidShotPower() / (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    } else {
+                        this.shotPowerMeter += (SHOT_POWER_METER_OPTIMAL - outfieldPlayer.getLongShotsMidShotPower()) / outfieldPlayer.getLongShotsMidShotPower() * timeFactor * SHOT_POWER_METER_OPTIMAL / AIMING_TIME;
+                    }
                 }
             }
+
+            this.timeAimed += timeFactor;
 
             if (controlOn) {
                 this.aimTarget = targetGoal.getAimTarget(controlX - HALF, controlY - FULL);
@@ -166,7 +169,11 @@ public class MatchState {
                 this.aimTarget = new Position(0,0);
             }
         } else {
-            if (this.shotPowerMeter < SHOT_POWER_METER_LOWER_LIMIT) {
+            if (this.timeAimed > AIMING_FAIL_TIME) {
+                this.readyToShoot = false;
+                this.shotPowerMeter = 0;
+                this.shootingTimer = 0;
+            } else if (this.shotPowerMeter < SHOT_POWER_METER_LOWER_LIMIT) {
                 this.readyToShoot = false;
                 this.shotPowerMeter = 0;
                 this.shootingTimer = 0;
@@ -185,6 +192,8 @@ public class MatchState {
                     outfieldPlayer.setAimRecoveryTimer(AIM_RECOVERY_TIME);
                 }
             }
+
+            this.timeAimed = 0;
 
             if (outfieldPlayer.getAimRecoveryTimer() > 0) {
                 outfieldPlayer.setAimRecoveryTimer(outfieldPlayer.getAimRecoveryTimer() - elapsed);

@@ -106,6 +106,7 @@ public class Constants {
     public static float FAILED_SHOT_POWER_FACTOR = 0.5f;
     public static int SHOT_POWER_METER_LOWER_LIMIT = 15;
     public static float AIMING_TIME = 1f;
+    public static float AIMING_FAIL_TIME = 2f;
     public static float SHOOT_READY_TIME_IN_MILLISECONDS = 1000;
     public static float PLAYER_KICK_RECOVERY_TIME = 300;
     public static float AIM_RECOVERY_TIME = 300;
