@@ -166,7 +166,7 @@ public class Constants {
     public static int GOALKEEPER_AFTER_KICK_TIME = 1500;
     public static Position GOALKEEPER_STARTING_POSITION = new Position(0, 4);
     public static float GOALKEEPER_STARTING_ORIENTATION = DOWN;
-    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1.5f; //ball speed magnitude perceived as an incoming shot
+    public static float GK_AI_BALL_SPEED_PERCEIVED_SHOT = 1f; //ball speed magnitude perceived as an incoming shot
     public static float GK_AI_BALL_DIRECTION_PERCEIVED_SAME = (float)Math.PI / 50;
     public static float GK_AI_INTERCEPT_DISTANCE_TO_BALL_FACTOR = 0.8f;
     public static float GK_AI_OUTSIDE_BOX_INTERCEPT_FACTOR = 0.9f;

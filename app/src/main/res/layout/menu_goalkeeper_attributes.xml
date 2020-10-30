@@ -184,7 +184,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:onClick="increaseGoalkeeperspeed"
+                    android:onClick="increaseGoalkeeperSpeed"
                     android:text="@string/plus_text"
                     android:textSize="25dp"
                     android:textStyle="bold" />
