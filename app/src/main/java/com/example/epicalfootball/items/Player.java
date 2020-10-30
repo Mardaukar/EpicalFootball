@@ -1,5 +1,7 @@
 package com.example.epicalfootball.items;
 
+import android.util.Log;
+
 import com.example.epicalfootball.math.EpicalMath;
 import com.example.epicalfootball.control.TargetSpeedVector;
 import com.example.epicalfootball.math.Position;
@@ -7,7 +9,7 @@ import com.example.epicalfootball.math.Vector;
 
 import static com.example.epicalfootball.Constants.*;
 
-public abstract class Player extends Circle {
+public class Player extends Circle {
     float orientation;
     TargetSpeedVector targetSpeed;
     Vector speed;
@@ -26,6 +28,46 @@ public abstract class Player extends Circle {
         this.position.setY(y);
     }
 
+    public Position getSeizingPosition(Ball ball) {
+        if (ball.getSpeed().getMagnitude() == 0) {
+            return ball.getPosition();
+        } else {
+            float ballDirection = ball.getSpeed().getDirection();
+            float ballToPlayerDirection = EpicalMath.convertToDirection(ball.getPosition(), this.getPosition());
+            float perpendicularTargetDirection;
+
+            if (EpicalMath.directionLeftFromDirection(ballToPlayerDirection, ballDirection)) {
+                perpendicularTargetDirection = EpicalMath.sanitizeDirection(ballDirection + QUARTER_CIRCLE);
+            } else {
+                perpendicularTargetDirection = EpicalMath.sanitizeDirection(ballDirection - QUARTER_CIRCLE);
+            }
+
+            float perpendicularTargetDistance = EpicalMath.calculateDistance(ball.getPosition(), this.getPosition()) * (float) Math.sin(EpicalMath.absoluteAngleBetweenDirections(ballDirection, ballToPlayerDirection));
+            Position perpendicularTargetPosition = this.getPosition().clonePosition().addPositionVector(perpendicularTargetDirection, perpendicularTargetDistance);
+
+            float timeToPerpendicularTargetPosition;
+            if (this.getSpeed().getMagnitude() > 0 && EpicalMath.absoluteAngleBetweenDirections(perpendicularTargetDirection, this.getSpeed().getDirection()) < QUARTER_CIRCLE) {
+                timeToPerpendicularTargetPosition = perpendicularTargetDistance / (this.getSpeed().getMagnitude() * this.getFullMagnitudeSpeed());
+
+                if (timeToPerpendicularTargetPosition > MAX_SEIZE_ANTICIPATION_TIME) {
+                    timeToPerpendicularTargetPosition = MAX_SEIZE_ANTICIPATION_TIME;
+                }
+            } else {
+                timeToPerpendicularTargetPosition = MAX_SEIZE_ANTICIPATION_TIME;
+            }
+
+            Position anticipatedBallPosition = ball.getPosition().clonePosition();
+            anticipatedBallPosition.moveBySpeed(ball, timeToPerpendicularTargetPosition);
+
+            if (EpicalMath.absoluteAngleBetweenDirections(EpicalMath.convertToDirection(ball.getPosition(), perpendicularTargetPosition), ball.getSpeed().getDirection()) < QUARTER_CIRCLE) {
+                return EpicalMath.getPositionBetweenPositions(perpendicularTargetPosition, anticipatedBallPosition);
+            } else {
+                return anticipatedBallPosition;
+            }
+        }
+    }
+
+
     public void setTargetSpeedDirectionByTargetPosition(Position targetPosition) {
         float playerToTargetPositionDirection = EpicalMath.convertToDirection(this.getPosition(), targetPosition);
 
@@ -35,11 +77,14 @@ public abstract class Player extends Circle {
 
             if (EpicalMath.absoluteAngleBetweenDirections(playerToTargetPositionDirection, currentSpeedDirection) > QUARTER_CIRCLE) {
                 newTargetSpeedDirection = EpicalMath.reversedDirection(currentSpeedDirection);
+                newTargetSpeedDirection = EpicalMath.directionBetweenDirections(playerToTargetPositionDirection, newTargetSpeedDirection);
+            } else if (EpicalMath.calculateDistance(this.position, targetPosition) < SEIZE_MIRRORING_DISTANCE_TOLERANCE) {
+                newTargetSpeedDirection = playerToTargetPositionDirection;
             } else {
                 newTargetSpeedDirection = EpicalMath.mirroredDirection(playerToTargetPositionDirection, currentSpeedDirection);
+                newTargetSpeedDirection = EpicalMath.directionBetweenDirections(playerToTargetPositionDirection, newTargetSpeedDirection);
             }
 
-            newTargetSpeedDirection = EpicalMath.directionBetweenDirections(playerToTargetPositionDirection, newTargetSpeedDirection);
             this.targetSpeed.setDirection(newTargetSpeedDirection);
         } else {
             this.targetSpeed.setDirection(playerToTargetPositionDirection);

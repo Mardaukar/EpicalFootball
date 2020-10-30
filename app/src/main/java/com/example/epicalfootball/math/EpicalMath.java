@@ -144,6 +144,7 @@ public class EpicalMath {
 
     public static float mirroredDirection(float referenceDirection, float direction) {
         float angle = angleBetweenDirections(referenceDirection, direction);
+        Log.d("angle", "" + angle);
         return sanitizeDirection(referenceDirection + angle);
     }
 
@@ -166,5 +167,11 @@ public class EpicalMath {
         Position position = new Position();
         position.addPositionVector(direction, distance);
         return position;
+    }
+
+    public static Position getPositionBetweenPositions(Position position1, Position position2) {
+        float x = (position1.getX() + position2.getX()) / 2;
+        float y = (position1.getY() + position2.getY()) / 2;
+        return new Position(x, y);
     }
 }

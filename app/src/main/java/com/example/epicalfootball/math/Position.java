@@ -1,6 +1,7 @@
 package com.example.epicalfootball.math;
 
 import com.example.epicalfootball.items.Ball;
+import com.example.epicalfootball.items.Player;
 
 import static com.example.epicalfootball.Constants.BALL_REFERENCE_SPEED;
 
@@ -29,7 +30,7 @@ public class Position {
         return this;
     }
 
-    public void moveBySpeed(Ball ball, float seconds) {
+    public void moveBySpeed(Ball ball, float seconds) { //Change to FieldObject
         this.x += Math.cos(ball.getSpeed().getDirection()) * ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED * seconds;
         this.y += Math.sin(ball.getSpeed().getDirection()) * ball.getSpeed().getMagnitude() * BALL_REFERENCE_SPEED * seconds;
     }

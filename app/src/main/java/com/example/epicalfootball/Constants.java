@@ -95,6 +95,8 @@ public class Constants {
     public static float BALL_COLLISION_SPEED_REDUCTION_BY_SPEED_FACTOR = 0.5f;
     public static long BALL_FEED_TIMER = 500;
     public static float GOAL_POST_PLAYER_SHIFT_ANGLE = 0.1f;
+    public static float SEIZE_MIRRORING_DISTANCE_TOLERANCE = 2; //Necessary for removing spinning around with ball when seizing (caused by control cone)
+    public static float MAX_SEIZE_ANTICIPATION_TIME = 1;
 
     //SHOOTING
     public static float LONG_SHOTS_LIMIT = 20;

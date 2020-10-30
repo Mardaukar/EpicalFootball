@@ -41,6 +41,10 @@ public class Vector {
         this.direction = bounceDirection;
     }
 
+    public Vector cloneVector() {
+        return new Vector(this.direction, this.magnitude);
+    }
+
     public float getDirection() {
         return direction;
     }

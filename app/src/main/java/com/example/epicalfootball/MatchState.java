@@ -1,6 +1,7 @@
 package com.example.epicalfootball;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.example.epicalfootball.activities.MatchActivity;
 import com.example.epicalfootball.control.AIAction;
@@ -124,8 +125,9 @@ public class MatchState {
     public void handlePlayerControls(float elapsed, float timeFactor) {
         if (shootButtonDown) {
             outfieldPlayer.setAimRecoveryTimer(0);
-            float playerBallDirection = EpicalMath.convertToDirectionFromOrigo(ball.getPosition().getX() - outfieldPlayer.getPosition().getX(), ball.getPosition().getY() - outfieldPlayer.getPosition().getY());
-            outfieldPlayer.getTargetSpeed().setDirection(playerBallDirection);
+            Position seizingPosition = outfieldPlayer.getSeizingPosition(this.ball);
+            //outfieldPlayer.getTargetSpeed().setDirection(EpicalMath.convertToDirection(outfieldPlayer.getPosition(), ball.getPosition()));
+            outfieldPlayer.setTargetSpeedDirectionByTargetPosition(seizingPosition);
             outfieldPlayer.getTargetSpeed().setMagnitude(AUTOPILOT_SPEED_MAGNITUDE);
 
             if (this.targetGoal == null) {
