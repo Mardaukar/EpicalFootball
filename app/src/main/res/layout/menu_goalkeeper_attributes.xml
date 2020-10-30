@@ -28,7 +28,7 @@
             android:text="@string/title_text"
             android:textAlignment="gravity"
             android:textColor="#040404"
-            android:textSize="30sp"
+            android:textSize="30dp"
             android:textStyle="bold" />
 
         <TableLayout
@@ -40,261 +40,321 @@
                 <TextView
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp" />
+                    android:textSize="25dp" />
             </TableRow>
 
             <TableRow>
-                <Button
-                    android:id="@+id/player_attributes_button"
-                    android:layout_weight="1"
-                    android:onClick="switchToPlayerAttributes"
-                    android:text="@string/player_button_text"
-                    android:textSize="25sp" />
+                    <Button
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/player_attributes_button"
+                        android:onClick="switchToPlayerAttributes"
+                        android:text="@string/player_button_text"
+                        android:textSize="25dp" />
 
-                <Button
-                    android:id="@+id/goalkeeper_attributes_button"
-                    android:clickable="false"
-                    android:layout_weight="1"
-                    android:text="@string/goalkeeper_button_text"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/goalkeeper_attributes_button"
+                        android:clickable="false"
+                        android:text="@string/goalkeeper_button_text"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/reach"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/goalkeeper_reach_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goalkeeper_reach_attribute_textView"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_goalkeeper_reach_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/minus_goalkeeper_reach_button"
                     android:onClick="decreaseGoalkeeperReach"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_goalkeeper_reach_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/plus_goalkeeper_reach_button"
                     android:onClick="increaseGoalkeeperReach"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/agility"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/goalkeeper_agility_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_goalkeeper_agility_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreaseGoalkeeperAgility"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_goalkeeper_agility_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increaseGoalkeeperAgility"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/speed"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/goalkeeper_speed_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_goalkeeper_speed_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreaseGoalkeeperSpeed"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_goalkeeper_speed_button"
                     android:layout_weight="1"
-                    android:onClick="increaseGoalkeeperSpeed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="increaseGoalkeeperspeed"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/reflexes"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/goalkeeper_reflexes_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_goalkeeper_reflexes_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreaseGoalkeeperReflexes"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_goalkeeper_reflexes_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increaseGoalkeeperReflexes"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/reaction_saves"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/goalkeeper_reaction_saves_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goalkeeper_reaction_saves_attribute_textView"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_goalkeeper_reaction_saves_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/minus_goalkeeper_reaction_saves_button"
                     android:onClick="decreaseGoalkeeperReactionSaves"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_goalkeeper_reaction_saves_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/plus_goalkeeper_reaction_saves_button"
                     android:onClick="increaseGoalkeeperReactionSaves"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/ball_handling"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/goalkeeper_ball_handling_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_goalkeeper_ball_handling_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreaseGoalkeeperBallHandling"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_goalkeeper_ball_handling_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increaseGoalkeeperBallHandling"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/intelligence"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/goalkeeper_goalkeeping_intelligence_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_goalkeeper_goalkeeping_intelligence_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreaseGoalkeeperGoalkeepingIntelligence"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_goalkeeper_goalkeeping_intelligence_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increaseGoalkeeperGoalkeepingIntelligence"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
@@ -302,7 +362,7 @@
                 <TextView
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp" />
+                    android:textSize="25dp" />
             </TableRow>
 
         </TableLayout>
@@ -316,7 +376,7 @@
             android:background="#DF471A97"
             android:text="@string/start_game_text"
             android:textColor="#000000"
-            android:textSize="30sp" />
+            android:textSize="30dp" />
 
 
     </LinearLayout>

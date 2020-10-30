@@ -28,7 +28,7 @@
             android:text="@string/title_text"
             android:textAlignment="gravity"
             android:textColor="#040404"
-            android:textSize="30sp"
+            android:textSize="30dp"
             android:textStyle="bold" />
 
         <TableLayout
@@ -40,329 +40,407 @@
                 <TextView
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp" />
+                    android:textSize="25dp" />
             </TableRow>
 
             <TableRow>
                 <Button
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:id="@+id/player_attributes_button"
                     android:clickable="false"
-                    android:layout_weight="1"
                     android:text="@string/player_button_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/goalkeeper_attributes_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goalkeeper_attributes_button"
                     android:onClick="switchToGoalkeeperAttributes"
                     android:text="@string/goalkeeper_button_text"
-                    android:textSize="25sp" />
+                    android:textSize="25dp" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/reach"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/player_reach_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player_reach_attribute_textView"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_player_reach_button"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/minus_player_reach_button"
                     android:onClick="decreasePlayerReach"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_player_reach_button"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/plus_player_reach_button"
                     android:onClick="increasePlayerReach"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/acceleration"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_acceleration_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_acceleration_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerAcceleration"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_acceleration_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerAcceleration"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/speed"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_speed_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_speed_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerSpeed"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_speed_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerSpeed"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/ball_control"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_ball_control_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_ball_control_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerBallControl"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_ball_control_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerBallControl"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/dribbling"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/player_dribbling_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player_dribbling_attribute_textView"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/minus_player_dribbling_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/minus_player_dribbling_button"
                     android:onClick="decreasePlayerDribbling"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/plus_player_dribbling_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/plus_player_dribbling_button"
                     android:onClick="increasePlayerDribbling"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/shot_power"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_shot_power_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_shot_power_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerShotPower"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_shot_power_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerShotPower"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/accuracy"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_accuracy_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_accuracy_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerAccuracy"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_accuracy_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerAccuracy"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/finishing"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_finishing_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_finishing_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerFinishing"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_finishing_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerFinishing"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
             <TableRow>
                 <TextView
-                    android:layout_weight="2"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="@string/long_shots"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/player_long_shots_attribute_textView"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/minus_player_long_shots_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="decreasePlayerLongShots"
                     android:text="@string/minus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/plus_player_long_shots_button"
                     android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:onClick="increasePlayerLongShots"
                     android:text="@string/plus_text"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
 
@@ -370,7 +448,7 @@
                 <TextView
                     android:padding="3dip"
                     android:text=""
-                    android:textSize="25sp" />
+                    android:textSize="25dp" />
             </TableRow>
 
         </TableLayout>
@@ -384,7 +462,7 @@
             android:background="#DF471A97"
             android:text="@string/start_game_text"
             android:textColor="#000000"
-            android:textSize="30sp" />
+            android:textSize="30dp" />
 
 
     </LinearLayout>
