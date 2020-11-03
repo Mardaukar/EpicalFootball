@@ -173,7 +173,7 @@ public class Constants {
     public static float GK_AI_KICK_MAGNITUDE = 1;
     public static float GK_AI_ACCEPTED_POSITION_OFFSET = 0.2f;
     public static float GK_AI_ACCEPTED_SLOWDOWN_DIRECTION_ANGLE = (float)Math.PI / 8;
-    public static float SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER = 3;
+    public static float SAVING_BALL_SPEED_REDUCTION_RANDOM_MULTIPLIER = 2;
     public static float SAVING_BALL_SPEED_SHOVE_LIMIT = 2;
     public static float SAVING_SHOVE_MAX_ANGLE_SHIFT = QUARTER_CIRCLE / 2;
     public static Position SAVING_SHOVE_RIGHT_TARGET_POSITION = new Position(5, 0);
@@ -210,7 +210,7 @@ public class Constants {
     public static float MIN_DRIBBLING_TARGET = 0.9f;
     public static float MAX_DRIBBLING_TARGET = 1.1f;
     public static float MAX_SHOT_POWER_VALUE = 4f;
-    public static float MIN_SHOT_POWER_VALUE = 2f;
+    public static float MIN_SHOT_POWER_VALUE = 2.5f;
     public static float MIN_ACCURACY_TARGET_DOT = 0.12f;
     public static float MAX_ACCURACY_TARGET_DOT = 0.03f;
     public static float MIN_ACCURACY_GAUSSIAN_FACTOR = 0.05f;
