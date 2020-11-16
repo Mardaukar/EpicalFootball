@@ -130,8 +130,8 @@ public class MenuActivity extends Activity {
         TextView goalkeeperReflexesView = findViewById(R.id.goalkeeper_reflexes_attribute_textView);
         goalkeeperReflexesView.setText(Integer.toString(this.goalkeeperReflexesAttribute));
 
-        TextView goalkeeperReactionSavesView = findViewById(R.id.goalkeeper_reaction_saves_attribute_textView);
-        goalkeeperReactionSavesView.setText(Integer.toString(this.goalkeeperReactionSavesAttribute));
+        //TextView goalkeeperReactionSavesView = findViewById(R.id.goalkeeper_reaction_saves_attribute_textView);
+        //goalkeeperReactionSavesView.setText(Integer.toString(this.goalkeeperReactionSavesAttribute));
 
         TextView goalkeeperBallHandlingView = findViewById(R.id.goalkeeper_ball_handling_attribute_textView);
         goalkeeperBallHandlingView.setText(Integer.toString(this.goalkeeperBallHandlingAttribute));
@@ -387,7 +387,7 @@ public class MenuActivity extends Activity {
         }
     }
 
-    public void decreaseGoalkeeperReactionSaves(View view) {
+    /*public void decreaseGoalkeeperReactionSaves(View view) {
         if (this.goalkeeperReactionSavesAttribute > MIN_ATTRIBUTE) {
             this.goalkeeperReactionSavesAttribute -= ATTRIBUTE_INCREMENT;
             TextView goalkeeperReactionSavesView = findViewById(R.id.goalkeeper_reaction_saves_attribute_textView);
@@ -401,7 +401,7 @@ public class MenuActivity extends Activity {
             TextView goalkeeperReactionSavesView = findViewById(R.id.goalkeeper_reaction_saves_attribute_textView);
             goalkeeperReactionSavesView.setText(Integer.toString(this.goalkeeperReactionSavesAttribute));
         }
-    }
+    }*/
 
     public void decreaseGoalkeeperGoalkeepingIntelligence(View view) {
         if (this.goalkeeperGoalkeepingIntelligenceAttribute > MIN_ATTRIBUTE) {

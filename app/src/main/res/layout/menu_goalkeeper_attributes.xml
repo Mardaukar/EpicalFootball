@@ -231,7 +231,7 @@
                     android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
-
+            <!--
             <TableRow>
                 <TextView
                     android:layout_weight="3"
@@ -273,6 +273,7 @@
                     android:textSize="25dp"
                     android:textStyle="bold" />
             </TableRow>
+            -->
 
             <TableRow>
                 <TextView
